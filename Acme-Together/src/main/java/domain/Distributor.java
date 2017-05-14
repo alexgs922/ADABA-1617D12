@@ -33,6 +33,7 @@ public class Distributor extends Actor {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getCompanyName() {
 		return this.companyName;
 	}
@@ -53,6 +54,7 @@ public class Distributor extends Actor {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getCompanyAddress() {
 		return this.companyAddress;
 	}
@@ -63,6 +65,7 @@ public class Distributor extends Actor {
 
 	@NotBlank
 	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getWebPage() {
 		return this.webPage;
 	}
@@ -71,19 +74,19 @@ public class Distributor extends Actor {
 		this.webPage = webPage;
 	}
 
-	private Collection<Warehouse> warehouse;
+
+	private Collection<Warehouse>	warehouse;
+
 
 	@OneToMany
 	@Valid
 	@NotNull
 	public Collection<Warehouse> getWarehouse() {
-		return warehouse;
+		return this.warehouse;
 	}
 
-	public void setWarehouse(Collection<Warehouse> warehouse) {
+	public void setWarehouse(final Collection<Warehouse> warehouse) {
 		this.warehouse = warehouse;
 	}
-	
-	
-	
+
 }

@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Comment extends DomainEntity {
@@ -31,6 +33,7 @@ public class Comment extends DomainEntity {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getTitle() {
 		return this.title;
 	}
@@ -40,6 +43,7 @@ public class Comment extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getText() {
 		return this.text;
 	}
@@ -57,20 +61,20 @@ public class Comment extends DomainEntity {
 	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
-	
-	private ShoppingGroup shoppingGroupComments;
 
-	@ManyToOne(optional=false)
+
+	private ShoppingGroup	shoppingGroupComments;
+
+
+	@ManyToOne(optional = false)
 	@Valid
 	@NotNull
 	public ShoppingGroup getShoppingGroupComments() {
-		return shoppingGroupComments;
+		return this.shoppingGroupComments;
 	}
 
-	public void setShoppingGroupComments(ShoppingGroup shoppingGroupComments) {
+	public void setShoppingGroupComments(final ShoppingGroup shoppingGroupComments) {
 		this.shoppingGroupComments = shoppingGroupComments;
 	}
-	
-	
 
 }

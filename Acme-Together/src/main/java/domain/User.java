@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,6 +41,7 @@ public class User extends Actor {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getAddress() {
 		return this.address;
 	}
@@ -49,6 +52,7 @@ public class User extends Actor {
 
 	@URL
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPicture() {
 		return this.picture;
 	}
@@ -58,6 +62,7 @@ public class User extends Actor {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getDescription() {
 		return this.description;
 	}
@@ -78,6 +83,7 @@ public class User extends Actor {
 
 	@NotBlank
 	@Pattern(regexp = "^(([X-Z]{1})([-]?)(\\d{7})([-]?)([A-Z]{1}))|((\\d{8})([-]?)([A-Z]{1}))")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getIdentification() {
 		return this.identification;
 	}
@@ -94,64 +100,64 @@ public class User extends Actor {
 	public void setPuntuation(final int puntuation) {
 		this.puntuation = puntuation;
 	}
-	
-	private CreditCard creditCard;
-	private Collection<User> friends;
-	private Collection<ShoppingGroup> shoppingGroup;
-	private Collection<Product> products;
-	private Collection<Comment> comments;
+
+
+	private CreditCard					creditCard;
+	private Collection<User>			friends;
+	private Collection<ShoppingGroup>	shoppingGroup;
+	private Collection<Product>			products;
+	private Collection<Comment>			comments;
+
 
 	@OneToOne
 	@Valid
 	@NotNull
 	public CreditCard getCreditCard() {
-		return creditCard;
+		return this.creditCard;
 	}
 
-	public void setCreditCard(CreditCard creditCard) {
+	public void setCreditCard(final CreditCard creditCard) {
 		this.creditCard = creditCard;
 	}
 
 	@ManyToMany
 	@Valid
 	public Collection<User> getFriends() {
-		return friends;
+		return this.friends;
 	}
 
-	public void setFriends(Collection<User> friends) {
+	public void setFriends(final Collection<User> friends) {
 		this.friends = friends;
 	}
 
 	@ManyToMany
 	@Valid
 	public Collection<ShoppingGroup> getShoppingGroup() {
-		return shoppingGroup;
+		return this.shoppingGroup;
 	}
 
-	public void setShoppingGroup(Collection<ShoppingGroup> shoppingGroup) {
+	public void setShoppingGroup(final Collection<ShoppingGroup> shoppingGroup) {
 		this.shoppingGroup = shoppingGroup;
 	}
 
-	@OneToMany(mappedBy="userProduct")
+	@OneToMany(mappedBy = "userProduct")
 	@Valid
 	public Collection<Product> getProducts() {
-		return products;
+		return this.products;
 	}
 
-	public void setProducts(Collection<Product> products) {
+	public void setProducts(final Collection<Product> products) {
 		this.products = products;
 	}
 
-	@OneToMany(mappedBy="userComment")
+	@OneToMany(mappedBy = "userComment")
 	@Valid
 	public Collection<Comment> getComments() {
-		return comments;
+		return this.comments;
 	}
 
-	public void setComments(Collection<Comment> comments) {
+	public void setComments(final Collection<Comment> comments) {
 		this.comments = comments;
 	}
-	
-	
 
 }

@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 public class Warehouse extends DomainEntity {
 
@@ -27,6 +29,7 @@ public class Warehouse extends DomainEntity {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getName() {
 		return this.name;
 	}
@@ -36,6 +39,7 @@ public class Warehouse extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getWarehouseAddress() {
 		return this.warehouseAddress;
 	}
@@ -43,21 +47,20 @@ public class Warehouse extends DomainEntity {
 	public void setWarehouseAddress(final String warehouseAddress) {
 		this.warehouseAddress = warehouseAddress;
 	}
-	
-	
-	private Collection<Order>orders;
+
+
+	private Collection<Order>	orders;
+
 
 	@OneToMany
 	@Valid
 	@NotNull
 	public Collection<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 
-	public void setOrders(Collection<Order> orders) {
+	public void setOrders(final Collection<Order> orders) {
 		this.orders = orders;
 	}
-	
-	
 
 }

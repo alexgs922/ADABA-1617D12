@@ -4,7 +4,6 @@ package domain;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -59,30 +58,31 @@ public class Order extends DomainEntity {
 	public void setStatus(final Status status) {
 		this.status = status;
 	}
-	
-	private Collection<Product> products;
-	private Coupon coupon;
-	
-	@ManyToOne(optional=true)
+
+
+	private Collection<Product>	products;
+	private Coupon				coupon;
+
+
+	@ManyToOne(optional = true)
 	@Valid
 	public Coupon getCoupon() {
-		return coupon;
+		return this.coupon;
 	}
 
-	public void setCoupon(Coupon coupon) {
+	public void setCoupon(final Coupon coupon) {
 		this.coupon = coupon;
 	}
 
-	@OneToMany(mappedBy="orderProduct")
+	@OneToMany(mappedBy = "orderProduct")
 	@Valid
 	@NotNull
 	public Collection<Product> getProducts() {
-		return products;
+		return this.products;
 	}
 
-	public void setProducts(Collection<Product> products) {
+	public void setProducts(final Collection<Product> products) {
 		this.products = products;
 	}
-	
 
 }

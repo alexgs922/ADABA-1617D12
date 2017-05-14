@@ -58,6 +58,7 @@ public class Actor extends PuntuableEntity {
 
 	@NotBlank
 	@Email
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getEmail() {
 		return this.email;
 	}
@@ -68,6 +69,7 @@ public class Actor extends PuntuableEntity {
 
 	@NotBlank
 	@Pattern(regexp = "^\\+?\\d{1,3}?[- .]?\\d+$")
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPhone() {
 		return this.phone;
 	}
@@ -75,6 +77,7 @@ public class Actor extends PuntuableEntity {
 	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
+
 
 	private UserAccount	userAccount;
 
@@ -90,6 +93,7 @@ public class Actor extends PuntuableEntity {
 		this.userAccount = userAccount;
 	}
 
+
 	private Collection<PrivateMessage>	messageReceives;
 	private Collection<PrivateMessage>	messageWrites;
 
@@ -100,7 +104,7 @@ public class Actor extends PuntuableEntity {
 	}
 
 	public void setMessageReceives(final Collection<PrivateMessage> messageReceives) {
-		this.messageReceives= messageReceives;
+		this.messageReceives = messageReceives;
 	}
 
 	@OneToMany(mappedBy = "sender")
@@ -109,11 +113,7 @@ public class Actor extends PuntuableEntity {
 	}
 
 	public void setMessageWrites(final Collection<PrivateMessage> messageWrites) {
-		this.messageWrites= messageWrites;
+		this.messageWrites = messageWrites;
 	}
 
-
-	
-	
-	
 }

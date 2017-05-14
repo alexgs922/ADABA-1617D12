@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class ShoppingGroup extends PuntuableEntity {
@@ -46,6 +48,7 @@ public class ShoppingGroup extends PuntuableEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getName() {
 		return this.name;
 	}
@@ -55,6 +58,7 @@ public class ShoppingGroup extends PuntuableEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getDescription() {
 		return this.description;
 	}
@@ -82,6 +86,7 @@ public class ShoppingGroup extends PuntuableEntity {
 		this.freePlaces = freePlaces;
 	}
 
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public Collection<String> getFrecuentedSites() {
 		return this.frecuentedSites;
 	}
@@ -98,67 +103,67 @@ public class ShoppingGroup extends PuntuableEntity {
 	public void setPuntuation(final int puntuation) {
 		this.puntuation = puntuation;
 	}
-	
-	private Collection<User>users;
-	private Collection<Product>products;
-	private Collection<Comment> comments;
-	private Category category;
-	private Collection<Engagement> engagements;
+
+
+	private Collection<User>		users;
+	private Collection<Product>		products;
+	private Collection<Comment>		comments;
+	private Category				category;
+	private Collection<Engagement>	engagements;
+
 
 	@ManyToMany
 	@Valid
 	@NotNull
 	public Collection<User> getUsers() {
-		return users;
+		return this.users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(final Collection<User> users) {
 		this.users = users;
 	}
 
-	@OneToMany(mappedBy="shoppingGroupProducts")
+	@OneToMany(mappedBy = "shoppingGroupProducts")
 	@Valid
 	@NotNull
 	public Collection<Product> getProducts() {
-		return products;
+		return this.products;
 	}
 
-	public void setProducts(Collection<Product> products) {
+	public void setProducts(final Collection<Product> products) {
 		this.products = products;
 	}
 
-	@OneToMany(mappedBy="shoppingGroupComments")
+	@OneToMany(mappedBy = "shoppingGroupComments")
 	@Valid
 	public Collection<Comment> getComments() {
-		return comments;
+		return this.comments;
 	}
 
-	public void setComments(Collection<Comment> comments) {
+	public void setComments(final Collection<Comment> comments) {
 		this.comments = comments;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	@Valid
 	@NotNull
 	public Category getCategory() {
-		return category;
+		return this.category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(final Category category) {
 		this.category = category;
 	}
 
-	@OneToMany(mappedBy="shoppingGroupEngagements")
+	@OneToMany(mappedBy = "shoppingGroupEngagements")
 	@Valid
 	@NotNull
 	public Collection<Engagement> getEngagements() {
-		return engagements;
+		return this.engagements;
 	}
 
-	public void setEngagements(Collection<Engagement> engagements) {
+	public void setEngagements(final Collection<Engagement> engagements) {
 		this.engagements = engagements;
 	}
-	
-	
 
 }

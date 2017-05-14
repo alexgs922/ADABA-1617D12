@@ -10,6 +10,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 public class Coupon extends DomainEntity {
 
@@ -30,6 +32,7 @@ public class Coupon extends DomainEntity {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getCouponNumber() {
 		return this.couponNumber;
 	}
@@ -57,18 +60,19 @@ public class Coupon extends DomainEntity {
 		this.used = used;
 	}
 
-	private Collection<Order> orders;
 
-	@OneToMany(mappedBy="coupon")
+	private Collection<Order>	orders;
+
+
+	@OneToMany(mappedBy = "coupon")
 	@Valid
 	@NotNull
 	public Collection<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 
-	public void setOrders(Collection<Order> orders) {
+	public void setOrders(final Collection<Order> orders) {
 		this.orders = orders;
 	}
-	
-	
+
 }

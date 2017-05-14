@@ -30,6 +30,7 @@ public class Commercial extends Actor {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getCompanyName() {
 		return this.companyName;
 	}
@@ -49,21 +50,19 @@ public class Commercial extends Actor {
 		this.vatNumber = vatNumber;
 	}
 
-	private Collection<Coupon>coupon;
+
+	private Collection<Coupon>	coupon;
+
 
 	@Valid
 	@NotNull
 	@OneToMany
 	public Collection<Coupon> getCoupon() {
-		return coupon;
+		return this.coupon;
 	}
 
-	public void setCoupon(Collection<Coupon> coupon) {
+	public void setCoupon(final Collection<Coupon> coupon) {
 		this.coupon = coupon;
 	}
-	
-	
-	
-	
-	
+
 }

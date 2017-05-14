@@ -7,6 +7,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 
 public class Product extends DomainEntity {
@@ -29,6 +31,7 @@ public class Product extends DomainEntity {
 	//Getters and Setters --------------------------
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getName() {
 		return this.name;
 	}
@@ -39,6 +42,7 @@ public class Product extends DomainEntity {
 
 	@URL
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getUrl() {
 		return this.url;
 	}
@@ -47,6 +51,7 @@ public class Product extends DomainEntity {
 		this.url = url;
 	}
 
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getReferenceNumber() {
 		return this.referenceNumber;
 	}
@@ -65,31 +70,31 @@ public class Product extends DomainEntity {
 		this.price = price;
 	}
 
-	private ShoppingGroup shoppingGroupProducts;
-	private Order orderProduct;
 
-	@ManyToOne(optional=false)
+	private ShoppingGroup	shoppingGroupProducts;
+	private Order			orderProduct;
+
+
+	@ManyToOne(optional = false)
 	@Valid
 	@NotNull
 	public ShoppingGroup getShoppingGroupProducts() {
-		return shoppingGroupProducts;
+		return this.shoppingGroupProducts;
 	}
 
-	public void setShoppingGroupProducts(ShoppingGroup shoppingGroupProducts) {
+	public void setShoppingGroupProducts(final ShoppingGroup shoppingGroupProducts) {
 		this.shoppingGroupProducts = shoppingGroupProducts;
 	}
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	@Valid
 	@NotNull
 	public Order getOrder() {
-		return orderProduct;
+		return this.orderProduct;
 	}
 
-	public void setOrder(Order order) {
-		this.orderProduct= order;
+	public void setOrder(final Order order) {
+		this.orderProduct = order;
 	}
-	
-	
-	
+
 }

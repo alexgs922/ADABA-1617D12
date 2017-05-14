@@ -15,6 +15,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -62,6 +64,7 @@ public class PrivateMessage extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getTitle() {
 
 		return this.title;
@@ -75,6 +78,7 @@ public class PrivateMessage extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getText() {
 
 		return this.text;
@@ -88,6 +92,7 @@ public class PrivateMessage extends DomainEntity {
 	}
 
 	@URL
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getAttachments() {
 
 		return this.attachments;
