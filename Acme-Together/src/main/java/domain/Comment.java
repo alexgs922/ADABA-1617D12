@@ -3,8 +3,11 @@ package domain;
 
 import java.util.Date;
 
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,5 +57,20 @@ public class Comment extends DomainEntity {
 	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
+	
+	private ShoppingGroup shoppingGroupComments;
+
+	@ManyToOne(optional=false)
+	@Valid
+	@NotNull
+	public ShoppingGroup getShoppingGroupComments() {
+		return shoppingGroupComments;
+	}
+
+	public void setShoppingGroupComments(ShoppingGroup shoppingGroupComments) {
+		this.shoppingGroupComments = shoppingGroupComments;
+	}
+	
+	
 
 }

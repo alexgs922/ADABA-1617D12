@@ -4,8 +4,12 @@ package domain;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -94,5 +98,67 @@ public class ShoppingGroup extends ToPuntuate {
 	public void setPuntuation(final int puntuation) {
 		this.puntuation = puntuation;
 	}
+	
+	private Collection<User>users;
+	private Collection<Product>products;
+	private Collection<Comment> comments;
+	private Category category;
+	private Collection<Engagement> engagements;
+
+	@ManyToMany
+	@Valid
+	@NotNull
+	public Collection<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Collection<User> users) {
+		this.users = users;
+	}
+
+	@OneToMany(mappedBy="shoppingGroupProducts")
+	@Valid
+	@NotNull
+	public Collection<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Collection<Product> products) {
+		this.products = products;
+	}
+
+	@OneToMany(mappedBy="shoppingGroupComments")
+	@Valid
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@ManyToOne(optional=false)
+	@Valid
+	@NotNull
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	@OneToMany(mappedBy="shoppingGroupEngagements")
+	@Valid
+	@NotNull
+	public Collection<Engagement> getEngagements() {
+		return engagements;
+	}
+
+	public void setEngagements(Collection<Engagement> engagements) {
+		this.engagements = engagements;
+	}
+	
+	
 
 }

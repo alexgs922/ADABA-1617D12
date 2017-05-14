@@ -1,8 +1,13 @@
 
 package domain;
 
+import java.util.Collection;
+
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -52,4 +57,18 @@ public class Coupon extends DomainEntity {
 		this.used = used;
 	}
 
+	private Collection<Order> orders;
+
+	@OneToMany(mappedBy="coupon")
+	@Valid
+	@NotNull
+	public Collection<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Collection<Order> orders) {
+		this.orders = orders;
+	}
+	
+	
 }

@@ -1,6 +1,11 @@
 
 package domain;
 
+import java.util.Collection;
+
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -44,4 +49,21 @@ public class Commercial extends Actor {
 		this.vatNumber = vatNumber;
 	}
 
+	private Collection<Coupon>coupon;
+
+	@Valid
+	@NotNull
+	@OneToMany
+	public Collection<Coupon> getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(Collection<Coupon> coupon) {
+		this.coupon = coupon;
+	}
+	
+	
+	
+	
+	
 }

@@ -1,6 +1,11 @@
 
 package domain;
 
+import java.util.Collection;
+
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -66,4 +71,19 @@ public class Distributor extends Actor {
 		this.webPage = webPage;
 	}
 
+	private Collection<Warehouse> warehouse;
+
+	@OneToMany
+	@Valid
+	@NotNull
+	public Collection<Warehouse> getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(Collection<Warehouse> warehouse) {
+		this.warehouse = warehouse;
+	}
+	
+	
+	
 }

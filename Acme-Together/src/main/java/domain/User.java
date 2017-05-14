@@ -1,10 +1,15 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -89,5 +94,64 @@ public class User extends Actor {
 	public void setPuntuation(final int puntuation) {
 		this.puntuation = puntuation;
 	}
+	
+	private CreditCard creditCard;
+	private Collection<User> friends;
+	private Collection<ShoppingGroup> shoppingGroup;
+	private Collection<Product> products;
+	private Collection<Comment> comments;
+
+	@OneToOne
+	@Valid
+	@NotNull
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	@ManyToMany
+	@Valid
+	public Collection<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(Collection<User> friends) {
+		this.friends = friends;
+	}
+
+	@ManyToMany
+	@Valid
+	public Collection<ShoppingGroup> getShoppingGroup() {
+		return shoppingGroup;
+	}
+
+	public void setShoppingGroup(Collection<ShoppingGroup> shoppingGroup) {
+		this.shoppingGroup = shoppingGroup;
+	}
+
+	@OneToMany(mappedBy="userProduct")
+	@Valid
+	public Collection<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Collection<Product> products) {
+		this.products = products;
+	}
+
+	@OneToMany(mappedBy="userComment")
+	@Valid
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
+	}
+	
+	
 
 }

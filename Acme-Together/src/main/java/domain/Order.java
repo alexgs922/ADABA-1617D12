@@ -1,10 +1,16 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -53,5 +59,30 @@ public class Order extends DomainEntity {
 	public void setStatus(final Status status) {
 		this.status = status;
 	}
+	
+	private Collection<Product> products;
+	private Coupon coupon;
+	
+	@ManyToOne(optional=true)
+	@Valid
+	public Coupon getCoupon() {
+		return coupon;
+	}
+
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+
+	@OneToMany(mappedBy="orderProduct")
+	@Valid
+	@NotNull
+	public Collection<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Collection<Product> products) {
+		this.products = products;
+	}
+	
 
 }

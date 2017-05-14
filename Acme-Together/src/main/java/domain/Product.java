@@ -1,7 +1,10 @@
 
 package domain;
 
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -62,4 +65,31 @@ public class Product extends DomainEntity {
 		this.price = price;
 	}
 
+	private ShoppingGroup shoppingGroupProducts;
+	private Order orderProduct;
+
+	@ManyToOne(optional=false)
+	@Valid
+	@NotNull
+	public ShoppingGroup getShoppingGroupProducts() {
+		return shoppingGroupProducts;
+	}
+
+	public void setShoppingGroupProducts(ShoppingGroup shoppingGroupProducts) {
+		this.shoppingGroupProducts = shoppingGroupProducts;
+	}
+
+	@ManyToOne(optional=false)
+	@Valid
+	@NotNull
+	public Order getOrder() {
+		return orderProduct;
+	}
+
+	public void setOrder(Order order) {
+		this.orderProduct= order;
+	}
+	
+	
+	
 }

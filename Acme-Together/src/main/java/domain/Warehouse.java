@@ -1,6 +1,12 @@
 
 package domain;
 
+import java.util.Collection;
+
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class Warehouse extends DomainEntity {
@@ -37,5 +43,21 @@ public class Warehouse extends DomainEntity {
 	public void setWarehouseAddress(final String warehouseAddress) {
 		this.warehouseAddress = warehouseAddress;
 	}
+	
+	
+	private Collection<Order>orders;
+
+	@OneToMany
+	@Valid
+	@NotNull
+	public Collection<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Collection<Order> orders) {
+		this.orders = orders;
+	}
+	
+	
 
 }
