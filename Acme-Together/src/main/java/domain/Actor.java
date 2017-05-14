@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import security.UserAccount;
 
-public class Actor extends ToPuntuate {
+public class Actor extends PuntuableEntity {
 
 	//Constructor ---------------------------------------
 
@@ -90,25 +90,25 @@ public class Actor extends ToPuntuate {
 		this.userAccount = userAccount;
 	}
 
-	private Collection<Message>	messageReceives;
-	private Collection<Message>	messageWrites;
+	private Collection<PrivateMessage>	messageReceives;
+	private Collection<PrivateMessage>	messageWrites;
 
 
 	@OneToMany(mappedBy = "recipient")
-	public Collection<Message> getMessageReceives() {
+	public Collection<PrivateMessage> getMessageReceives() {
 		return this.messageReceives;
 	}
 
-	public void setMessageReceives(final Collection<Message> messageReceives) {
+	public void setMessageReceives(final Collection<PrivateMessage> messageReceives) {
 		this.messageReceives= messageReceives;
 	}
 
 	@OneToMany(mappedBy = "sender")
-	public Collection<Message> getMessageWrites() {
+	public Collection<PrivateMessage> getMessageWrites() {
 		return this.messageWrites;
 	}
 
-	public void setMessageWrites(final Collection<Message> messageWrites) {
+	public void setMessageWrites(final Collection<PrivateMessage> messageWrites) {
 		this.messageWrites= messageWrites;
 	}
 

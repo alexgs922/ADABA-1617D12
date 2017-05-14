@@ -7,24 +7,24 @@ import javax.persistence.ManyToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class ToPuntuate extends DomainEntity {
+public class PuntuableEntity extends DomainEntity {
 
 	//Constructor --------------------------------------------------------
 
-	public ToPuntuate() {
+	public PuntuableEntity() {
 		super();
 	}
 
-	private Collection<ToPuntuate> toPuntuate;
+	private Collection<PuntuableEntity> toPuntuate;
 
 	@ManyToMany
 	@Valid
 	@NotNull
-	public Collection<ToPuntuate> getToPuntuate() {
+	public Collection<PuntuableEntity> getToPuntuate() {
 		return toPuntuate;
 	}
 
-	public void setToPuntuate(Collection<ToPuntuate> toPuntuate) {
+	public void setToPuntuate(Collection<PuntuableEntity> toPuntuate) {
 		this.toPuntuate = toPuntuate;
 	}
 	

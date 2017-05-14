@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class ShoppingGroup extends ToPuntuate {
+public class ShoppingGroup extends PuntuableEntity {
 
 	//Constructor ------------------------------------
 

@@ -25,11 +25,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 	@Index(columnList = "copy")
 
 })
-public class Message extends DomainEntity {
+public class PrivateMessage extends DomainEntity {
 
 	//Constructor ---------------------------------------------------------
 
-	public Message() {
+	public PrivateMessage() {
 
 		super();
 
