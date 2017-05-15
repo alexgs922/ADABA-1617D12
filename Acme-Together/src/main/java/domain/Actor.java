@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import security.UserAccount;
 
-public class Actor extends PuntuableEntity {
+public abstract class Actor extends PuntuableEntity {
 
 	//Constructor ---------------------------------------
 
@@ -80,7 +80,7 @@ public class Actor extends PuntuableEntity {
 
 
 	//Relationships
-	
+
 	private UserAccount	userAccount;
 
 
