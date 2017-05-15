@@ -51,12 +51,14 @@ public class Commercial extends Actor {
 	}
 
 
+	//Relationships
+
 	private Collection<Coupon>	coupon;
 
 
 	@Valid
 	@NotNull
-	@OneToMany
+	@OneToMany(mappedBy = "commercial")
 	public Collection<Coupon> getCoupon() {
 		return this.coupon;
 	}

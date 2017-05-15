@@ -75,18 +75,20 @@ public class Distributor extends Actor {
 	}
 
 
-	private Collection<Warehouse>	warehouse;
+	//Relationships
+
+	private Collection<Warehouse>	warehouses;
 
 
 	@OneToMany
 	@Valid
 	@NotNull
-	public Collection<Warehouse> getWarehouse() {
-		return this.warehouse;
+	public Collection<Warehouse> getWarehouses() {
+		return this.warehouses;
 	}
 
-	public void setWarehouse(final Collection<Warehouse> warehouse) {
-		this.warehouse = warehouse;
+	public void setWarehouses(final Collection<Warehouse> warehouses) {
+		this.warehouses = warehouses;
 	}
 
 }

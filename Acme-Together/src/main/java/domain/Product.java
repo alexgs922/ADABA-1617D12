@@ -71,9 +71,34 @@ public class Product extends DomainEntity {
 	}
 
 
+	//Relationship
+
 	private ShoppingGroup	shoppingGroupProducts;
 	private Order			orderProduct;
+	private User			userProduct;
 
+
+	@ManyToOne(optional = true)
+	@Valid
+	@NotNull
+	public Order getOrderProduct() {
+		return this.orderProduct;
+	}
+
+	public void setOrderProduct(final Order orderProduct) {
+		this.orderProduct = orderProduct;
+	}
+
+	@ManyToOne(optional = true)
+	@Valid
+	@NotNull
+	public User getUserProduct() {
+		return this.userProduct;
+	}
+
+	public void setUserProduct(final User userProduct) {
+		this.userProduct = userProduct;
+	}
 
 	@ManyToOne(optional = false)
 	@Valid
@@ -84,17 +109,6 @@ public class Product extends DomainEntity {
 
 	public void setShoppingGroupProducts(final ShoppingGroup shoppingGroupProducts) {
 		this.shoppingGroupProducts = shoppingGroupProducts;
-	}
-
-	@ManyToOne(optional = false)
-	@Valid
-	@NotNull
-	public Order getOrder() {
-		return this.orderProduct;
-	}
-
-	public void setOrder(final Order order) {
-		this.orderProduct = order;
 	}
 
 }

@@ -3,6 +3,7 @@ package domain;
 
 import java.util.Collection;
 
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -26,8 +27,9 @@ public class Coupon extends DomainEntity {
 
 	private String	couponNumber;
 	private double	discount;
-	private boolean	used;
 
+
+	//private boolean	used;
 
 	//Getters and Setters --------------------------
 
@@ -52,17 +54,31 @@ public class Coupon extends DomainEntity {
 		this.discount = discount;
 	}
 
-	public boolean isUsed() {
-		return this.used;
-	}
 
-	public void setUsed(final boolean used) {
-		this.used = used;
-	}
+	//	public boolean isUsed() {
+	//		return this.used;
+	//	}
+	//
+	//	public void setUsed(final boolean used) {
+	//		this.used = used;
+	//	}
 
+	//Relationships
 
 	private Collection<Order>	orders;
+	private Commercial			commercial;
 
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	public Commercial getCommercial() {
+		return this.commercial;
+	}
+
+	public void setCommercial(final Commercial commercial) {
+		this.commercial = commercial;
+	}
 
 	@OneToMany(mappedBy = "coupon")
 	@Valid

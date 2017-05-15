@@ -42,12 +42,22 @@ public class PrivateMessage extends DomainEntity {
 
 	private Date	moment;
 
-	private String	title;
+	private String	subject;
 
 	private String	text;
 
 	private String	attachments;
 
+	private boolean	copy;
+
+
+	public boolean isCopy() {
+		return this.copy;
+	}
+
+	public void setCopy(final boolean copy) {
+		this.copy = copy;
+	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -65,15 +75,15 @@ public class PrivateMessage extends DomainEntity {
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getTitle() {
+	public String getSubject() {
 
-		return this.title;
+		return this.subject;
 
 	}
 
-	public void setTitle(final String title) {
+	public void setSubject(final String subject) {
 
-		this.title = title;
+		this.subject = subject;
 
 	}
 
@@ -110,8 +120,8 @@ public class PrivateMessage extends DomainEntity {
 
 	private Actor	sender;
 
-	private Actor	recipient;
 
+	//private Actor	recipient;
 
 	@Valid
 	@NotNull
@@ -128,19 +138,19 @@ public class PrivateMessage extends DomainEntity {
 
 	}
 
-	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Actor getRecipient() {
-
-		return this.recipient;
-
-	}
-
-	public void setRecipient(final Actor recipient) {
-
-		this.recipient = recipient;
-
-	}
+	//	@Valid
+	//	@NotNull
+	//	@ManyToOne(optional = false)
+	//	public Actor getRecipient() {
+	//
+	//		return this.recipient;
+	//
+	//	}
+	//
+	//	public void setRecipient(final Actor recipient) {
+	//
+	//		this.recipient = recipient;
+	//
+	//	}
 
 }

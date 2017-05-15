@@ -79,6 +79,8 @@ public class Actor extends PuntuableEntity {
 	}
 
 
+	//Relationships
+	
 	private UserAccount	userAccount;
 
 

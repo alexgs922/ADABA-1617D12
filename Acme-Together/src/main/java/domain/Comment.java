@@ -63,8 +63,22 @@ public class Comment extends DomainEntity {
 	}
 
 
-	private ShoppingGroup	shoppingGroupComments;
+	//Relationships
 
+	private ShoppingGroup	shoppingGroupComments;
+	private User			userComment;
+
+
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false)
+	public User getUserComment() {
+		return this.userComment;
+	}
+
+	public void setUserComment(final User userComment) {
+		this.userComment = userComment;
+	}
 
 	@ManyToOne(optional = false)
 	@Valid

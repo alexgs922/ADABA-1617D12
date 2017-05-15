@@ -105,6 +105,8 @@ public class ShoppingGroup extends PuntuableEntity {
 	}
 
 
+	//Relationships
+
 	private Collection<User>		users;
 	private Collection<Product>		products;
 	private Collection<Comment>		comments;

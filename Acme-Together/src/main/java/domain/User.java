@@ -102,6 +102,8 @@ public class User extends Actor {
 	}
 
 
+	//Relationships
+
 	private CreditCard					creditCard;
 	private Collection<User>			friends;
 	private Collection<ShoppingGroup>	shoppingGroup;

@@ -60,6 +60,8 @@ public class Order extends DomainEntity {
 	}
 
 
+	// Relationships
+
 	private Collection<Product>	products;
 	private Coupon				coupon;
 
