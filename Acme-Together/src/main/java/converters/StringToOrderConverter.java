@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import repositories.OrderRepository;
+import repositories.OrderDomainRepository;
 import domain.OrderDomain;
 
 @Component
@@ -16,7 +16,7 @@ import domain.OrderDomain;
 public class StringToOrderConverter implements Converter<String, OrderDomain> {
 
 	@Autowired
-	OrderRepository	orderRepository;
+	OrderDomainRepository	orderRepository;
 
 
 	@Override

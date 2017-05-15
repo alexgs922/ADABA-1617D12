@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import domain.OrderDomain;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderDomain, Integer> {
+public interface OrderDomainRepository extends JpaRepository<OrderDomain, Integer> {
 
 }

@@ -35,65 +35,63 @@ public class UserController extends AbstractController {
 		super();
 	}
 
+
 	@Autowired
 	private UserService	userService;
 
-	
+
 	// Creation ---------------------------------------------------------------
-		@RequestMapping(value = "/register", method = RequestMethod.GET)
-		public ModelAndView create() {
-			ModelAndView result;
-			RegistrationForm user;
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		RegistrationForm user;
 
-			user = new RegistrationForm();
-			result = this.createEditModelAndView(user);
+		user = new RegistrationForm();
+		result = this.createEditModelAndView(user);
 
-			return result;
+		return result;
 
-		}
+	}
 
-		@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
-		public ModelAndView save(@ModelAttribute("user") @Valid final RegistrationForm form, final BindingResult binding) {
+	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@ModelAttribute("user") @Valid final RegistrationForm form, final BindingResult binding) {
 
-			ModelAndView result;
-			User user;
-			if (binding.hasErrors()) {
-				if (binding.getGlobalError() != null)
-					result = this.createEditModelAndView(form, binding.getGlobalError().getCode());
-				else
-					result = this.createEditModelAndView(form);
-			} else
-				try {
-					user = this.userService.reconstruct(form);
-					this.userService.save(user);
-	
-					result = new ModelAndView("redirect:../security/login.do");
-				} catch (final DataIntegrityViolationException exc) {
-					result = this.createEditModelAndView(form, "user.duplicated.user");
-				} catch (final Throwable oops) {
-					result = this.createEditModelAndView(form, "user.commit.error");
-				}
-			return result;
-		}
+		ModelAndView result;
+		User user;
+		if (binding.hasErrors()) {
+			if (binding.getGlobalError() != null)
+				result = this.createEditModelAndView(form, binding.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(form);
+		} else
+			try {
+				user = this.userService.reconstruct(form);
+				this.userService.save(user);
 
-		// Other methods
+				result = new ModelAndView("redirect:../security/login.do");
+			} catch (final DataIntegrityViolationException exc) {
+				result = this.createEditModelAndView(form, "user.duplicated.user");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(form, "user.commit.error");
+			}
+		return result;
+	}
 
-		protected ModelAndView createEditModelAndView(final RegistrationForm user) {
-			ModelAndView result;
-			result = this.createEditModelAndView(user, null);
-			return result;
-		}
+	// Other methods
 
-		protected ModelAndView createEditModelAndView(final RegistrationForm user, final String message) {
-			ModelAndView result;
-			result = new ModelAndView("user/register");
-			result.addObject("user", user);
-			result.addObject("message", message);
-			return result;
+	protected ModelAndView createEditModelAndView(final RegistrationForm user) {
+		ModelAndView result;
+		result = this.createEditModelAndView(user, null);
+		return result;
+	}
 
-		}
+	protected ModelAndView createEditModelAndView(final RegistrationForm user, final String message) {
+		ModelAndView result;
+		result = new ModelAndView("user/register");
+		result.addObject("user", user);
+		result.addObject("message", message);
+		return result;
 
-	
-	
+	}
 
 }

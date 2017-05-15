@@ -32,9 +32,7 @@ public class PrivateMessage extends DomainEntity {
 	//Constructor ---------------------------------------------------------
 
 	public PrivateMessage() {
-
 		super();
-
 	}
 
 
