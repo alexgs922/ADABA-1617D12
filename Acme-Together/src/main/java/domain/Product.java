@@ -65,7 +65,6 @@ public class Product extends DomainEntity {
 		this.referenceNumber = referenceNumber;
 	}
 
-	@NotBlank
 	@Min(0)
 	public double getPrice() {
 		return this.price;
@@ -79,18 +78,18 @@ public class Product extends DomainEntity {
 	//Relationship
 
 	private ShoppingGroup	shoppingGroupProducts;
-	private Order			orderProduct;
+	private OrderDomain		orderProduct;
 	private User			userProduct;
 
 
 	@ManyToOne(optional = true)
 	@Valid
 	@NotNull
-	public Order getOrderProduct() {
+	public OrderDomain getOrderProduct() {
 		return this.orderProduct;
 	}
 
-	public void setOrderProduct(final Order orderProduct) {
+	public void setOrderProduct(final OrderDomain orderProduct) {
 		this.orderProduct = orderProduct;
 	}
 

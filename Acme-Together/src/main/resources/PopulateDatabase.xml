@@ -70,7 +70,7 @@
 
 	<bean id="admin" class="domain.Administrator">
 		<property name="name" value="Administrador Nombre" />
-		<property name="surname" value="Administrador Apellido1 Apellido2" />
+		<property name="surName" value="Administrador Apellido1 Apellido2" />
 		<property name="phone" value="+34 652814975" />
 		<property name="email" value="admin@correo.us.es" />
 		<property name="userAccount" ref="userAccount1" />
@@ -94,7 +94,7 @@
 
 	<bean id="commercial1" class="domain.Commercial">
 		<property name="name" value="Commercial1 Nombre" />
-		<property name="surname" value="Commercial1 Apellido1 Apellido2" />
+		<property name="surName" value="Commercial1 Apellido1 Apellido2" />
 		<property name="phone" value="+34 652817975" />
 		<property name="email" value="commercial1@correo.us.es" />
 		<property name="userAccount" ref="userAccount2" />
@@ -139,7 +139,7 @@
 
 	<bean id="distributor1" class="domain.Distributor">
 		<property name="name" value="Distributor1 Nombre" />
-		<property name="surname" value="Distributor1 Apellido1 Apellido2" />
+		<property name="surName" value="Distributor1 Apellido1 Apellido2" />
 		<property name="phone" value="682817975" />
 		<property name="email" value="distributor1@correo.us.es" />
 		<property name="userAccount" ref="userAccount3" />
@@ -204,7 +204,7 @@
 
 	<bean id="user1" class="domain.User">
 		<property name="name" value="User1 Nombre" />
-		<property name="surname" value="User1 Apellido1 Apellido2" />
+		<property name="surName" value="User1 Apellido1 Apellido2" />
 		<property name="phone" value="+34 652814975" />
 		<property name="email" value="user1@correo.us.es" />
 		<property name="userAccount" ref="userAccount4" />
@@ -212,10 +212,10 @@
 		<property name="picture"
 			value="https://c1.staticflickr.com/6/5310/5671008455_70cd84fc06_m.jpg" />
 		<property name="description" value="Descripción del usuario1" />
-		<property name="birthDate" value="1995/03/1995" />
-		<property name="identification" value="" />
+		<property name="birthDate" value="1995/03/22" />
+		<property name="identification" value="77863541F" />
 		<property name="puntuation" value="1" />
-		<property name="creditCard" ref="creditCard1" />
+		<property name="creditCard" ref="creditCardUser1" />
 		<property name="shoppingGroup" ref="shoppingGroup1" />
 		<property name="messageReceives">
 			<list>
@@ -262,7 +262,7 @@
 
 	<!-- ORDERS -->
 
-	<bean id="order1" class="domain.Order">
+	<bean id="order1" class="domain.OrderDomain">
 		<property name="initDate" value="2017/04/25 12:00" />
 		<property name="status" value="SENT" />
 		<property name="coupon" ref="coupon1" />
@@ -314,7 +314,7 @@
 	<!-- SHOPPING GROUPS -->
 
 	<bean id="shoppingGroup1" class="domain.ShoppingGroup">
-		<property name="isPrivate" value="true" />
+		<property name="private_group" value="true" />
 		<property name="name" value="Sh1" />
 		<property name="description" value="Sh1 descreiption" />
 		<property name="lastOrderDate" value="2017/04/25" />
@@ -332,7 +332,7 @@
 				<ref bean="product1" />
 			</list>
 		</property>
-		<property name="products">
+		<property name="comments">
 			<list>
 				<ref bean="comment1" />
 			</list>
@@ -342,9 +342,10 @@
 				<ref bean="engagement1" />
 			</list>
 		</property>
-
-
-
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- WAREHOUSES -->

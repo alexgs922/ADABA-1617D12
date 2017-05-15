@@ -18,11 +18,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Order extends DomainEntity {
+public class OrderDomain extends DomainEntity {
 
 	//Constructors -------------------------------------
 
-	public Order() {
+	public OrderDomain() {
 		super();
 	}
 

@@ -9,19 +9,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import repositories.OrderRepository;
-import domain.Order;
+import domain.OrderDomain;
 
 @Component
 @Transactional
-public class StringToOrderConverter implements Converter<String, Order> {
+public class StringToOrderConverter implements Converter<String, OrderDomain> {
 
 	@Autowired
 	OrderRepository	orderRepository;
 
 
 	@Override
-	public Order convert(final String text) {
-		Order result;
+	public OrderDomain convert(final String text) {
+		OrderDomain result;
 		int id;
 
 		try {

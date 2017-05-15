@@ -33,7 +33,7 @@ public class ShoppingGroup extends PuntuableEntity {
 
 	//Attributes --------------------------------------
 
-	private boolean	isPrivate;
+	private boolean	private_group;
 	private String	name;
 	private String	description;
 	private Date	lastOrderDate;
@@ -44,12 +44,12 @@ public class ShoppingGroup extends PuntuableEntity {
 
 	//Getters and Setters ------------------------------
 
-	public boolean isPrivate() {
-		return this.isPrivate;
+	public boolean isPrivate_group() {
+		return this.private_group;
 	}
 
-	public void setPrivate(final boolean isPrivate) {
-		this.isPrivate = isPrivate;
+	public void setPrivate_group(final boolean private_group) {
+		this.private_group = private_group;
 	}
 
 	@NotBlank

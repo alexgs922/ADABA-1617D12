@@ -48,7 +48,6 @@ public class Coupon extends DomainEntity {
 		this.couponNumber = couponNumber;
 	}
 
-	@NotBlank
 	@Min((long) 0.0)
 	@Max((long) 1.0)
 	public double getDiscount() {
@@ -70,8 +69,8 @@ public class Coupon extends DomainEntity {
 
 	//Relationships
 
-	private Collection<Order>	orders;
-	private Commercial			commercial;
+	private Collection<OrderDomain>	orders;
+	private Commercial				commercial;
 
 
 	@NotNull
@@ -88,11 +87,11 @@ public class Coupon extends DomainEntity {
 	@OneToMany(mappedBy = "coupon")
 	@Valid
 	@NotNull
-	public Collection<Order> getOrders() {
+	public Collection<OrderDomain> getOrders() {
 		return this.orders;
 	}
 
-	public void setOrders(final Collection<Order> orders) {
+	public void setOrders(final Collection<OrderDomain> orders) {
 		this.orders = orders;
 	}
 

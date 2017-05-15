@@ -54,17 +54,17 @@ public class Warehouse extends DomainEntity {
 	}
 
 
-	private Collection<Order>	orders;
+	private Collection<OrderDomain>	orders;
 
 
 	@OneToMany
 	@Valid
 	@NotNull
-	public Collection<Order> getOrders() {
+	public Collection<OrderDomain> getOrders() {
 		return this.orders;
 	}
 
-	public void setOrders(final Collection<Order> orders) {
+	public void setOrders(final Collection<OrderDomain> orders) {
 		this.orders = orders;
 	}
 
