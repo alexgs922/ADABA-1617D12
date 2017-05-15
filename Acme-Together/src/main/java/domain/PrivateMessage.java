@@ -120,8 +120,8 @@ public class PrivateMessage extends DomainEntity {
 
 	private Actor	sender;
 
+	private Actor	recipient;
 
-	//private Actor	recipient;
 
 	@Valid
 	@NotNull
@@ -138,19 +138,19 @@ public class PrivateMessage extends DomainEntity {
 
 	}
 
-	//	@Valid
-	//	@NotNull
-	//	@ManyToOne(optional = false)
-	//	public Actor getRecipient() {
-	//
-	//		return this.recipient;
-	//
-	//	}
-	//
-	//	public void setRecipient(final Actor recipient) {
-	//
-	//		this.recipient = recipient;
-	//
-	//	}
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false)
+	public Actor getRecipient() {
+
+		return this.recipient;
+
+	}
+
+	public void setRecipient(final Actor recipient) {
+
+		this.recipient = recipient;
+
+	}
 
 }

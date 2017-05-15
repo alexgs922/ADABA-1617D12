@@ -3,11 +3,16 @@ package domain;
 
 import java.util.Collection;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public class PuntuableEntity extends DomainEntity {
+@Entity
+@Access(AccessType.PROPERTY)
+public abstract class PuntuableEntity extends DomainEntity {
 
 	//Constructor --------------------------------------------------------
 
@@ -15,18 +20,19 @@ public class PuntuableEntity extends DomainEntity {
 		super();
 	}
 
-	private Collection<PuntuableEntity> toPuntuate;
+
+	private Collection<PuntuableEntity>	toPuntuate;
+
 
 	@ManyToMany
 	@Valid
 	@NotNull
 	public Collection<PuntuableEntity> getToPuntuate() {
-		return toPuntuate;
+		return this.toPuntuate;
 	}
 
-	public void setToPuntuate(Collection<PuntuableEntity> toPuntuate) {
+	public void setToPuntuate(final Collection<PuntuableEntity> toPuntuate) {
 		this.toPuntuate = toPuntuate;
 	}
-	
-	
+
 }

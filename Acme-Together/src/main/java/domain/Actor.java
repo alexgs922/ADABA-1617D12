@@ -3,7 +3,10 @@ package domain;
 
 import java.util.Collection;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
@@ -17,6 +20,8 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import security.UserAccount;
 
+@Entity
+@Access(AccessType.PROPERTY)
 public abstract class Actor extends PuntuableEntity {
 
 	//Constructor ---------------------------------------

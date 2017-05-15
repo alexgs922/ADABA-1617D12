@@ -4,6 +4,9 @@ package domain;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,6 +20,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Entity
+@Access(AccessType.PROPERTY)
 public class ShoppingGroup extends PuntuableEntity {
 
 	//Constructor ------------------------------------
@@ -28,13 +33,13 @@ public class ShoppingGroup extends PuntuableEntity {
 
 	//Attributes --------------------------------------
 
-	private boolean				isPrivate;
-	private String				name;
-	private String				description;
-	private Date				lastOrderDate;
-	private int					freePlaces;
-	private Collection<String>	frecuentedSites;
-	private int					puntuation;
+	private boolean	isPrivate;
+	private String	name;
+	private String	description;
+	private Date	lastOrderDate;
+	private int		freePlaces;
+	private String	frecuentedSites;
+	private int		puntuation;
 
 
 	//Getters and Setters ------------------------------
@@ -77,7 +82,6 @@ public class ShoppingGroup extends PuntuableEntity {
 		this.lastOrderDate = lastOrderDate;
 	}
 
-	@NotNull
 	public int getFreePlaces() {
 		return this.freePlaces;
 	}
@@ -87,11 +91,11 @@ public class ShoppingGroup extends PuntuableEntity {
 	}
 
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public Collection<String> getFrecuentedSites() {
+	public String getFrecuentedSites() {
 		return this.frecuentedSites;
 	}
 
-	public void setFrecuentedSites(final Collection<String> frecuentedSites) {
+	public void setFrecuentedSites(final String frecuentedSites) {
 		this.frecuentedSites = frecuentedSites;
 	}
 

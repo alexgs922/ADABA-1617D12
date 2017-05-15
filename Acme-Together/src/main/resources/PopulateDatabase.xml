@@ -250,8 +250,14 @@
 	<!--ENGAGEMENTS -->
 
 	<bean id="engagement1" class="domain.Engagement">
-		<property name="listOrdersByUser"
-			value=" usuario 1 ..... usuario2..... usuario 3....total....." />
+			<property name="listOrdersByUser">
+			<list>
+				<value>"usuario 1 ..."</value>
+				<value>"usuario2 ....</value>
+				<value>"usuario3 .....</value>
+			</list>
+		</property>
+			<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
 	</bean>
 
 	<!-- ORDERS -->
