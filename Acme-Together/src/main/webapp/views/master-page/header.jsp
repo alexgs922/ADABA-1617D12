@@ -28,6 +28,14 @@
 					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
 				</ul>
 			</li>
+			<li><a class="fNiv" href="distributor/register.do"><spring:message
+						code="master.page.registerDistributor" /></a>
+			</li>
+			<li><a class="fNiv" href="commercial/register.do"><spring:message
+						code="master.page.registerCommercial" /></a>
+			</li>
+		
+		
 		</security:authorize>
 		
 		<security:authorize access="hasRole('CUSTOMER')">
@@ -42,6 +50,9 @@
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+			<li><a class="fNiv" href="user/register.do"><spring:message code="master.page.registerUser" /></a></li>
+		
+		
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">

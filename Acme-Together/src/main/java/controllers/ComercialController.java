@@ -77,6 +77,15 @@ public class ComercialController extends AbstractController {
 		return result;
 	}
 
+	// Terms of Use -----------------------------------------------------------
+	@RequestMapping("/dataProtection")
+	public ModelAndView dataProtection() {
+		ModelAndView result;
+		result = new ModelAndView("commercial/dataProtection");
+		return result;
+
+	}
+	
 	// Other methods
 
 	protected ModelAndView createEditModelAndView(final CommercialForm commercial) {

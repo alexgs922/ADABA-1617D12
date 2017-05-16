@@ -22,6 +22,18 @@
 	</definition>
 	
 	
+	<definition name="user/profile" extends="master.page">
+		<put-attribute name="title" value="Display User Profile" />
+		<put-attribute name="body" value="/views/user/displayProfile.jsp" />
+	</definition>
+	
+	
+	<definition name="user/dataProtection" extends="master.page">
+		<put-attribute name="title" value="Terms of Use"/>
+		<put-attribute name="body" value="/views/user/dataProtection.jsp"/>
+	</definition>
+	
+	
 	<definition name="customer/action-2" extends="master.page">	
 		<put-attribute name="title" value="Customer: Action 2" />
 		<put-attribute name="body" value="/views/customer/action-2.jsp" />

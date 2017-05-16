@@ -19,9 +19,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.UserService;
+import domain.CreditCard;
 import domain.User;
 import forms.RegistrationForm;
 
@@ -77,6 +79,49 @@ public class UserController extends AbstractController {
 		return result;
 	}
 
+	// Terms of Use -----------------------------------------------------------
+	@RequestMapping("/dataProtection")
+	public ModelAndView dataProtection() {
+		ModelAndView result;
+		result = new ModelAndView("user/dataProtection");
+		return result;
+
+	}
+	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int userId) {
+		ModelAndView result;
+		User user;
+		User principal;
+
+		user = this.userService.findOne(userId);
+		principal = this.userService.findByPrincipal();
+
+		boolean toCreditCard = false;
+
+		final CreditCard creditCard = user.getCreditCard();
+		if (creditCard != null)
+			toCreditCard = true;
+
+		result = new ModelAndView("user/profile");
+		result.addObject("user", user);
+		result.addObject("principal", principal);
+		result.addObject("creditCard", creditCard);
+		result.addObject("toCreditCard", toCreditCard);
+		result.addObject("requestURI", "user/profile.do?userId=" + userId);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
+	public ModelAndView viewProfile() {
+		return this.display(this.userService.findByPrincipal().getId());
+
+	}
+
+
+	
+	
 	// Other methods
 
 	protected ModelAndView createEditModelAndView(final RegistrationForm user) {

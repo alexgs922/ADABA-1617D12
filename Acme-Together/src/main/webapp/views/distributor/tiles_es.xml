@@ -21,6 +21,12 @@
 		<put-attribute name="body" value="/views/distributor/register.jsp" />
 	</definition>
 	
+	<definition name="distributor/dataProtection" extends="master.page">
+		<put-attribute name="title" value="Terminos de Uso"/>
+		<put-attribute name="body" value="/views/distributor/dataProtection.jsp"/>
+	</definition>
+	
+	
 	<definition name="customer/action-2" extends="master.page">	
 		<put-attribute name="title" value="Cliente: Acción 2" />
 		<put-attribute name="body" value="/views/customer/action-2.jsp" />
