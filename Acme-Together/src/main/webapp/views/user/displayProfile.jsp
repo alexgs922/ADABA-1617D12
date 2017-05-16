@@ -17,6 +17,11 @@
 <display:table pagesize="5" class="displaytag" name="user"
 	requestURI="${requestURI}" id="row">
 
+	<spring:message code="user.picture" var="userPicture" />
+	<display:column title="${picture}" sortable="false">
+		<img src="${row.picture}" width="200" height="100" />
+	</display:column>
+
 	<spring:message code="user.name" var="name" />
 	<display:column property="name" title="${name}" sortable="false" />
 
@@ -32,6 +37,14 @@
 	<display:column property="phone" title="${phone}"
 		sortable="false" />	
 
+	<spring:message code="user.desc" var="description" />
+	<display:column property="description" title="${description}"
+		sortable="false" />
+
+	<spring:message code="user.birthDate" var="birthDate" />
+	<display:column property="birthDate" title="${birthDate}"
+		sortable="false" />
+	
 
 </display:table>
 
@@ -81,13 +94,13 @@
 				<br>
 				<jstl:choose>
 					<jstl:when test="${toCreditCard == true}">
-						<a href="profile/editCreditCardManager.do?managerId=${row.id}"> <spring:message
+						<a href="user/editCreditCard.do?userId=${row.id}"> <spring:message
 								code="user.editCreditCard" />
 						</a>
 					</jstl:when>
 
 					<jstl:when test="${toCreditCard == false}">
-						<a href="profile/createCreditCardManager.do"> <spring:message
+						<a href="user/createCreditCard.do"> <spring:message
 								code="user.createCreditCard" />
 						</a>
 					</jstl:when>

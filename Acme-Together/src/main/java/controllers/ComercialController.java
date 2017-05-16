@@ -19,10 +19,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CommercialService;
 import domain.Commercial;
+import domain.Distributor;
 import forms.CommercialForm;
 
 @Controller
@@ -85,6 +87,35 @@ public class ComercialController extends AbstractController {
 		return result;
 
 	}
+
+	
+	// Profile
+	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int commercialId) {
+		ModelAndView result;
+		Commercial commercial;
+		Commercial principal;
+
+		commercial	= this.comercialService.findOne(commercialId);
+		principal = this.comercialService.findByPrincipal();
+
+		
+
+		result = new ModelAndView("commercial/profile");
+		result.addObject("commercial", commercial);
+		result.addObject("principal", principal);
+		result.addObject("requestURI", "commercial/profile.do?commercialId=" + commercialId);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
+	public ModelAndView viewProfile() {
+		return this.display(this.comercialService.findByPrincipal().getId());
+
+	}
+
 	
 	// Other methods
 
