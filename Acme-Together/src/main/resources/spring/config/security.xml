@@ -57,6 +57,9 @@
 			<security:intercept-url pattern="/commercial/register.do"
 			access="isAnonymous()" />
 	
+			<security:intercept-url pattern="/distributor/register.do"
+			access="isAnonymous()" />
+	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
 		<security:form-login 

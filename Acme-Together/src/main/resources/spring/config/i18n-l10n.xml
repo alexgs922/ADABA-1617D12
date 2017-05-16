@@ -28,6 +28,7 @@
 		<value>/views/profile/messages</value>
 		<value>/views/user/messages</value>
 		<value>/views/commercial/messages</value>
+		<value>/views/distributor/messages</value>
 	
 	</util:list>
 

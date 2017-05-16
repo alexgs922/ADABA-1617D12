@@ -86,8 +86,6 @@ public class Distributor extends Actor {
 
 
 	@OneToMany
-	@Valid
-	@NotNull
 	public Collection<Warehouse> getWarehouses() {
 		return this.warehouses;
 	}
