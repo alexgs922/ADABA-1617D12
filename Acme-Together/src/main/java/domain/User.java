@@ -118,7 +118,6 @@ public class User extends Actor {
 
 	@OneToOne
 	@Valid
-	@NotNull
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}

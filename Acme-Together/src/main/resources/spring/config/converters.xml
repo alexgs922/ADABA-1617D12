@@ -81,7 +81,7 @@
 		
 		
 		<bean class="converters.WarehouseToStringConverter" />
-		<bean class="converters.StringToWerehouseConverter" />
+		<bean class="converters.StringToWarehouseConverter" />
 
 
 	</util:list>
