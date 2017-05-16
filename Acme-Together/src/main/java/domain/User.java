@@ -117,7 +117,6 @@ public class User extends Actor {
 
 
 	@OneToOne
-	@Valid
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}
@@ -127,7 +126,6 @@ public class User extends Actor {
 	}
 
 	@ManyToMany
-	@Valid
 	public Collection<User> getFriends() {
 		return this.friends;
 	}
@@ -137,7 +135,6 @@ public class User extends Actor {
 	}
 
 	@ManyToMany
-	@Valid
 	public Collection<ShoppingGroup> getShoppingGroup() {
 		return this.shoppingGroup;
 	}
@@ -147,7 +144,6 @@ public class User extends Actor {
 	}
 
 	@OneToMany(mappedBy = "userProduct")
-	@Valid
 	public Collection<Product> getProducts() {
 		return this.products;
 	}
@@ -157,7 +153,6 @@ public class User extends Actor {
 	}
 
 	@OneToMany(mappedBy = "userComment")
-	@Valid
 	public Collection<Comment> getComments() {
 		return this.comments;
 	}

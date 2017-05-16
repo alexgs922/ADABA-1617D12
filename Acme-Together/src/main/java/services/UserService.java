@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -19,6 +20,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
+import domain.PuntuableEntity;
 import domain.User;
 import forms.RegistrationForm;
 
@@ -57,25 +59,37 @@ public class UserService {
 	}
 
 	public User reconstruct(final RegistrationForm customerForm) {
-		// TODO hacer reconstruct!!!
 		User result;
 		UserAccount userAccount;
 		Authority authority;
 		Collection<Authority> authorities;
 		String pwdHash;
-
+		Collection<PuntuableEntity> puntuable;
+		
+		
+		
 		result = this.create();
 		authorities = new HashSet<Authority>();
 		userAccount = new UserAccount();
-
+		puntuable  = new ArrayList<PuntuableEntity>();
+		
 		result.setName(customerForm.getName());
 		result.setSurName(customerForm.getSurName());
 		result.setPhone(customerForm.getPhone());
 		result.setEmail(customerForm.getEmail());
-
+		result.setIdentification(customerForm.getIdentefication());
+		result.setDescription(customerForm.getDescription());
+		result.setBirthDate(customerForm.getBirthDate());
+		result.setAddress(customerForm.getAdress());
+		result.setPicture(customerForm.getPicture());
+		result.setToPuntuate(puntuable);
+		
+		
+		
 		authority = new Authority();
 		authority.setAuthority(Authority.USER);
 		authorities.add(authority);
+		
 		pwdHash = this.encoder.encodePassword(customerForm.getPassword(), null);
 		userAccount.setAuthorities(authorities);
 		userAccount.setPassword(pwdHash);
