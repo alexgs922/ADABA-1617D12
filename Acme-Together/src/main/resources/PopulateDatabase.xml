@@ -214,6 +214,7 @@
 		<property name="puntuation" value="1" />
 		<property name="creditCard" ref="creditCardUser1" />
 		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="banned" value="false" />
 		<property name="messageReceives">
 			<list>
 			</list>

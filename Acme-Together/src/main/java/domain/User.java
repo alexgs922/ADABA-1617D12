@@ -12,7 +12,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -41,9 +40,18 @@ public class User extends Actor {
 	private Date	birthDate;
 	private String	identification;
 	private int		puntuation;
+	private boolean	banned;
 
 
 	//Getters and Setters --------------------------
+
+	public boolean isBanned() {
+		return this.banned;
+	}
+
+	public void setBanned(final boolean banned) {
+		this.banned = banned;
+	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)

@@ -45,6 +45,10 @@
 		<security:intercept-url pattern="/category/administrator/edit.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/category/administrator/create.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/category/administrator/delete.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/list.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/banUser.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/unBanUser.do" access="hasRole('ADMIN')" /> 
+		
 
 		<security:intercept-url pattern="/customer/action-1.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/customer/action-2.do" access="hasRole('CUSTOMER')" /> 
@@ -58,7 +62,7 @@
 			<security:intercept-url pattern="/user/dataProtection.do"
 			access="isAnonymous()" />
 	
-		<security:intercept-url pattern="/user/profile.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/user/createCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/editCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 

@@ -49,7 +49,8 @@ public class UserService {
 	private AdministratorService	administratorService;
 
 	@Autowired
-	private CreditCardService	creditCardService;
+	private CreditCardService		creditCardService;
+
 
 	// Simple CRUD methods ----------------------------------------------------
 
@@ -68,14 +69,12 @@ public class UserService {
 		Collection<Authority> authorities;
 		String pwdHash;
 		Collection<PuntuableEntity> puntuable;
-		
-		
-		
+
 		result = this.create();
 		authorities = new HashSet<Authority>();
 		userAccount = new UserAccount();
-		puntuable  = new ArrayList<PuntuableEntity>();
-		
+		puntuable = new ArrayList<PuntuableEntity>();
+
 		result.setName(customerForm.getName());
 		result.setSurName(customerForm.getSurName());
 		result.setPhone(customerForm.getPhone());
@@ -86,13 +85,11 @@ public class UserService {
 		result.setAddress(customerForm.getAdress());
 		result.setPicture(customerForm.getPicture());
 		result.setToPuntuate(puntuable);
-		
-		
-		
+
 		authority = new Authority();
 		authority.setAuthority(Authority.USER);
 		authorities.add(authority);
-		
+
 		pwdHash = this.encoder.encodePassword(customerForm.getPassword(), null);
 		userAccount.setAuthorities(authorities);
 		userAccount.setPassword(pwdHash);
@@ -170,8 +167,6 @@ public class UserService {
 
 	}
 
-	
-	
 	// Other business methods ----------------------------------------------------
 
 	public User findByPrincipal() {
@@ -203,6 +198,28 @@ public class UserService {
 		res = principal != null;
 
 		return res;
+	}
+
+	public void banUser(final User user) {
+		Assert.notNull(user);
+
+		Assert.isTrue(user.isBanned() == false);
+
+		user.setBanned(true);
+
+		this.save(user);
+
+	}
+
+	public void unBanUser(final User user) {
+		Assert.notNull(user);
+
+		Assert.isTrue(user.isBanned() == true);
+
+		user.setBanned(false);
+
+		this.save(user);
+
 	}
 
 	public void flush() {

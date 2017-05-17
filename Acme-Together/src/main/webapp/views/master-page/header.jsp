@@ -29,6 +29,10 @@
 						code="master.page.registerCommercial" /></a>
 			</li>
 			
+			<li><a class="fNiv" href="user/administrator/list.do"><spring:message
+						code="master.page.allUsers" /></a>
+			</li>
+			
 			<li><a class="fNiv" href="category/administrator/list.do"><spring:message
 						code="master.page.listCategories" /></a>
 			</li>
