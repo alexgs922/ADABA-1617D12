@@ -44,6 +44,17 @@ public class ActorService {
 
 	}
 
+	public Actor findOneToSent(final int actorId) {
+
+		Actor result;
+
+		result = this.actorRepository.findOne(actorId);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
 	public Collection<Actor> findAll() {
 		Collection<Actor> result;
 
@@ -91,5 +102,18 @@ public class ActorService {
 		result = this.actorRepository.findByUserAccountId(userAccount.getId());
 
 		return result;
+	}
+
+	public Collection<Actor> findAllNotBannedActors() {
+		final Actor principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		Collection<Actor> chorbiesToShow;
+
+		chorbiesToShow = this.actorRepository.findAllNotBannedActors();
+
+		Assert.notNull(chorbiesToShow);
+
+		return chorbiesToShow;
 	}
 }
