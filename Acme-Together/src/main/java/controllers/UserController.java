@@ -234,14 +234,15 @@ public class UserController extends AbstractController {
 		} else
 			try {
 				final User t = this.userService.findByPrincipal();
-				t.setCreditCard(creditCard);
-				this.userService.save(t);
-				this.creditCardService.save(creditCard);
+				CreditCard creditCard1 = this.creditCardService.reconstruct(creditCard, binding);
+				if(binding.hasErrors()==false){
+				this.userService.saveAndFlush2(t, creditCard1);	
+				}
 				result = new ModelAndView("redirect:../user/profile.do?userId=" + t.getId());
 			} catch (final Throwable oops) {
 				result = new ModelAndView("user/editCreditCard");
 				result.addObject("creditCard", creditCard);
-				result.addObject("message", "chorbi.commit.error");
+				result.addObject("message", "user.commit.error");
 			}
 		return result;
 
