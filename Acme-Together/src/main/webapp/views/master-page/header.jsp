@@ -51,7 +51,34 @@
 			</li>
 		
 		</security:authorize>
+
+		<security:authorize access="hasRole('COMMERCIAL')">
+			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
+					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
+				</ul>
+			</li>
+			<li><a class="fNiv" href="commercial/viewProfile.do"><spring:message
+						code="master.page.viewProfile" /></a>
+			</li>
 		
+		</security:authorize>
+
+		<security:authorize access="hasRole('DISTRIBUTOR')">
+			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
+					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
+				</ul>
+			</li>
+			<li><a class="fNiv" href="distributor/viewProfile.do"><spring:message
+						code="master.page.viewProfile" /></a>
+			</li>
+		
+		</security:authorize>
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="user/register.do"><spring:message code="master.page.registerUser" /></a></li>

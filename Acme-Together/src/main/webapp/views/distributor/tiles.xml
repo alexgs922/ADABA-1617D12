@@ -22,6 +22,13 @@
 	</definition>
 	
 	
+	
+	<definition name="distributor/profile" extends="master.page">
+		<put-attribute name="title" value="Display Distributor Profile" />
+		<put-attribute name="body" value="/views/distributor/displayProfile.jsp" />
+	</definition>
+	
+	
 	<definition name="distributor/dataProtection" extends="master.page">
 		<put-attribute name="title" value="Terms of Use"/>
 		<put-attribute name="body" value="/views/distributor/dataProtection.jsp"/>

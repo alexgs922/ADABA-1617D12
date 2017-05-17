@@ -21,11 +21,14 @@
 		<put-attribute name="body" value="/views/commercial/register.jsp" />
 	</definition>
 	
-	
-	
 	<definition name="commercial/dataProtection" extends="master.page">
 		<put-attribute name="title" value="Terms of Use"/>
 		<put-attribute name="body" value="/views/commercial/dataProtection.jsp"/>
+	</definition>
+	
+	<definition name="commercial/profile" extends="master.page">
+		<put-attribute name="title" value="Display Commercial Profile" />
+		<put-attribute name="body" value="/views/commercial/displayProfile.jsp" />
 	</definition>
 	
 	<definition name="customer/action-2" extends="master.page">	

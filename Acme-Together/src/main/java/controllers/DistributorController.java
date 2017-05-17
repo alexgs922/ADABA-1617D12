@@ -15,14 +15,18 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.DistributorService;
+import domain.CreditCard;
 import domain.Distributor;
+import domain.User;
 import forms.DistributorForm;
 
 @Controller
@@ -85,6 +89,35 @@ public class DistributorController extends AbstractController {
 		return result;
 
 	}
+	
+
+	// Profile
+	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int distributorId) {
+		ModelAndView result;
+		Distributor distributor;
+		Distributor principal;
+
+		distributor = this.distributorService.findOne(distributorId);
+		principal = this.distributorService.findByPrincipal();
+
+		
+
+		result = new ModelAndView("distributor/profile");
+		result.addObject("distributor", distributor);
+		result.addObject("principal", principal);
+		result.addObject("requestURI", "distributor/profile.do?distributorId=" + distributorId);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
+	public ModelAndView viewProfile() {
+		return this.display(this.distributorService.findByPrincipal().getId());
+
+	}
+
 	
 	// Other methods
 

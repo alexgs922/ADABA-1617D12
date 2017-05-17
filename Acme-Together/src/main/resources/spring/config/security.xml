@@ -62,6 +62,12 @@
 		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 
 	
 	
+		<security:intercept-url pattern="/distributor/profile.do" access="permitAll" /> 
+		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
+	
+	
+		<security:intercept-url pattern="/commercial/profile.do" access="permitAll" /> 
+		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
 	
 
 		
