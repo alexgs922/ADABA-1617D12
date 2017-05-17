@@ -101,7 +101,7 @@
 
 		<display:column>
 
-			<acme:confirmDelete url="privateMessage/deleteReceived.do?chirpId=${row.id}"
+			<acme:confirmDelete url="privateMessage/deleteReceived.do?privateMessageId=${row.id}"
 				code="chirp.delete" codeConfirm="chirp.confirm.delete" />
 
 		</display:column>
@@ -114,7 +114,7 @@
 
 
 		<display:column>
-			<acme:confirmDelete url="privateMessage/deleteSent.do?chirpId=${row.id}"
+			<acme:confirmDelete url="privateMessage/deleteSent.do?privateMessageId=${row.id}"
 				code="chirp.delete" codeConfirm="chirp.confirm.delete" />
 
 		</display:column>

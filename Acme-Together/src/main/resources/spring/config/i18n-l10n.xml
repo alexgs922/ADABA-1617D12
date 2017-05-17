@@ -31,6 +31,8 @@
 		<value>/views/distributor/messages</value>
 		<value>/views/category/messages</value>
 		<value>/views/shoppingGroup/messages</value>
+		
+		<value>/views/privateMessage/messages</value>
 	
 	</util:list>
 

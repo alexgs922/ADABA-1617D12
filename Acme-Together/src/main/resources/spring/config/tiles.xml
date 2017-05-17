@@ -32,6 +32,7 @@
 		<value>/views/category/tiles.xml</value>
 		<value>/views/shoppingGroup/tiles.xml</value>
 		
+		<value>/views/privateMessage/tiles.xml</value>
 	
 	
 	</util:list>

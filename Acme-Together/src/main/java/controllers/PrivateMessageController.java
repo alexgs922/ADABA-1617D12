@@ -110,7 +110,7 @@ public class PrivateMessageController extends AbstractController {
 				result = new ModelAndView("redirect:/privateMessage/listSentMessages.do");
 
 			} catch (final Throwable th) {
-				result = this.createEditModelAndView(privateMessageToEdit, "privateMessage.commit.error");
+				result = this.createEditModelAndView(privateMessageToEdit, "chirp.commit.error");
 
 			}
 
@@ -134,7 +134,7 @@ public class PrivateMessageController extends AbstractController {
 				this.privateMessageService.save(privateMessageToEdit);
 
 			} catch (final Throwable th) {
-				result = this.createEditModelAndView2(privateMessageToEdit, "privateMessage.commit.error");
+				result = this.createEditModelAndView2(privateMessageToEdit, "chirp.commit.error");
 
 				result.addObject("privateMessage", privateMessageToEdit);
 
