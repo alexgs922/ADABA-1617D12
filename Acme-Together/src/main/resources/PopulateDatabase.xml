@@ -424,151 +424,151 @@
 	<bean id="category1" class="domain.Category">
 		<property name="name" value="Música" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category2" class="domain.Category">
 		<property name="name" value="Videojuegos" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category3" class="domain.Category">
 		<property name="name" value="Moda" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 				<ref bean="shoppingGroup2" />
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category4" class="domain.Category">
 		<property name="name" value="Libros" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category5" class="domain.Category">
 		<property name="name" value="Juguetes y Bebés" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category6" class="domain.Category">
 		<property name="name" value="Cine y televisión" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category7" class="domain.Category">
 		<property name="name" value="Hogar, jardín y bricolaje" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category8" class="domain.Category">
 		<property name="name" value="Libros" />
 		<property name="description" value="Deportes y aire libre" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category9" class="domain.Category">
 		<property name="name" value="Electrónica" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category10" class="domain.Category">
 		<property name="name" value="Coche y moto" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category11" class="domain.Category">
 		<property name="name" value="Supermercado" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category12" class="domain.Category">
 		<property name="name" value="Belleza y salud" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category13" class="domain.Category">
 		<property name="name" value="Informática" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 				<ref bean="shoppingGroup1" />
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category14" class="domain.Category">
 		<property name="name" value="Hecho a mano" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 	<bean id="category15" class="domain.Category">
 		<property name="name" value="Industria, empresas y ciencia" />
 		<property name="description" value="Descripción de la categoría" />
-		<property name="shoppingGroups">
+		<!-- <property name="shoppingGroups">
 			<list>
 
 			</list>
-		</property>
+		</property> -->
 	</bean>
 
 
