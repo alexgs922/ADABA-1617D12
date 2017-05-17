@@ -30,6 +30,7 @@
 		<value>/views/commercial/messages</value>
 		<value>/views/distributor/messages</value>
 		<value>/views/category/messages</value>
+		<value>/views/shoppingGroup/messages</value>
 	
 	</util:list>
 
