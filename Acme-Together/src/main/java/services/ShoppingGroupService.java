@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ShoppingGroupRepository;
+import domain.Category;
 import domain.ShoppingGroup;
 
 @Service
@@ -67,5 +68,15 @@ public class ShoppingGroupService {
 
 	public void flush() {
 		this.shoppingGroupRepository.flush();
+	}
+
+	public Collection<ShoppingGroup> findShoppingGroupByCategory(final Category category) {
+		Assert.notNull(category);
+
+		Collection<ShoppingGroup> shoppingGroups;
+
+		shoppingGroups = this.shoppingGroupRepository.findShoppingGroupsByCategory(category.getId());
+
+		return shoppingGroups;
 	}
 }

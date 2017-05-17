@@ -43,9 +43,12 @@
 		</display:column>
 	</security:authorize>
 	
+	<spring:message code="category.confirm.delete" var ="confirmDelete"/>
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
-			<button onclick = "location.href='category/administrator/delete.do?categoryId=${row.id}'"> <spring:message
+			<button onclick = "if(confirm('${confirmDelete }'))
+			location.href='category/administrator/delete.do?categoryId=${row.id}'
+			"  > <spring:message
 					code="category.delete" />
 			</button>
 		</display:column>

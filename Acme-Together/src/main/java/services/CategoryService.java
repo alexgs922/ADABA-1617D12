@@ -14,6 +14,7 @@ import org.springframework.validation.Validator;
 import repositories.CategoryRepository;
 import domain.Administrator;
 import domain.Category;
+import domain.ShoppingGroup;
 
 @Service
 @Transactional
@@ -28,6 +29,9 @@ public class CategoryService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ShoppingGroupService	shoppingGroupService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -67,13 +71,24 @@ public class CategoryService {
 	}
 
 	public Category saveAndFlush(final Category c) {
+		Assert.isTrue(this.checkAdminPrincipal());
 		Assert.notNull(c);
 		return this.categoryRepository.saveAndFlush(c);
 
 	}
 
 	public void delete(final Category c) {
+		Assert.isTrue(this.checkAdminPrincipal());
 		Assert.notNull(c);
+
+		Collection<ShoppingGroup> shoppingGroupsByCategory;
+		shoppingGroupsByCategory = this.shoppingGroupService.findShoppingGroupByCategory(c);
+
+		for (final ShoppingGroup s : shoppingGroupsByCategory) {
+			s.setCategory(null);
+			this.shoppingGroupService.save(s);
+		}
+
 		this.categoryRepository.delete(c);
 	}
 
@@ -101,18 +116,20 @@ public class CategoryService {
 
 	public Category reconstruct(final Category category, final BindingResult bindingResult) {
 		Category result;
-
-		if (category.getId() == 0)
+		if (category.getId() == 0) {
 			result = category;
-		else {
+			this.validator.validate(result, bindingResult);
+		} else {
 
-			result = new Category();
+			result = this.categoryRepository.findOne(category.getId());
 
 			result.setDescription(category.getDescription());
 			result.setName(category.getName());
 
 			this.validator.validate(result, bindingResult);
+
 		}
+
 		return result;
 
 	}

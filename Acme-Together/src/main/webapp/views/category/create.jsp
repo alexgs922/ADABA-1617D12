@@ -21,23 +21,14 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="category/administrator/edit.do"
+<form:form action="category/administrator/create.do"
 	modelAttribute="category">
-	
-	
-	<form:hidden path="id"/>
-	<form:hidden path="version"/> 
 
 	
 	<acme:textbox code="category.name" path="name" />
-		<br>
-	
-		
-		
+		<br>	
 	<acme:textarea code="category.description" path="description" />
 		<br>
-		
-
 	
 
 	<input type="submit" name="save"
