@@ -57,6 +57,9 @@
 			access="isAnonymous()" />
 	
 		<security:intercept-url pattern="/user/profile.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/createCreditCard.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/editCreditCard.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 
 	
 	
 	

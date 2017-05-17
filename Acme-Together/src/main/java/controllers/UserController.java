@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CreditCardService;
 import services.UserService;
 import domain.CreditCard;
 import domain.User;
@@ -41,7 +43,10 @@ public class UserController extends AbstractController {
 	@Autowired
 	private UserService	userService;
 
+	@Autowired
+	private CreditCardService	creditCardService;
 
+	
 	// Creation ---------------------------------------------------------------
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -87,6 +92,8 @@ public class UserController extends AbstractController {
 		return result;
 
 	}
+
+	// Profile
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int userId) {
@@ -119,6 +126,84 @@ public class UserController extends AbstractController {
 
 	}
 
+	//CreditCard
+	
+	@RequestMapping(value = "/createCreditCard", method = RequestMethod.GET)
+	public ModelAndView createCreditCard() {
+		ModelAndView result;
+		CreditCard creditCard;
+
+		creditCard = this.creditCardService.create();
+
+		result = this.editCreditCardModelAndView(creditCard);
+
+		return result;
+	}
+
+	@RequestMapping(value = "/createCreditCard", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final CreditCard creditCard, final BindingResult binding) {
+
+		ModelAndView result;
+		CreditCard res;
+		final User user = this.userService.findByPrincipal();
+		res = this.creditCardService.reconstruct(creditCard, binding);
+		if (binding.hasErrors())
+			result = this.editCreditCardModelAndView(res);
+		else
+			try {
+				this.userService.saveAndFlush2(user, creditCard);
+				result = new ModelAndView("redirect:../user/profile.do?userId=" + user.getId());
+
+			} catch (final Throwable th) {
+				result = this.editCreditCardModelAndView(res, "creditCard.commit.error");
+
+			}
+
+		return result;
+	}
+
+	// Edit CreditCard ----------------------------------
+
+	@RequestMapping(value = "/editCreditCard", method = RequestMethod.GET)
+	public ModelAndView editCreditCard(@RequestParam final int userId) {
+		ModelAndView res;
+		CreditCard creditCard;
+		User principal;
+		principal = this.userService.findByPrincipal();
+		creditCard = this.userService.findOne(userId).getCreditCard();
+		try {
+			Assert.isTrue(principal.getId() == userId);
+		} catch (final Throwable th) {
+			res = this.createEditCreditCardModelAndViewError(creditCard);
+			return res;
+		}
+		Assert.notNull(creditCard);
+		res = this.createEditCreditCardModelAndView(creditCard);
+		return res;
+	}
+
+	@RequestMapping(value = "/editCreditCard", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveCreditCard(@Valid final CreditCard creditCard, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			result = new ModelAndView("user/editCreditCard");
+			result.addObject("creditCard", creditCard);
+			result.addObject("forbiddenOperation", false);
+		} else
+			try {
+				final User t = this.userService.findByPrincipal();
+				t.setCreditCard(creditCard);
+				this.userService.save(t);
+				this.creditCardService.save(creditCard);
+				result = new ModelAndView("redirect:../user/profile.do?userId=" + t.getId());
+			} catch (final Throwable oops) {
+				result = new ModelAndView("user/editCreditCard");
+				result.addObject("creditCard", creditCard);
+				result.addObject("message", "chorbi.commit.error");
+			}
+		return result;
+
+	}
 
 	
 	
@@ -139,4 +224,58 @@ public class UserController extends AbstractController {
 
 	}
 
+	protected ModelAndView editCreditCardModelAndView(final CreditCard creditCard) {
+		ModelAndView res;
+		res = this.editCreditCardModelAndView(creditCard, null);
+		return res;
+	}
+
+	protected ModelAndView editCreditCardModelAndView(final CreditCard creditCard, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("user/createCreditCard");
+		result.addObject("creditCard", creditCard);
+		result.addObject("message", message);
+		result.addObject("forbiddenOperation", false);
+
+		return result;
+	}
+
+	protected ModelAndView createEditCreditCardModelAndView(final CreditCard creditCard) {
+		ModelAndView result;
+		result = this.createEditCreditCardModelAndView(creditCard, null);
+		return result;
+
+	}
+
+	protected ModelAndView createEditCreditCardModelAndViewError(final CreditCard creditCard) {
+		ModelAndView res;
+		res = this.createEditCreditCardModelAndViewError(creditCard, null);
+		return res;
+	}
+
+	protected ModelAndView createEditCreditCardModelAndView(final CreditCard creditCard, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("user/editCreditCard");
+		result.addObject("creditCard", creditCard);
+		result.addObject("message", message);
+		result.addObject("forbiddenOperation", false);
+
+		return result;
+	}
+
+	protected ModelAndView createEditCreditCardModelAndViewError(final CreditCard creditCard, final String message) {
+		ModelAndView res;
+		res = new ModelAndView("user/editCreditCard");
+		res.addObject("creditCard", creditCard);
+		res.addObject("message", message);
+		res.addObject("forbiddenOperation", true);
+		return res;
+
+	}
+
+
+
+	
 }

@@ -38,7 +38,7 @@
 		
 		</security:authorize>
 		
-		<security:authorize access="hasRole('CUSTOMER')">
+		<security:authorize access="hasRole('USER')">
 			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -46,6 +46,10 @@
 					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
 				</ul>
 			</li>
+			<li><a class="fNiv" href="user/viewProfile.do"><spring:message
+						code="master.page.viewProfile" /></a>
+			</li>
+		
 		</security:authorize>
 		
 		<security:authorize access="isAnonymous()">

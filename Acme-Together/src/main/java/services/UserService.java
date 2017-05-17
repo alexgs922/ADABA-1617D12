@@ -20,6 +20,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
+import domain.CreditCard;
 import domain.PuntuableEntity;
 import domain.User;
 import forms.RegistrationForm;
@@ -47,6 +48,8 @@ public class UserService {
 	@Autowired
 	private AdministratorService	administratorService;
 
+	@Autowired
+	private CreditCardService	creditCardService;
 
 	// Simple CRUD methods ----------------------------------------------------
 
@@ -153,6 +156,23 @@ public class UserService {
 
 	}
 
+	public User saveAndFlush2(User user, CreditCard c) {
+		Assert.notNull(user);
+		Assert.notNull(c);
+
+		if (user.getId() != 0) {
+
+			c = this.creditCardService.saveAndFlush(c);
+			user.setCreditCard(c);
+			this.save(user);
+		} else
+			user = this.save(user);
+		return user;
+
+	}
+
+	
+	
 	// Other business methods ----------------------------------------------------
 
 	public User findByPrincipal() {
