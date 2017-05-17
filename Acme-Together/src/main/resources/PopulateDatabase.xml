@@ -10,8 +10,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	">
 
-	<!-- User accounts -->
-
+<!-- User accounts -->
 	<bean id="userAccount1" class="security.UserAccount">
 		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
@@ -36,6 +35,30 @@
 		</property>
 	</bean>
 
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="commercial2" />
+		<property name="password" value="04c62ae304ba5a5df7d9703e5d3b483e" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMMERCIAL" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount6" class="security.UserAccount">
+		<property name="username" value="commercial3" />
+		<property name="password" value="af4184c099afa747374dd59f0ed01203" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMMERCIAL" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	<bean id="userAccount3" class="security.UserAccount">
 		<property name="username" value="distributor1" />
 		<property name="password" value="f7a2c0c7c5c1a1a3066b9e0d9f0b504f" />
@@ -48,8 +71,34 @@
 		</property>
 	</bean>
 
+	<bean id="userAccount7" class="security.UserAccount">
+		<property name="username" value="distributor2" />
+		<property name="password" value="569cbd52f1ab6ac12325092520029054" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="DISTRIBUTOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="userAccount8" class="security.UserAccount">
+		<property name="username" value="distributor3" />
+		<property name="password" value="e98afcda46d7a6f68ab5c2f9519a5877" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="DISTRIBUTOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
 	<bean id="userAccount4" class="security.UserAccount">
-		<property name="username" value="user11" />
+		<property name="username" value="user1" />
 		<property name="password" value="24c9e15e52afc47c225b757e7bee1f9d" />
 		<property name="authorities">
 			<list>
@@ -60,9 +109,64 @@
 		</property>
 	</bean>
 
+	<bean id="userAccount9" class="security.UserAccount">
+		<property name="username" value="user2" />
+		<property name="password" value="7e58d63b60197ceb55a1c487989a3720" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean id="userAccount10" class="security.UserAccount">
+		<property name="username" value="user3" />
+		<property name="password" value="92877af70a45fd6a2ed7fe81e1236b78" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
+	<bean id="userAccount11" class="security.UserAccount">
+		<property name="username" value="user4" />
+		<property name="password" value="3f02ebe3d7929b091e3d8ccfde2f3bc6" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
+	<bean id="userAccount12" class="security.UserAccount">
+		<property name="username" value="user5" />
+		<property name="password" value="0a791842f52a0acfbb3a783378c066b8" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
+	<bean id="userAccount13" class="security.UserAccount">
+		<property name="username" value="user6" />
+		<property name="password" value="affec3b64cf90492377a8114c86fc093" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<!-- Other domain beans come here -->
 
@@ -117,6 +221,64 @@
 		<property name="coupon">
 			<list>
 				<ref bean="coupon1" />
+				<ref bean="coupon2" />
+				<ref bean="coupon3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commercial2" class="domain.Commercial">
+		<property name="name" value="Commercial2 Nombre" />
+		<property name="surName" value="Commercial2 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817975" />
+		<property name="email" value="commercial2@correo.us.es" />
+		<property name="userAccount" ref="userAccount5" />
+		<property name="companyName" value="Nombre de la compañia del commercial2" />
+		<property name="vatNumber" value="ESA12345674" />
+		<property name="messageReceives">
+			<list>
+
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="coupon">
+			<list>
+				<ref bean="coupon4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="commercial3" class="domain.Commercial">
+		<property name="name" value="Commercial3 Nombre" />
+		<property name="surName" value="Commercial3 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817975" />
+		<property name="email" value="commercial3@correo.us.es" />
+		<property name="userAccount" ref="userAccount6" />
+		<property name="companyName" value="Nombre de la compañia del commercial3" />
+		<property name="vatNumber" value="ESA12345671" />
+		<property name="messageReceives">
+			<list>
+
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="coupon">
+			<list>
+
 			</list>
 		</property>
 	</bean>
@@ -130,6 +292,39 @@
 		<property name="orders">
 			<list>
 				<ref bean="order1" />
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="coupon2" class="domain.Coupon">
+		<property name="couponNumber" value="COUPON2" />
+		<property name="discount" value="0.08" />
+		<property name="commercial" ref="commercial1" />
+		<property name="orders">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="coupon3" class="domain.Coupon">
+		<property name="couponNumber" value="COUPON3" />
+		<property name="discount" value="0.10" />
+		<property name="commercial" ref="commercial1" />
+		<property name="orders">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="coupon4" class="domain.Coupon">
+		<property name="couponNumber" value="COUPON4" />
+		<property name="discount" value="0.17" />
+		<property name="commercial" ref="commercial2" />
+		<property name="orders">
+			<list>
 
 			</list>
 		</property>
@@ -161,21 +356,221 @@
 		</property>
 		<property name="warehouses">
 			<list>
+				<ref bean="warehouse1" />
 			</list>
 		</property>
 	</bean>
 
+	<bean id="distributor2" class="domain.Distributor">
+		<property name="name" value="Distributor2 Nombre" />
+		<property name="surName" value="Distributor2 Apellido1 Apellido2" />
+		<property name="phone" value="682817975" />
+		<property name="email" value="distributor2@correo.us.es" />
+		<property name="userAccount" ref="userAccount7" />
+		<property name="companyName" value="Nombre de la compañia del distributor2" />
+		<property name="companyAddress" value="Dirección de la compañia del distributor2" />
+		<property name="vatNumber" value="ESA12385672" />
+		<property name="webPage" value="https://www.seur.com/es/index.html" />
+		<property name="messageReceives">
+			<list>
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="warehouses">
+			<list>
+				<ref bean="warehouse2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="distributor3" class="domain.Distributor">
+		<property name="name" value="Distributor3 Nombre" />
+		<property name="surName" value="Distributor3 Apellido1 Apellido2" />
+		<property name="phone" value="682817975" />
+		<property name="email" value="distributor3@correo.us.es" />
+		<property name="userAccount" ref="userAccount8" />
+		<property name="companyName" value="Nombre de la compañia del distributor3" />
+		<property name="companyAddress" value="Dirección de la compañia del distributor3" />
+		<property name="vatNumber" value="ESA12385675" />
+		<property name="webPage" value="https://www.seur.com/es/index.html" />
+		<property name="messageReceives">
+			<list>
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="warehouses">
+			<list>
+				<ref bean="warehouse3" />
+			</list>
+		</property>
+	</bean>
 
 	<!-- CATEGORÍAS -->
 
 	<bean id="category1" class="domain.Category">
-		<property name="name" value="Categoria 1" />
-		<property name="description" value="Descripción de la primera categoría" />
+		<property name="name" value="Música" />
+		<property name="description" value="Descripción de la categoría" />
 		<property name="shoppingGroups">
 			<list>
+
 			</list>
 		</property>
 	</bean>
+
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="Videojuegos" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category3" class="domain.Category">
+		<property name="name" value="Moda" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+				<ref bean="shoppingGroup2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category4" class="domain.Category">
+		<property name="name" value="Libros" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category5" class="domain.Category">
+		<property name="name" value="Juguetes y Bebés" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category6" class="domain.Category">
+		<property name="name" value="Cine y televisión" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category7" class="domain.Category">
+		<property name="name" value="Hogar, jardín y bricolaje" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category8" class="domain.Category">
+		<property name="name" value="Libros" />
+		<property name="description" value="Deportes y aire libre" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category9" class="domain.Category">
+		<property name="name" value="Electrónica" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category10" class="domain.Category">
+		<property name="name" value="Coche y moto" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category11" class="domain.Category">
+		<property name="name" value="Supermercado" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category12" class="domain.Category">
+		<property name="name" value="Belleza y salud" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category13" class="domain.Category">
+		<property name="name" value="Informática" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+				<ref bean="shoppingGroup1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category14" class="domain.Category">
+		<property name="name" value="Hecho a mano" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category15" class="domain.Category">
+		<property name="name" value="Industria, empresas y ciencia" />
+		<property name="description" value="Descripción de la categoría" />
+		<property name="shoppingGroups">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
 
 	<!-- COMMENT -->
 
@@ -185,6 +580,69 @@
 		<property name="moment" value="2017/05/15 09:00" />
 		<property name="shoppingGroupComments" ref="shoppingGroup1" />
 		<property name="userComment" ref="user1" />
+
+	</bean>
+
+	<bean id="comment2" class="domain.Comment">
+		<property name="title" value="Titulo del segundo comentario" />
+		<property name="text" value="Texto del segundo comentario" />
+		<property name="moment" value="2017/05/16 15:00" />
+		<property name="shoppingGroupComments" ref="shoppingGroup1" />
+		<property name="userComment" ref="user2" />
+
+	</bean>
+
+	<bean id="comment5" class="domain.Comment">
+		<property name="title" value="Titulo del quinto comentario" />
+		<property name="text" value="Texto del quinto comentario" />
+		<property name="moment" value="2017/05/15 09:00" />
+		<property name="shoppingGroupComments" ref="shoppingGroup1" />
+		<property name="userComment" ref="user4" />
+
+	</bean>
+
+	<bean id="comment6" class="domain.Comment">
+		<property name="title" value="Titulo del sexto comentario" />
+		<property name="text" value="Texto del sexto comentario" />
+		<property name="moment" value="2017/05/13 18:14" />
+		<property name="shoppingGroupComments" ref="shoppingGroup1" />
+		<property name="userComment" ref="user5" />
+
+	</bean>
+
+	<bean id="comment7" class="domain.Comment">
+		<property name="title" value="Titulo del septimo comentario" />
+		<property name="text" value="Texto del septimo comentario" />
+		<property name="moment" value="2017/05/14 20:00" />
+		<property name="shoppingGroupComments" ref="shoppingGroup1" />
+		<property name="userComment" ref="user3" />
+
+	</bean>
+
+	<bean id="comment3" class="domain.Comment">
+		<property name="title" value="Titulo del tercer comentario" />
+		<property name="text" value="Texto del tercer comentario" />
+		<property name="moment" value="2017/04/19 19:00" />
+		<property name="shoppingGroupComments" ref="shoppingGroup2" />
+		<property name="userComment" ref="user3" />
+
+	</bean>
+
+	<bean id="comment4" class="domain.Comment">
+		<property name="title" value="Titulo del cuarto comentario" />
+		<property name="text" value="Texto del cuarto comentario" />
+		<property name="moment" value="2017/02/15 10:10" />
+		<property name="shoppingGroupComments" ref="shoppingGroup2" />
+		<property name="userComment" ref="user4" />
+
+	</bean>
+
+	<bean id="comment8" class="domain.Comment">
+		<property name="title" value="Titulo del octavo comentario" />
+		<property name="text" value="Texto del octavo comentario" />
+		<property name="moment" value="2016/07/15 12:00" />
+		<property name="shoppingGroupComments" ref="shoppingGroup3" />
+		<property name="userComment" ref="user5" />
 
 	</bean>
 
@@ -199,6 +657,42 @@
 		<property name="cvvCode" value="201" />
 	</bean>
 
+	<bean id="creditCardUser2" class="domain.CreditCard">
+		<property name="holderName" value="User2" />
+		<property name="brandName" value="DISCOVER" />
+		<property name="number" value="6495918741487682" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="2021" />
+		<property name="cvvCode" value="202" />
+	</bean>
+
+	<bean id="creditCardUser3" class="domain.CreditCard">
+		<property name="holderName" value="User3" />
+		<property name="brandName" value="MASTERCARD" />
+		<property name="number" value="5277058097941796" />
+		<property name="expirationMonth" value="05" />
+		<property name="expirationYear" value="2022" />
+		<property name="cvvCode" value="203" />
+	</bean>
+
+
+	<bean id="creditCardUser4" class="domain.CreditCard">
+		<property name="holderName" value="User4" />
+		<property name="brandName" value="MASTERCARD" />
+		<property name="number" value="5772238481348549" />
+		<property name="expirationMonth" value="04" />
+		<property name="expirationYear" value="2020" />
+		<property name="cvvCode" value="204" />
+	</bean>
+
+	<bean id="creditCardUser5" class="domain.CreditCard">
+		<property name="holderName" value="User4" />
+		<property name="brandName" value="MASTERCARD" />
+		<property name="number" value="5772238481348549" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="2015" />
+		<property name="cvvCode" value="204" />
+	</bean>
 
 	<!-- USERS -->
 
@@ -216,13 +710,23 @@
 		<property name="identification" value="77863541F" />
 		<property name="puntuation" value="1" />
 		<property name="creditCard" ref="creditCardUser1" />
-		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="banned" value="false" />
+		<property name="shoppingGroup">
+			<list>
+				<ref bean="shoppingGroup1" />
+			</list>
+		</property>
 		<property name="messageReceives">
 			<list>
+				<ref bean="message3" />
+				<ref bean="message3copy" />
 			</list>
 		</property>
 		<property name="messageWrites">
 			<list>
+
+				<ref bean="message4" />
+				<ref bean="message4copy" />
 
 			</list>
 		</property>
@@ -247,32 +751,309 @@
 
 	</bean>
 
-	<!--ENGAGEMENTS -->
-
-	<bean id="engagement1" class="domain.Engagement">
-			<property name="listOrdersByUser">
+	<bean id="user2" class="domain.User">
+		<property name="name" value="User2 Nombre" />
+		<property name="surName" value="User2 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817475" />
+		<property name="email" value="user2@correo.us.es" />
+		<property name="userAccount" ref="userAccount9" />
+		<property name="address" value="Dirección User2" />
+		<property name="picture"
+			value="https://c1.staticflickr.com/4/3469/3391878958_0d6de27054_m.jpg" />
+		<property name="description" value="Descripción del usuario2" />
+		<property name="birthDate" value="1991/03/14" />
+		<property name="identification" value="77521489C" />
+		<property name="puntuation" value="4" />
+		<property name="creditCard" ref="creditCardUser2" />
+		<property name="banned" value="false" />
+		<property name="shoppingGroup">
 			<list>
-				<value>"usuario 1 ..."</value>
-				<value>"usuario2 ....</value>
-				<value>"usuario3 .....</value>
+				<ref bean="shoppingGroup1" />
 			</list>
 		</property>
-			<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
-	</bean>
-
-	<!-- ORDERS -->
-
-	<bean id="order1" class="domain.OrderDomain">
-		<property name="initDate" value="2017/04/25 12:00" />
-		<property name="status" value="SENT" />
-		<property name="coupon" ref="coupon1" />
+		<property name="messageReceives">
+			<list>
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+				<ref bean="message2" />
+				<ref bean="message2copy" />
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="friends">
+			<list>
+			</list>
+		</property>
 		<property name="products">
 			<list>
 				<ref bean="product1" />
 			</list>
 		</property>
+		<property name="comments">
+			<list>
+
+				<ref bean="comment2" />
+
+			</list>
+		</property>
 
 	</bean>
+
+	<bean id="user3" class="domain.User">
+		<property name="name" value="User3 Nombre" />
+		<property name="surName" value="User3 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817475" />
+		<property name="email" value="user3@correo.us.es" />
+		<property name="userAccount" ref="userAccount10" />
+		<property name="address" value="Dirección User3" />
+		<property name="picture"
+			value="https://c1.staticflickr.com/3/2485/3826872258_fe9c05b0f2_m.jpg" />
+		<property name="description" value="Descripción del usuario3" />
+		<property name="birthDate" value="1965/05/17" />
+		<property name="identification" value="28751886D" />
+		<property name="puntuation" value="7" />
+		<property name="creditCard" ref="creditCardUser3" />
+		<property name="banned" value="false" />
+		<property name="shoppingGroup">
+			<list>
+				<ref bean="shoppingGroup1" />
+				<ref bean="shoppingGroup2" />
+			</list>
+		</property>
+		<property name="messageReceives">
+			<list>
+				<ref bean="message4" />
+				<ref bean="message4copy" />
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+				<ref bean="message3" />
+				<ref bean="message3copy" />
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="friends">
+			<list>
+			</list>
+		</property>
+		<property name="products">
+			<list>
+				<ref bean="product3" />
+				<ref bean="product6" />
+			</list>
+		</property>
+		<property name="comments">
+			<list>
+				<ref bean="comment7" />
+				<ref bean="comment3" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="user4" class="domain.User">
+		<property name="name" value="User4 Nombre" />
+		<property name="surName" value="User3 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817475" />
+		<property name="email" value="user4@correo.us.es" />
+		<property name="userAccount" ref="userAccount11" />
+		<property name="address" value="Dirección User4" />
+		<property name="picture"
+			value="https://c1.staticflickr.com/9/8732/16647644858_49492139d6_m.jpg" />
+		<property name="description" value="Descripción del usuario4" />
+		<property name="birthDate" value="1989/06/24" />
+		<property name="identification" value="29154963Q" />
+		<property name="puntuation" value="2" />
+		<property name="creditCard" ref="creditCardUser4" />
+		<property name="shoppingGroup">
+			<list>
+				<ref bean="shoppingGroup1" />
+				<ref bean="shoppingGroup2" />
+				<ref bean="shoppingGroup3" />
+			</list>
+		</property>
+		<property name="messageReceives">
+			<list>
+				<ref bean="message2" />
+				<ref bean="message2copy" />
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="friends">
+			<list>
+			</list>
+		</property>
+		<property name="products">
+			<list>
+				<ref bean="product4" />
+				<ref bean="product7" />
+				<ref bean="product8" />
+			</list>
+		</property>
+		<property name="comments">
+			<list>
+				<ref bean="comment5" />
+				<ref bean="comment4" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="user5" class="domain.User">
+		<property name="name" value="User5 Nombre" />
+		<property name="surName" value="User5 Apellido1 Apellido2" />
+		<property name="phone" value="+34 652817475" />
+		<property name="email" value="user5@correo.us.es" />
+		<property name="userAccount" ref="userAccount12" />
+		<property name="address" value="Dirección User5" />
+		<property name="picture"
+			value="https://c1.staticflickr.com/5/4030/4715180809_6f6630a12e_m.jpg" />
+		<property name="description" value="Descripción del usuario5" />
+		<property name="birthDate" value="1981/04/29" />
+		<property name="identification" value="77159624P" />
+		<property name="puntuation" value="3" />
+		<property name="creditCard" ref="creditCardUser5" />
+		<property name="shoppingGroup">
+			<list>
+				<ref bean="shoppingGroup1" />
+				<ref bean="shoppingGroup3" />
+			</list>
+		</property>
+		<property name="messageReceives">
+			<list>
+			</list>
+		</property>
+		<property name="messageWrites">
+			<list>
+
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+		<property name="friends">
+			<list>
+			</list>
+		</property>
+		<property name="products">
+			<list>
+				<ref bean="product5" />
+				<ref bean="product9" />
+
+			</list>
+		</property>
+		<property name="comments">
+			<list>
+				<ref bean="comment6" />
+				<ref bean="comment8" />
+			</list>
+		</property>
+
+	</bean>
+
+	<!--ENGAGEMENTS -->
+
+	<bean id="engagement1" class="domain.Engagement">
+		<property name="listOrdersByUser">
+			<list>
+				<value>"usuario1 --> Portatil MSI -- 699.00"</value>
+				<value>"usuario2 --> Bateria externa Samsung -- 54.00....</value>
+				<value>"usuario3 --> Disco duro sata3 -- 135.00 .....</value>
+				<value>"usuario4 --> Móvil Sony Experia -- 259.00</value>
+				<value>"usuario5 --> Go Pro Hero Negra -- 169.00</value>
+				<value>"TOTAL --> 5 items -- 1316.00</value>
+			</list>
+		</property>
+		<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
+	</bean>
+
+	<bean id="engagement2" class="domain.Engagement">
+		<property name="listOrdersByUser">
+			<list>
+				<value>"usuario3 --> KHALILA -- 78.00</value>
+				<value>"usuario4 --> PARIS -- 158.00</value>
+				<value>"TOTAL --> 2 items -- 236.00</value>
+			</list>
+		</property>
+		<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
+	</bean>
+
+	<bean id="engagement3" class="domain.Engagement">
+		<property name="listOrdersByUser">
+			<list>
+				<value>"usuario3 --> Quatrefoil -- 97.33</value>
+				<value>"usuario5 --> Dc to Ac inverter -- 279.99</value>
+				<value>"TOTAL --> 2 items -- 377.32</value>
+			</list>
+		</property>
+		<property name="shoppingGroupEngagements" ref="shoppingGroup2" />
+	</bean>
+
+
+
+	<!-- ORDERS -->
+
+	<bean id="order1" class="domain.OrderDomain">
+		<property name="initDate" value="2017/04/25 12:00" />
+		<property name="status" value="INPROCESS" />
+		<property name="coupon" ref="coupon1" />
+		<property name="products">
+			<list>
+				<ref bean="product1" />
+				<ref bean="product2" />
+				<ref bean="product3" />
+				<ref bean="product4" />
+				<ref bean="product5" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="order2" class="domain.OrderDomain">
+		<property name="initDate" value="2017/03/10 10:00" />
+		<property name="status" value="SENT" />
+		<property name="coupon" ref="coupon1" />
+		<property name="products">
+			<list>
+				<ref bean="product6" />
+				<ref bean="product7" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="order3" class="domain.OrderDomain">
+		<property name="initDate" value="2017/02/14 22:00" />
+		<property name="status" value="RECEIVED" />
+		<property name="coupon" ref="coupon2" />
+		<property name="products">
+			<list>
+				<ref bean="product8" />
+				<ref bean="product9" />
+			</list>
+		</property>
+
+	</bean>
+
+
 
 	<!-- PRIVATE MESSAGES -->
 
@@ -296,18 +1077,168 @@
 
 	</bean>
 
+	<bean id="message2" class="domain.PrivateMessage">
+		<property name="moment" value="2017/03/04 16:30" />
+		<property name="subject" value="Hola" />
+		<property name="text" value="Hola, quieres comprar conmigo!?" />
+		<property name="copy" value="false" />
+		<property name="sender" ref="user2" />
+		<property name="recipient" ref="user4" />
+
+	</bean>
+
+	<bean id="message2copy" class="domain.PrivateMessage">
+		<property name="moment" value="2017/03/04 16:30" />
+		<property name="subject" value="Hola" />
+		<property name="text" value="Hola, quieres comprar conmigo!?" />
+		<property name="copy" value="true" />
+		<property name="sender" ref="user2" />
+		<property name="recipient" ref="user4" />
+
+	</bean>
+
+
+	<bean id="message3" class="domain.PrivateMessage">
+		<property name="moment" value="2017/03/04 16:30" />
+		<property name="subject" value="Hola2" />
+		<property name="text" value="Hola, quieres comprar conmigo usuario!?" />
+		<property name="copy" value="false" />
+		<property name="sender" ref="user3" />
+		<property name="recipient" ref="user1" />
+
+	</bean>
+
+	<bean id="message3copy" class="domain.PrivateMessage">
+		<property name="moment" value="2017/03/04 16:30" />
+		<property name="subject" value="Hola2" />
+		<property name="text" value="Hola, quieres comprar conmigo usuario!?" />
+		<property name="copy" value="true" />
+		<property name="sender" ref="user3" />
+		<property name="recipient" ref="user1" />
+
+	</bean>
+
+	<bean id="message4" class="domain.PrivateMessage">
+		<property name="moment" value="2017/02/04 16:30" />
+		<property name="subject" value="Hola3" />
+		<property name="text"
+			value="Hola, quieres comprar conmigo el mes que viene!?" />
+		<property name="copy" value="false" />
+		<property name="sender" ref="user1" />
+		<property name="recipient" ref="user3" />
+
+	</bean>
+
+	<bean id="message4copy" class="domain.PrivateMessage">
+		<property name="moment" value="2017/02/04 16:30" />
+		<property name="subject" value="Hola3" />
+		<property name="text"
+			value="Hola, quieres comprar conmigo el mes que viene!?" />
+		<property name="copy" value="true" />
+		<property name="sender" ref="user1" />
+		<property name="recipient" ref="user3" />
+
+	</bean>
+
 	<!-- PRODUCT -->
 
 	<bean id="product1" class="domain.Product">
 		<property name="name" value="Producto1" />
-		<property name="url"
-			value="https://www.pccomponentes.com/msi-cx72-6qd-234xes-intel-core-i7-6700hq-8gb-1tb-940mx-173" />
+		 <property name="url" value="https://www.pccomponentes.com/msi-cx72-6qd-234xes-intel-core-i7-6700hq-8gb-1tb-940mx-173" /> 		
 		<property name="referenceNumber"
 			value="MSI CX72 6QD-234XES Intel Core i7-6700HQ/8GB/1TB/940MX/17.3" />
 		<property name="price" value="699.00" />
 		<property name="shoppingGroupProducts" ref="shoppingGroup1" />
 		<property name="userProduct" ref="user1" />
 		<property name="orderProduct" ref="order1" />
+
+	</bean>
+
+	<bean id="product2" class="domain.Product">
+		<property name="name" value="Producto2" />
+		<property name="url" value="https://www.pccomponentes.com/samsung-bateria-externa-carga-rapida-10200mah" />
+		<property name="referenceNumber" value=" EB-PG935BBEGWW-121847" />
+		<property name="price" value="54.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup1" />
+		<property name="userProduct" ref="user2" />
+		<property name="orderProduct" ref="order1" />
+
+	</bean>
+
+	<bean id="product3" class="domain.Product">
+		<property name="name" value="Producto3" />
+		 <property name="url" value="https://www.pccomponentes.com/avexir-e100-ssd-480gb-sata3" />
+		<property name="referenceNumber" value=" AVSSDE100ZZ-480GB-104066" />
+		<property name="price" value="135.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup1" />
+		<property name="userProduct" ref="user3" />
+		<property name="orderProduct" ref="order1" />
+
+	</bean>
+
+	<bean id="product4" class="domain.Product">
+		<property name="name" value="Producto4" />
+		<property name="url" value="https://www.pccomponentes.com/sony-xperia-xa1-32gb-4g-dorado-libre" />
+		<property name="referenceNumber" value="1307-4377-126285" />
+		<property name="price" value="259.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup1" />
+		<property name="userProduct" ref="user4" />
+		<property name="orderProduct" ref="order1" />
+
+	</bean>
+
+	<bean id="product5" class="domain.Product">
+		<property name="name" value="Producto5" />
+		<property name="url" value="https://www.pccomponentes.com/gopro-hero-session-v2-negra" />
+		<property name="referenceNumber" value=" CHDHS-102-ES-107895" />
+		<property name="price" value="169.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup1" />
+		<property name="userProduct" ref="user5" />
+		<property name="orderProduct" ref="order1" />
+
+	</bean>
+
+	<bean id="product6" class="domain.Product">
+		<property name="name" value="Producto6" />
+		<property name="url" value="http://www.houseofcb.com/khalila-vestido-color-verde-azulado-con-botones-en-la-espalda.html" /> 
+		<property name="referenceNumber" value="KHALILA" />
+		<property name="price" value="78.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup2" />
+		<property name="userProduct" ref="user3" />
+		<property name="orderProduct" ref="order2" />
+
+	</bean>
+
+	<bean id="product7" class="domain.Product">
+		<property name="name" value="Producto6" />
+		<property name="url" value="http://www.houseofcb.com/paris-mocha-suede-pointy-toe-heels-4-es.html" />
+		<property name="referenceNumber" value="PARIS" />
+		<property name="price" value="158.00" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup2" />
+		<property name="userProduct" ref="user4" />
+		<property name="orderProduct" ref="order2" />
+
+	</bean>
+
+	<bean id="product8" class="domain.Product">
+		<property name="name" value="Producto8" />
+		<property name="url" value="http://www.homedepot.com/p/Safavieh-Quatrefoil-Cream-Patio-Stool-ACS4535B/205557379" />
+		<property name="referenceNumber" value="Model#ACS4535B Internet#205557379" />
+		<property name="price" value="97.33" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup3" />
+		<property name="userProduct" ref="user4" />
+		<property name="orderProduct" ref="order3" />
+
+	</bean>
+
+	<bean id="product9" class="domain.Product">
+		<property name="name" value="Producto9" />
+		<property name="url" value="http://www.homedepot.com/p/Ramsond-Sunray-1500-Pure-Sine-Wave-Intelligent-DC-to-AC-Inverter-12-Volt-SUN1500/203423828" />
+		<property name="referenceNumber" value="Model#SUN1500 Internet#203423828" />
+		<property name="price" value="279.99" />
+		<property name="shoppingGroupProducts" ref="shoppingGroup3" />
+		<property name="userProduct" ref="user5" />
+		<property name="orderProduct" ref="order3" />
 
 	</bean>
 
@@ -321,20 +1252,35 @@
 		<property name="freePlaces" value="4" />
 		<property name="frecuentedSites" value="https://www.pccomponentes.com/" />
 		<property name="puntuation" value="3" />
-		<property name="category" ref="category1" />
+		<property name="category" ref="category13" />
 		<property name="users">
 			<list>
+
+				<ref bean="user1" />
+				<ref bean="user2" />
+				<ref bean="user3" />
+				<ref bean="user4" />
+				<ref bean="user5" />
+
 
 			</list>
 		</property>
 		<property name="products">
 			<list>
 				<ref bean="product1" />
+				<ref bean="product2" />
+				<ref bean="product3" />
+				<ref bean="product4" />
+				<ref bean="product5" />
 			</list>
 		</property>
 		<property name="comments">
 			<list>
 				<ref bean="comment1" />
+				<ref bean="comment2" />
+				<ref bean="comment5" />
+				<ref bean="comment6" />
+				<ref bean="comment7" />
 			</list>
 		</property>
 		<property name="engagements">
@@ -348,14 +1294,121 @@
 		</property>
 	</bean>
 
+	<bean id="shoppingGroup2" class="domain.ShoppingGroup">
+		<property name="private_group" value="true" />
+		<property name="name" value="Sh2" />
+		<property name="description" value="Sh2 descreiption" />
+		<property name="lastOrderDate" value="2017/03/10" />
+		<property name="freePlaces" value="4" />
+		<property name="frecuentedSites" value="https://www.pccomponentes.com/" />
+		<property name="puntuation" value="3" />
+		<property name="category" ref="category3" />
+		<property name="users">
+			<list>
+
+				<ref bean="user3" />
+				<ref bean="user4" />
+
+			</list>
+		</property>
+		<property name="products">
+			<list>
+
+				<ref bean="product6" />
+				<ref bean="product7" />
+			</list>
+		</property>
+		<property name="comments">
+			<list>
+
+				<ref bean="comment3" />
+				<ref bean="comment4" />
+			</list>
+		</property>
+		<property name="engagements">
+			<list>
+				<ref bean="engagement2" />
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="shoppingGroup3" class="domain.ShoppingGroup">
+		<property name="private_group" value="false" />
+		<property name="name" value="Sh3" />
+		<property name="description" value="Sh3 descreiption" />
+		<!-- <property name="lastOrderDate" value="" /> -->
+		<property name="freePlaces" value="15" />
+		<!-- <property name="frecuentedSites" value="" /> -->
+		<property name="puntuation" value="3" />
+		<property name="category" ref="category7" />
+		<property name="users">
+			<list>
+
+				<ref bean="user4" />
+				<ref bean="user5" />
+
+			</list>
+		</property>
+		<property name="products">
+			<list>
+
+				<ref bean="product8" />
+				<ref bean="product9" />
+			</list>
+		</property>
+		<property name="comments">
+			<list>
+
+				<ref bean="comment8" />
+
+			</list>
+		</property>
+		<property name="engagements">
+			<list>
+				<ref bean="engagement3" />
+			</list>
+		</property>
+		<property name="toPuntuate">
+			<list>
+			</list>
+		</property>
+	</bean>
+
 	<!-- WAREHOUSES -->
 
 	<bean id="warehouse1" class="domain.Warehouse">
 		<property name="name" value="warehouse1" />
 		<property name="warehouseAddress" value="Dirección del warehouse1" />
-	<property name="orders">
+		<property name="orders">
 			<list>
 				<ref bean="order1" />
+				<ref bean="order3" />
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="warehouse2" class="domain.Warehouse">
+		<property name="name" value="warehouse2" />
+		<property name="warehouseAddress" value="Dirección del warehouse2" />
+		<property name="orders">
+			<list>
+				<ref bean="order2" />
+			</list>
+		</property>
+
+	</bean>
+	
+	<bean id="warehouse3" class="domain.Warehouse">
+		<property name="name" value="warehouse3" />
+		<property name="warehouseAddress" value="Dirección del warehouse3" />
+		<property name="orders">
+			<list>
+				
 			</list>
 		</property>
 
@@ -363,6 +1416,6 @@
 
 
 
-
-
 </beans>
+
+
