@@ -10,6 +10,9 @@
 
 package security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -21,6 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.UserRepository;
+import domain.User;
+
 @Service
 @Transactional
 public class LoginService implements UserDetailsService {
@@ -30,6 +36,9 @@ public class LoginService implements UserDetailsService {
 	@Autowired
 	UserAccountRepository	userRepository;
 
+	@Autowired
+	UserRepository			uRepository;
+
 
 	// Business methods -------------------------------------------------------
 
@@ -38,9 +47,22 @@ public class LoginService implements UserDetailsService {
 		Assert.notNull(username);
 
 		UserDetails result;
+		UserAccount userAccount;
 
 		result = this.userRepository.findByUsername(username);
 		Assert.notNull(result);
+
+		// Comprueba que un chorbi no esta baneado. En el caso de que esté baneado no es posible entrar en el sistema.
+		userAccount = this.userRepository.findByUsername(username);
+		final List<Authority> listAuthority = new ArrayList<Authority>(userAccount.getAuthorities());
+		final Authority authority = listAuthority.get(0);
+
+		if (authority.getAuthority().equals("USER")) {
+			User user;
+			user = this.uRepository.findByUserAccountId(userAccount.getId());
+			Assert.isTrue(user.isBanned() == false);
+		}
+
 		// WARNING: The following sentences prevent lazy initialisation problems!
 		Assert.notNull(result.getAuthorities());
 		result.getAuthorities().size();
