@@ -41,8 +41,14 @@
 
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" /> 
 
-		<security:intercept-url pattern="/administrator/action-1.do" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/administrator/action-2.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/category/administrator/list.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/administrator/edit.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/category/administrator/create.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/category/administrator/delete.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/list.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/banUser.do" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/user/administrator/unBanUser.do" access="hasRole('ADMIN')" /> 
+		
 
 		<security:intercept-url pattern="/customer/action-1.do" access="hasRole('CUSTOMER')" /> 
 		<security:intercept-url pattern="/customer/action-2.do" access="hasRole('CUSTOMER')" /> 
@@ -56,18 +62,21 @@
 			<security:intercept-url pattern="/user/dataProtection.do"
 			access="isAnonymous()" />
 	
-		<security:intercept-url pattern="/user/profile.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/user/createCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/editCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/editProfile.do" access="hasRole('USER')" /> 
 	
 	
 		<security:intercept-url pattern="/distributor/profile.do" access="permitAll" /> 
 		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
+		<security:intercept-url pattern="/distributor/editProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 	
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="permitAll" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
+		<security:intercept-url pattern="/commercial/editProfile.do" access="hasRole('COMMERCIAL')" /> 
 	
 
 		

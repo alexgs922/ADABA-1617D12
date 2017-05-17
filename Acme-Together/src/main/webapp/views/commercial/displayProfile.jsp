@@ -32,3 +32,15 @@
 	<display:column property="phone" title="${phone}"
 		sortable="false" />	
 </display:table>
+
+<security:authorize access="hasRole('COMMERCIAL')">
+	<jstl:choose>
+
+			<jstl:when test="${principal.id == row.id }">
+				<a href="commercial/editProfile.do?commercialId=${row.id}"> <spring:message
+						code="commercial.editprofile" />
+				</a>
+
+			</jstl:when>
+</jstl:choose>
+</security:authorize>

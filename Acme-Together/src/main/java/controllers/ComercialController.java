@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CommercialService;
 import domain.Commercial;
 import domain.Distributor;
+import domain.Commercial;
 import forms.CommercialForm;
 
 @Controller
@@ -78,6 +80,51 @@ public class ComercialController extends AbstractController {
 			}
 		return result;
 	}
+	
+	
+	//Edit profile
+
+			@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+			public ModelAndView edit(@RequestParam final int commercialId) {
+				ModelAndView res;
+				Commercial commercial;
+				int principal;
+				commercial = this.comercialService.findOne(commercialId);
+				principal = this.comercialService.findByPrincipal().getId();
+				Assert.isTrue(principal == commercialId);
+
+				try {
+					Assert.isTrue(principal == commercialId);
+				} catch (final Throwable th) {
+					res = this.createEditModelAndViewError(commercial);
+					return res;
+				}
+				Assert.notNull(commercial);
+				res = this.createEditModelAndView(commercial);
+				return res;
+			}
+
+			@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+			public ModelAndView save(final Commercial commercial, final BindingResult binding) {
+				ModelAndView result;
+				if (binding.hasErrors()) {
+					if (binding.getGlobalError() != null)
+						result = this.createEditModelAndView(commercial, binding.getGlobalError().getCode());
+					else
+						result = this.createEditModelAndView(commercial);
+				} else
+					try {
+						final Commercial commercial1 = this.comercialService.reconstruct(commercial, binding);
+						this.comercialService.save(commercial1);
+						result = new ModelAndView("redirect:../commercial/profile.do?commercialId=" + commercial.getId());
+					} catch (final Throwable oops) {
+						result = this.createEditModelAndView(commercial, "commercial.commit.error");
+					}
+				return result;
+			}
+
+
+	
 
 	// Terms of Use -----------------------------------------------------------
 	@RequestMapping("/dataProtection")
@@ -134,4 +181,37 @@ public class ComercialController extends AbstractController {
 
 	}
 
+	protected ModelAndView createEditModelAndView(final Commercial commercial) {
+		ModelAndView result;
+		result = this.createEditModelAndView(commercial, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final Commercial commercial) {
+		ModelAndView res;
+		res = this.createEditModelAndViewError(commercial, null);
+		return res;
+
+	}
+
+	protected ModelAndView createEditModelAndView(final Commercial commercial, final String message) {
+		ModelAndView result;
+		result = new ModelAndView("commercial/editProfile");
+		result.addObject("commercial", commercial);
+		result.addObject("message", message);
+		result.addObject("forbiddenOperation", false);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final Commercial commercial, final String message) {
+		ModelAndView res;
+		res = new ModelAndView("commercial/editProfile");
+		res.addObject("commercial", commercial);
+		res.addObject("message", message);
+		res.addObject("forbiddenOperation", true);
+		return res;
+
+	}
+	
+	
 }

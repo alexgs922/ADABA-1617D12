@@ -8,10 +8,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CategoryRepository;
 import domain.Administrator;
 import domain.Category;
+import domain.ShoppingGroup;
 
 @Service
 @Transactional
@@ -26,6 +29,9 @@ public class CategoryService {
 
 	@Autowired
 	private AdministratorService	administratorService;
+
+	@Autowired
+	private ShoppingGroupService	shoppingGroupService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -64,8 +70,25 @@ public class CategoryService {
 		return this.categoryRepository.save(c);
 	}
 
-	public void delete(final Category c) {
+	public Category saveAndFlush(final Category c) {
+		Assert.isTrue(this.checkAdminPrincipal());
 		Assert.notNull(c);
+		return this.categoryRepository.saveAndFlush(c);
+
+	}
+
+	public void delete(final Category c) {
+		Assert.isTrue(this.checkAdminPrincipal());
+		Assert.notNull(c);
+
+		Collection<ShoppingGroup> shoppingGroupsByCategory;
+		shoppingGroupsByCategory = this.shoppingGroupService.findShoppingGroupByCategory(c);
+
+		for (final ShoppingGroup s : shoppingGroupsByCategory) {
+			s.setCategory(null);
+			this.shoppingGroupService.save(s);
+		}
+
 		this.categoryRepository.delete(c);
 	}
 
@@ -84,5 +107,30 @@ public class CategoryService {
 
 	public void flush() {
 		this.categoryRepository.flush();
+	}
+
+
+	@Autowired
+	private Validator	validator;
+
+
+	public Category reconstruct(final Category category, final BindingResult bindingResult) {
+		Category result;
+		if (category.getId() == 0) {
+			result = category;
+			this.validator.validate(result, bindingResult);
+		} else {
+
+			result = this.categoryRepository.findOne(category.getId());
+
+			result.setDescription(category.getDescription());
+			result.setName(category.getName());
+
+			this.validator.validate(result, bindingResult);
+
+		}
+
+		return result;
+
 	}
 }

@@ -21,18 +21,20 @@
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
-				</ul>
-			</li>
+			
 			<li><a class="fNiv" href="distributor/register.do"><spring:message
 						code="master.page.registerDistributor" /></a>
 			</li>
 			<li><a class="fNiv" href="commercial/register.do"><spring:message
 						code="master.page.registerCommercial" /></a>
+			</li>
+			
+			<li><a class="fNiv" href="user/administrator/list.do"><spring:message
+						code="master.page.allUsers" /></a>
+			</li>
+			
+			<li><a class="fNiv" href="category/administrator/list.do"><spring:message
+						code="master.page.listCategories" /></a>
 			</li>
 		
 		
@@ -94,9 +96,7 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="profile/action-1.do"><spring:message code="master.page.profile.action.1" /></a></li>
-					<li><a href="profile/action-2.do"><spring:message code="master.page.profile.action.2" /></a></li>
-					<li><a href="profile/action-3.do"><spring:message code="master.page.profile.action.3" /></a></li>					
+									
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
 			</li>

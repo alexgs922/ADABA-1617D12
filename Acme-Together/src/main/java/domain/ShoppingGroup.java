@@ -150,9 +150,8 @@ public class ShoppingGroup extends PuntuableEntity {
 		this.comments = comments;
 	}
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@Valid
-	@NotNull
 	public Category getCategory() {
 		return this.category;
 	}

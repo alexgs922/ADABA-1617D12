@@ -710,12 +710,14 @@
 		<property name="identification" value="77863541F" />
 		<property name="puntuation" value="1" />
 		<property name="creditCard" ref="creditCardUser1" />
+
 		<property name="banned" value="false" />
 		<property name="shoppingGroup">
 			<list>
 				<ref bean="shoppingGroup1" />
 			</list>
 		</property>
+
 		<property name="messageReceives">
 			<list>
 				<ref bean="message3" />

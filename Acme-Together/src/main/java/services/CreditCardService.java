@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 
 import repositories.CreditCardRepository;
@@ -59,14 +60,13 @@ public class CreditCardService {
 			result.setCvvCode(creditCard.getCvvCode());
 			result.setExpirationMonth(creditCard.getExpirationMonth());
 			result.setExpirationYear(creditCard.getExpirationYear());
-			if (this.validateDate(result.getExpirationMonth(), result.getExpirationYear())) {
-				result.setNumber(null);
-				result.setBrandName(null);
-
+			if (this.validateDate(result.getExpirationMonth(), result.getExpirationYear())==false) {
+				result.setNumber(null);	
 			}
 			result.setHolderName(creditCard.getHolderName());
 			this.validator.validate(result, binding);
 		}
+		
 		return result;
 	}
 
@@ -96,6 +96,7 @@ public class CreditCardService {
 
 	}
 
+	
 	public void delete(final CreditCard c) {
 		Assert.notNull(c);
 		this.creditCardRepository.delete(c);

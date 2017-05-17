@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/views/user/register.jsp" />
 	</definition>
 	
+	<definition name="user/editProfile" extends="master.page">	
+		<put-attribute name="title" value="Editar Perfil Usuario" />
+		<put-attribute name="body" value="/views/user/editProfile.jsp" />
+	</definition>
+	
 	
 	<definition name="user/createCreditCard" extends="master.page">	
 		<put-attribute name="title" value="Crear Tarjeta de Credito" />
@@ -42,10 +47,9 @@
 		<put-attribute name="body" value="/views/user/dataProtection.jsp"/>
 	</definition>
 	
-	
-	<definition name="customer/action-2" extends="master.page">	
-		<put-attribute name="title" value="Cliente: Acción 2" />
-		<put-attribute name="body" value="/views/customer/action-2.jsp" />
+	<definition name="user/administrator/list" extends="master.page">
+		<put-attribute name="title" value="Todos los usuarios"/>
+		<put-attribute name="body" value="/views/user/list.jsp"/>
 	</definition>
 	
 </tiles-definitions>

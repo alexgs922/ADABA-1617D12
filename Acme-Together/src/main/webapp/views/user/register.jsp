@@ -35,7 +35,7 @@
 		<acme:textarea code="user.desciption" path="description"/>
 		<acme:textbox code="user.birthDate" path="birthDate"/>
 		<acme:textbox code="user.adress" path="adress"/>
-		<acme:textbox code="user.identefication" path="identefication"/>
+		<acme:textbox code="user.identification" path="identefication"/>
 		
 	</fieldset>
 	
