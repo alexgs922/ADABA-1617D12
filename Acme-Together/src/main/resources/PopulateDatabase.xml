@@ -1252,7 +1252,7 @@
 		<property name="description" value="Sh1 descreiption" />
 		<property name="lastOrderDate" value="2017/04/25" />
 		<property name="freePlaces" value="4" />
-		<property name="frecuentedSites" value="https://www.pccomponentes.com/" />
+		<property name="frecuentedSites" value="https://www.pccomponentes.com/, http://es.gearbest.com/" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category13" />
 		<property name="users">
@@ -1302,7 +1302,7 @@
 		<property name="description" value="Sh2 descreiption" />
 		<property name="lastOrderDate" value="2017/03/10" />
 		<property name="freePlaces" value="4" />
-		<property name="frecuentedSites" value="https://www.pccomponentes.com/" />
+		<property name="frecuentedSites" value="http://es.shein.com/,http://shop.nordstrom.com/,https://www.lolashoetique.com/" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category3" />
 		<property name="users">
@@ -1344,7 +1344,7 @@
 		<property name="description" value="Sh3 descreiption" />
 		<!-- <property name="lastOrderDate" value="" /> -->
 		<property name="freePlaces" value="15" />
-		<!-- <property name="frecuentedSites" value="" /> -->
+		<property name="frecuentedSites" value="" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category7" />
 		<property name="users">
