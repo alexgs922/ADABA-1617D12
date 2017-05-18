@@ -61,6 +61,8 @@
 			
 	    <security:intercept-url pattern="/user/listUnbanned.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/myFriends.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/follow.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/unfollow.do" access="hasRole('USER')" /> 
 
 	
 		<security:intercept-url pattern="/user/register.do"	access="isAnonymous()" />
@@ -73,10 +75,10 @@
 		<security:intercept-url pattern="/user/editProfile.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/joinedShoppingGroups.do" access="hasRole('USER')" />  
 		<security:intercept-url pattern="/shoppingGroup/user/list.do" access="hasRole('USER')" /> 
-		
+		<security:intercept-url pattern="/shoppingGroup/user/display.do" access="hasRole('USER')" /> 
 	
 		<security:intercept-url pattern="/distributor/list.do" access="permitAll" /> 
-		<security:intercept-url pattern="/distributor/profile.do" access="permitAll" />
+		
 		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 		<security:intercept-url pattern="/distributor/editProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 	

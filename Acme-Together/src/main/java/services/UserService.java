@@ -211,19 +211,6 @@ public class UserService {
 
 	}
 
-	public void follow(final User user) {
-		Assert.notNull(user);
-
-		final Actor principal = this.actorService.findByPrincipal();
-
-		final Collection<User> users = this.userRepository.findAllMyFriends(principal.getId());
-
-		users.add(user);
-
-		this.save(user);
-
-	}
-
 	public void unBanUser(final User user) {
 		Assert.notNull(user);
 
@@ -235,17 +222,42 @@ public class UserService {
 
 	}
 
-	public void unFollow(final User user) {
-		Assert.notNull(user);
+	public void follow(final int userId) {
 
-		final Actor principal = this.actorService.findByPrincipal();
+		User principal;
+		User other;
 
-		final Collection<User> users = this.userRepository.findAllMyFriends(principal.getId());
+		principal = this.findByPrincipal();
+		Assert.notNull(principal);
 
-		users.remove(user);
+		other = this.findOne(userId);
+		Assert.notNull(other);
 
-		this.save(user);
+		Assert.isTrue(other.getId() != principal.getId());
+		Assert.isTrue(!principal.getFriends().contains(other));
 
+		principal.follow(other);
+
+		this.userRepository.save(principal);
+	}
+
+	public void unfollow(final int userId) {
+
+		User principal;
+		User other;
+
+		principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		other = this.findOne(userId);
+		Assert.notNull(other);
+
+		Assert.isTrue(other.getId() != principal.getId());
+		Assert.isTrue(principal.getFriends().contains(other));
+
+		principal.unfollow(other);
+
+		this.userRepository.save(principal);
 	}
 
 	public void flush() {

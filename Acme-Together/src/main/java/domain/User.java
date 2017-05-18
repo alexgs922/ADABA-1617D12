@@ -152,6 +152,14 @@ public class User extends Actor {
 		this.friends = friends;
 	}
 
+	public void follow(final User user) {
+		this.friends.add(user);
+	}
+
+	public void unfollow(final User user) {
+		this.friends.remove(user);
+	}
+
 	@ManyToMany
 	public Collection<ShoppingGroup> getShoppingGroup() {
 		return this.shoppingGroup;
