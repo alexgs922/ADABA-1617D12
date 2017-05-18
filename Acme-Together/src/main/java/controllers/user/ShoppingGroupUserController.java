@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,9 +85,18 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int shoppingGroupId) {
-
 		ModelAndView result;
 		final ShoppingGroup sGToShow = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		try {
+
+			final User principal = this.userService.findByPrincipal();
+			Assert.isTrue(sGToShow.isPrivate_group() == false || sGToShow.getUsers().contains(principal));
+
+		} catch (final Exception e) {
+			result = new ModelAndView("forbiddenOperation");
+			return result;
+		}
 
 		result = new ModelAndView("shoppingGroup/display");
 		result.addObject("shoppingGroup", sGToShow);
