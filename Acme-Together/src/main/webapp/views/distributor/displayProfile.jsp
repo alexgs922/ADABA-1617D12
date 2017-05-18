@@ -32,3 +32,16 @@
 	<display:column property="phone" title="${phone}"
 		sortable="false" />	
 </display:table>
+
+
+<security:authorize access="hasRole('DISTRIBUTOR')">
+		<jstl:choose>
+
+			<jstl:when test="${principal.id == row.id }">
+				<a href="distributor/editProfile.do?distributorId=${row.id}"> <spring:message
+						code="distributor.editprofile" />
+				</a>
+
+			</jstl:when>
+</jstl:choose>
+</security:authorize>
