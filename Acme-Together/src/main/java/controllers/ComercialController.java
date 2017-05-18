@@ -25,8 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CommercialService;
 import domain.Commercial;
-import domain.Distributor;
-import domain.Commercial;
 import forms.CommercialForm;
 
 @Controller
@@ -80,51 +78,47 @@ public class ComercialController extends AbstractController {
 			}
 		return result;
 	}
-	
-	
+
 	//Edit profile
 
-			@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-			public ModelAndView edit(@RequestParam final int commercialId) {
-				ModelAndView res;
-				Commercial commercial;
-				int principal;
-				commercial = this.comercialService.findOne(commercialId);
-				principal = this.comercialService.findByPrincipal().getId();
-				Assert.isTrue(principal == commercialId);
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int commercialId) {
+		ModelAndView res;
+		Commercial commercial;
+		int principal;
+		commercial = this.comercialService.findOne(commercialId);
+		principal = this.comercialService.findByPrincipal().getId();
+		Assert.isTrue(principal == commercialId);
 
-				try {
-					Assert.isTrue(principal == commercialId);
-				} catch (final Throwable th) {
-					res = this.createEditModelAndViewError(commercial);
-					return res;
-				}
-				Assert.notNull(commercial);
-				res = this.createEditModelAndView(commercial);
-				return res;
+		try {
+			Assert.isTrue(principal == commercialId);
+		} catch (final Throwable th) {
+			res = this.createEditModelAndViewError(commercial);
+			return res;
+		}
+		Assert.notNull(commercial);
+		res = this.createEditModelAndView(commercial);
+		return res;
+	}
+
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final Commercial commercial, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			if (binding.getGlobalError() != null)
+				result = this.createEditModelAndView(commercial, binding.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(commercial);
+		} else
+			try {
+				final Commercial commercial1 = this.comercialService.reconstruct(commercial, binding);
+				this.comercialService.save(commercial1);
+				result = new ModelAndView("redirect:../commercial/profile.do?commercialId=" + commercial.getId());
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(commercial, "commercial.commit.error");
 			}
-
-			@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
-			public ModelAndView save(final Commercial commercial, final BindingResult binding) {
-				ModelAndView result;
-				if (binding.hasErrors()) {
-					if (binding.getGlobalError() != null)
-						result = this.createEditModelAndView(commercial, binding.getGlobalError().getCode());
-					else
-						result = this.createEditModelAndView(commercial);
-				} else
-					try {
-						final Commercial commercial1 = this.comercialService.reconstruct(commercial, binding);
-						this.comercialService.save(commercial1);
-						result = new ModelAndView("redirect:../commercial/profile.do?commercialId=" + commercial.getId());
-					} catch (final Throwable oops) {
-						result = this.createEditModelAndView(commercial, "commercial.commit.error");
-					}
-				return result;
-			}
-
-
-	
+		return result;
+	}
 
 	// Terms of Use -----------------------------------------------------------
 	@RequestMapping("/dataProtection")
@@ -135,19 +129,16 @@ public class ComercialController extends AbstractController {
 
 	}
 
-	
 	// Profile
-	
+
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int commercialId) {
 		ModelAndView result;
 		Commercial commercial;
 		Commercial principal;
 
-		commercial	= this.comercialService.findOne(commercialId);
+		commercial = this.comercialService.findOne(commercialId);
 		principal = this.comercialService.findByPrincipal();
-
-		
 
 		result = new ModelAndView("commercial/profile");
 		result.addObject("commercial", commercial);
@@ -163,7 +154,6 @@ public class ComercialController extends AbstractController {
 
 	}
 
-	
 	// Other methods
 
 	protected ModelAndView createEditModelAndView(final CommercialForm commercial) {
@@ -212,6 +202,5 @@ public class ComercialController extends AbstractController {
 		return res;
 
 	}
-	
-	
+
 }

@@ -254,7 +254,9 @@ public class UserController extends AbstractController {
 		final ModelAndView result;
 		Collection<User> users;
 
+		final User principal = this.userService.findByPrincipal();
 		users = this.userService.findAllNotBannedActors();
+		users.remove(principal);
 
 		result = new ModelAndView("user/listUnbanned");
 		result.addObject("users", users);
@@ -277,6 +279,50 @@ public class UserController extends AbstractController {
 		result.addObject("requestURI", "user/myFriends.do");
 
 		return result;
+	}
+
+	@RequestMapping(value = "/follow", method = RequestMethod.GET)
+	public ModelAndView follow(@RequestParam final int userId) {
+		ModelAndView result;
+		User user;
+
+		final User principal = this.userService.findByPrincipal();
+		user = this.userService.findOne(userId);
+
+		try {
+			Assert.isTrue(principal.getId() != user.getId());
+			this.userService.follow(user);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable th) {
+			result = new ModelAndView("forbiddenOperation");
+
+		}
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/unfollow", method = RequestMethod.GET)
+	public ModelAndView unFollow(@RequestParam final int userId) {
+		ModelAndView result;
+		User user;
+
+		final User principal = this.userService.findByPrincipal();
+		user = this.userService.findOne(userId);
+
+		try {
+			Assert.isTrue(principal.getId() != user.getId());
+			this.userService.unFollow(user);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable th) {
+			result = new ModelAndView("forbiddenOperation");
+
+		}
+
+		return result;
+
 	}
 
 	// Other methods

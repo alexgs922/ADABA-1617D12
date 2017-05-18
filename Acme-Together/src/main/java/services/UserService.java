@@ -211,12 +211,38 @@ public class UserService {
 
 	}
 
+	public void follow(final User user) {
+		Assert.notNull(user);
+
+		final Actor principal = this.actorService.findByPrincipal();
+
+		final Collection<User> users = this.userRepository.findAllMyFriends(principal.getId());
+
+		users.add(user);
+
+		this.save(user);
+
+	}
+
 	public void unBanUser(final User user) {
 		Assert.notNull(user);
 
 		Assert.isTrue(user.isBanned() == true);
 
 		user.setBanned(false);
+
+		this.save(user);
+
+	}
+
+	public void unFollow(final User user) {
+		Assert.notNull(user);
+
+		final Actor principal = this.actorService.findByPrincipal();
+
+		final Collection<User> users = this.userRepository.findAllMyFriends(principal.getId());
+
+		users.remove(user);
 
 		this.save(user);
 
