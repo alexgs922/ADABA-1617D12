@@ -47,7 +47,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		principal = this.userService.findByPrincipal();
 		shoppingGroups = principal.getShoppingGroup();
 
-		res = new ModelAndView("shoppingGroup/list");
+		res = new ModelAndView("shoppingGroup/list2");
 		res.addObject("shoppingGroups", shoppingGroups);
 		res.addObject("requestURI", "/shoppingGroup/user/joinedShoppingGroups.do");
 
@@ -62,14 +62,18 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		ModelAndView result;
 		Collection<ShoppingGroup> sGToShow;
+		Collection<ShoppingGroup> joinedGroups;
 		User principal;
 
 		sGToShow = this.shoppingGroupService.listPublicForUsersOfSH();
 
 		principal = this.userService.findByPrincipal();
 
+		joinedGroups = principal.getShoppingGroup();
+
 		result = new ModelAndView("shoppingGroup/list2");
 		result.addObject("shoppingGroups", sGToShow);
+		result.addObject("joinedGroups", joinedGroups);
 		result.addObject("requestURI", "shoppingGroup/user/list.do");
 		result.addObject("principal", principal);
 

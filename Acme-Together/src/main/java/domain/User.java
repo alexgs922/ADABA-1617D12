@@ -120,9 +120,19 @@ public class User extends Actor {
 	private CreditCard					creditCard;
 	private Collection<User>			friends;
 	private Collection<ShoppingGroup>	shoppingGroup;
+	private Collection<ShoppingGroup>	myShoppingGroups;
 	private Collection<Product>			products;
 	private Collection<Comment>			comments;
 
+
+	@OneToMany(mappedBy = "creator")
+	public Collection<ShoppingGroup> getMyShoppingGroups() {
+		return this.myShoppingGroups;
+	}
+
+	public void setMyShoppingGroups(final Collection<ShoppingGroup> myShoppingGroups) {
+		this.myShoppingGroups = myShoppingGroups;
+	}
 
 	@OneToOne
 	public CreditCard getCreditCard() {
