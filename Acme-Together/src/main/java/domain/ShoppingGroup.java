@@ -116,7 +116,18 @@ public class ShoppingGroup extends PuntuableEntity {
 	private Collection<Comment>		comments;
 	private Category				category;
 	private Collection<Engagement>	engagements;
+	private User					creator;
 
+
+	@ManyToOne(optional = false)
+	@Valid
+	public User getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(final User creator) {
+		this.creator = creator;
+	}
 
 	@ManyToMany
 	@Valid
