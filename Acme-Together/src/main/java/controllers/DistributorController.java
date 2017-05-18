@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.DistributorService;
+import domain.Distributor;
+import domain.Distributor;
 import domain.CreditCard;
 import domain.Distributor;
 import domain.User;
@@ -91,6 +93,52 @@ public class DistributorController extends AbstractController {
 	}
 	
 
+	//Edit profile
+
+			@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+			public ModelAndView edit(@RequestParam final int distributorId) {
+				ModelAndView res;
+				Distributor distributor;
+				int principal;
+				distributor = this.distributorService.findOne(distributorId);
+				principal = this.distributorService.findByPrincipal().getId();
+				Assert.isTrue(principal == distributorId);
+
+				try {
+					Assert.isTrue(principal == distributorId);
+				} catch (final Throwable th) {
+					res = this.createEditModelAndViewError(distributor);
+					return res;
+				}
+				Assert.notNull(distributor);
+				res = this.createEditModelAndView(distributor);
+				return res;
+			}
+
+			@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+			public ModelAndView save(final Distributor distributor, final BindingResult binding) {
+				ModelAndView result;
+				if (binding.hasErrors()) {
+					if (binding.getGlobalError() != null)
+						result = this.createEditModelAndView(distributor, binding.getGlobalError().getCode());
+					else
+						result = this.createEditModelAndView(distributor);
+				} else
+					try {
+						final Distributor distributor1 = this.distributorService.reconstruct(distributor, binding);
+						this.distributorService.save(distributor1);
+						result = new ModelAndView("redirect:../distributor/profile.do?distributorId=" + distributor.getId());
+					} catch (final Throwable oops) {
+						result = this.createEditModelAndView(distributor, "distributor.commit.error");
+					}
+				return result;
+			}
+
+
+	
+
+	
+
 	// Profile
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -136,4 +184,38 @@ public class DistributorController extends AbstractController {
 
 	}
 
+	protected ModelAndView createEditModelAndView(final Distributor distributor) {
+		ModelAndView result;
+		result = this.createEditModelAndView(distributor, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final Distributor distributor) {
+		ModelAndView res;
+		res = this.createEditModelAndViewError(distributor, null);
+		return res;
+
+	}
+
+	protected ModelAndView createEditModelAndView(final Distributor distributor, final String message) {
+		ModelAndView result;
+		result = new ModelAndView("distributor/editProfile");
+		result.addObject("distributor", distributor);
+		result.addObject("message", message);
+		result.addObject("forbiddenOperation", false);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final Distributor distributor, final String message) {
+		ModelAndView res;
+		res = new ModelAndView("distributor/editProfile");
+		res.addObject("distributor", distributor);
+		res.addObject("message", message);
+		res.addObject("forbiddenOperation", true);
+		return res;
+
+	}
+	
+	
+	
 }

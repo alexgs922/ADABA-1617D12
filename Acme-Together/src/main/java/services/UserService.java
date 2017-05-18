@@ -103,7 +103,6 @@ public class UserService {
 	}
 
 	public User reconstruct(final User user, final BindingResult binding) {
-		// TODO hacer reconstruct!!!
 		User result;
 		final int principal = this.actorService.findByPrincipal().getId();
 		final int principalUser = user.getId();

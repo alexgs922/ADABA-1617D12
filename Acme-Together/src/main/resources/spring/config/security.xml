@@ -62,14 +62,17 @@
 		<security:intercept-url pattern="/user/createCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/editCreditCard.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/editProfile.do" access="hasRole('USER')" /> 
 	
 	
 		<security:intercept-url pattern="/distributor/profile.do" access="permitAll" /> 
 		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
+		<security:intercept-url pattern="/distributor/editProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 	
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="permitAll" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
+		<security:intercept-url pattern="/commercial/editProfile.do" access="hasRole('COMMERCIAL')" /> 
 	
 
 		

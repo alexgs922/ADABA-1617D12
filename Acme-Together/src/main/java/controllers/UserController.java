@@ -84,6 +84,48 @@ public class UserController extends AbstractController {
 		return result;
 	}
 
+	//Edit profile
+
+		@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+		public ModelAndView edit(@RequestParam final int userId) {
+			ModelAndView res;
+			User user;
+			int principal;
+			user = this.userService.findOne(userId);
+			principal = this.userService.findByPrincipal().getId();
+			Assert.isTrue(principal == userId);
+
+			try {
+				Assert.isTrue(principal == userId);
+			} catch (final Throwable th) {
+				res = this.createEditModelAndViewError(user);
+				return res;
+			}
+			Assert.notNull(user);
+			res = this.createEditModelAndView(user);
+			return res;
+		}
+
+		@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+		public ModelAndView save(final User user, final BindingResult binding) {
+			ModelAndView result;
+			if (binding.hasErrors()) {
+				if (binding.getGlobalError() != null)
+					result = this.createEditModelAndView(user, binding.getGlobalError().getCode());
+				else
+					result = this.createEditModelAndView(user);
+			} else
+				try {
+					final User user1 = this.userService.reconstruct(user, binding);
+					this.userService.save(user1);
+					result = new ModelAndView("redirect:../user/profile.do?userId=" + user.getId());
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(user, "user.commit.error");
+				}
+			return result;
+		}
+
+	
 	// Terms of Use -----------------------------------------------------------
 	@RequestMapping("/dataProtection")
 	public ModelAndView dataProtection() {
@@ -275,6 +317,37 @@ public class UserController extends AbstractController {
 
 	}
 
+	protected ModelAndView createEditModelAndView(final User user) {
+		ModelAndView result;
+		result = this.createEditModelAndView(user, null);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final User user) {
+		ModelAndView res;
+		res = this.createEditModelAndViewError(user, null);
+		return res;
+
+	}
+
+	protected ModelAndView createEditModelAndView(final User user, final String message) {
+		ModelAndView result;
+		result = new ModelAndView("user/editProfile");
+		result.addObject("user", user);
+		result.addObject("message", message);
+		result.addObject("forbiddenOperation", false);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewError(final User user, final String message) {
+		ModelAndView res;
+		res = new ModelAndView("user/editProfile");
+		res.addObject("user", user);
+		res.addObject("message", message);
+		res.addObject("forbiddenOperation", true);
+		return res;
+
+	}
 
 
 	
