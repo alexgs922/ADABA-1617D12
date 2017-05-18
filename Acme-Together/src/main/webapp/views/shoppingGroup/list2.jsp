@@ -81,8 +81,7 @@
 		</jstl:choose>
 
 	</display:column>
-<<<<<<< HEAD
-	
+
 	<display:column>
 			<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}"> <spring:message
 					code="sh.display" />
@@ -105,27 +104,6 @@
 	</security:authorize>
 	
 
-
-
-
-
-=======
->>>>>>> branch 'master' of https://github.com/alexgs922/ADABA-1617D12
-
-
-	<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
-	<security:authorize access="hasRole('USER')">
-		<display:column>
-			<jstl:if test="${row.creator.id == principal.id }">
-				<button
-					onclick="if(confirm('${confirmJoin }'))
-						location.href='shoppingGroup/user/join.do?shoppingGroupId=${row.id}'">
-					<spring:message code="shoppingGroup.join" />
-				</button>
-			</jstl:if>
-
-		</display:column>
-	</security:authorize>
 
 
 
