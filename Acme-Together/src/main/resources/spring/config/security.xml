@@ -79,6 +79,7 @@
 		<security:intercept-url pattern="/user/viewProfile.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/editProfile.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/joinedShoppingGroups.do" access="hasRole('USER')" />  
+		<security:intercept-url pattern="/shoppingGroup/user/list.do" access="hasRole('USER')" /> 
 		
 	
 	

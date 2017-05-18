@@ -55,4 +55,26 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	//Lista de shoppings groups públicos del sistema para un usuario y los privados a los que el propio usuario pertenece
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list2() {
+
+		ModelAndView result;
+		Collection<ShoppingGroup> sGToShow;
+		User principal;
+
+		sGToShow = this.shoppingGroupService.listPublicForUsersOfSH();
+
+		principal = this.userService.findByPrincipal();
+
+		result = new ModelAndView("shoppingGroup/list2");
+		result.addObject("shoppingGroups", sGToShow);
+		result.addObject("requestURI", "shoppingGroup/user/list.do");
+		result.addObject("principal", principal);
+
+		return result;
+
+	}
+
 }

@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import repositories.ShoppingGroupRepository;
 import domain.Category;
 import domain.ShoppingGroup;
+import domain.User;
 
 @Service
 @Transactional
@@ -22,8 +23,11 @@ public class ShoppingGroupService {
 	@Autowired
 	private ShoppingGroupRepository	shoppingGroupRepository;
 
-
 	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private UserService				userService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -76,6 +80,16 @@ public class ShoppingGroupService {
 		Collection<ShoppingGroup> shoppingGroups;
 
 		shoppingGroups = this.shoppingGroupRepository.findShoppingGroupsByCategory(category.getId());
+
+		return shoppingGroups;
+	}
+
+	public Collection<ShoppingGroup> listPublicForUsersOfSH() {
+		Collection<ShoppingGroup> shoppingGroups;
+
+		final User principal = this.userService.findByPrincipal();
+
+		shoppingGroups = this.shoppingGroupRepository.listPublicForUsersOfSH(principal.getId());
 
 		return shoppingGroups;
 	}

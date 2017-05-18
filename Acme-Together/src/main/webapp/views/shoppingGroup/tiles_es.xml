@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/views/shoppingGroup/list.jsp"/>
 	</definition>
 	
+	<definition name="shoppingGroup/list2" extends="master.page">	
+		<put-attribute name="title" value="Lista de grupos de compra" />
+		<put-attribute name="body" value="/views/shoppingGroup/list2.jsp"/>
+	</definition>
+	
 
 	
 </tiles-definitions>

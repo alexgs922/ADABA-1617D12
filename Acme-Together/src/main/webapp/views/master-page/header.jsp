@@ -53,6 +53,11 @@
 
 			<li><a class="fNiv" href="user/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
+			
+			<li><a class="fNiv" href="shoppingGroup/user/list.do"><spring:message
+						code="master.page.shoppingGroupsPublic" /></a>
+			</li>	
+			
 			<li><a class="fNiv"
 				href="shoppingGroup/user/joinedShoppingGroups.do"><spring:message
 						code="master.page.UserJoinedShoppingGroups" /></a></li>
