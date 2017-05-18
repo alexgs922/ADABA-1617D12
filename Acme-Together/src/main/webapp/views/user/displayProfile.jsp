@@ -55,17 +55,12 @@
 
 		<jstl:choose>
 			
-			
-
+						
 			<jstl:when test="${principal.id == row.id }">
 				<a href="user/editProfile.do?userId=${row.id}"> <spring:message
 						code="user.editprofile" />
 				</a>
-
-			</jstl:when>
-
-			
-			<jstl:when test="${principal.id == row.id }">
+				
 				<br />
 				<br>
 				<spring:message code="user.CreditCard" var="managerCC" />
