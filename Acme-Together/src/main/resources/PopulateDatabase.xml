@@ -715,7 +715,6 @@
 		<property name="shoppingGroup">
 			<list>
 				<ref bean="shoppingGroup1" />
-				<ref bean="shoppingGroup2" />
 				<ref bean="shoppingGroup3" />
 			</list>
 		</property>
@@ -1342,9 +1341,10 @@
 		<property name="creator" ref="user1" />
 		<property name="users">
 			<list>
-
-				<ref bean="user3" />
+			
 				<ref bean="user4" />
+				<ref bean="user5" />
+	
 
 			</list>
 		</property>

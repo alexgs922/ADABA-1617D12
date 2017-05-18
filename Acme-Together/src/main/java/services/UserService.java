@@ -222,6 +222,44 @@ public class UserService {
 
 	}
 
+	public void follow(final int userId) {
+
+		User principal;
+		User other;
+
+		principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		other = this.findOne(userId);
+		Assert.notNull(other);
+
+		Assert.isTrue(other.getId() != principal.getId());
+		Assert.isTrue(!principal.getFriends().contains(other));
+
+		principal.follow(other);
+
+		this.userRepository.save(principal);
+	}
+
+	public void unfollow(final int userId) {
+
+		User principal;
+		User other;
+
+		principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		other = this.findOne(userId);
+		Assert.notNull(other);
+
+		Assert.isTrue(other.getId() != principal.getId());
+		Assert.isTrue(principal.getFriends().contains(other));
+
+		principal.unfollow(other);
+
+		this.userRepository.save(principal);
+	}
+
 	public void flush() {
 		this.userRepository.flush();
 
