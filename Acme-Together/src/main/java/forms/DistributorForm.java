@@ -1,10 +1,7 @@
+
 package forms;
 
-import java.util.Date;
-
 import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -12,20 +9,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
-import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
-import org.springframework.format.annotation.DateTimeFormat;
 
-
-import utilities.validators.PasswordMatches;
-import utilities.validators.PasswordMatchesCommercial;
 import utilities.validators.PasswordMatchesDistributor;
 
 @PasswordMatchesDistributor
 public class DistributorForm {
-
-
 
 	// Constructors -----------------------------------------------------------
 	public DistributorForm() {
@@ -36,18 +25,15 @@ public class DistributorForm {
 
 	// Attributes -------------------------------------------------------------
 
-
-
 	private String	username;
 	private String	password;
 	private String	passwordCheck;
-	
+
 	private boolean	termsOfUse;
 	private String	name;
 	private String	surName;
 	private String	email;
 	private String	phone;
-
 
 	private String	companyName;
 	private String	vatNumber;
@@ -95,97 +81,86 @@ public class DistributorForm {
 		this.webPage = webPage;
 	}
 
-
-
 	@NotNull
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
 	public String getUsername() {
-		return username;
+		return this.username;
 
 	}
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
-
-
 
 	@NotNull
 	@Size(min = 5, max = 32)
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
 	@NotNull
 	@Size(min = 5, max = 32)
 	public String getPasswordCheck() {
-		return passwordCheck;
+		return this.passwordCheck;
 
 	}
 
-	public void setPasswordCheck(String passwordCheck) {
+	public void setPasswordCheck(final String passwordCheck) {
 		this.passwordCheck = passwordCheck;
 	}
 
 	@AssertTrue
 	public boolean getTermsOfUse() {
-		return termsOfUse;
+		return this.termsOfUse;
 
 	}
 
-	public void setTermsOfUse(boolean termsOfUse) {
+	public void setTermsOfUse(final boolean termsOfUse) {
 		this.termsOfUse = termsOfUse;
 
 	}
 
 	@NotBlank
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 
 	}
 
 	@NotBlank
 	public String getSurName() {
-		return surName;
+		return this.surName;
 	}
 
-	public void setSurName(String surName) {
+	public void setSurName(final String surName) {
 		this.surName = surName;
 
 	}
 
-	
 	@NotBlank
 	@Email
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
 	@NotBlank
 	@Pattern(regexp = "^\\+?\\d{1,3}?[- .]?\\d+$")
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
-	
-	public void setPhone(String phone) {
+
+	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
 
-
-
-
-
 }
-	
-
