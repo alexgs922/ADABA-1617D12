@@ -226,4 +226,26 @@ public class UserService {
 		this.userRepository.flush();
 
 	}
+
+	public Collection<User> findAllNotBannedActors() {
+		final User principal = this.findByPrincipal();
+		Assert.notNull(principal);
+
+		Collection<User> userToShow;
+
+		userToShow = this.userRepository.findAllNotBannedUsers();
+
+		Assert.notNull(userToShow);
+
+		return userToShow;
+	}
+
+	public Collection<User> findAllMyFriends(final int userId) {
+
+		Collection<User> myFriends;
+
+		myFriends = this.userRepository.findAllMyFriends(userId);
+
+		return myFriends;
+	}
 }

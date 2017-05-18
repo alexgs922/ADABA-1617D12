@@ -10,6 +10,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +43,12 @@ public class UserController extends AbstractController {
 
 
 	@Autowired
-	private UserService	userService;
+	private UserService			userService;
 
 	@Autowired
 	private CreditCardService	creditCardService;
 
-	
+
 	// Creation ---------------------------------------------------------------
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView create() {
@@ -86,46 +88,45 @@ public class UserController extends AbstractController {
 
 	//Edit profile
 
-		@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-		public ModelAndView edit(@RequestParam final int userId) {
-			ModelAndView res;
-			User user;
-			int principal;
-			user = this.userService.findOne(userId);
-			principal = this.userService.findByPrincipal().getId();
-			Assert.isTrue(principal == userId);
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int userId) {
+		ModelAndView res;
+		User user;
+		int principal;
+		user = this.userService.findOne(userId);
+		principal = this.userService.findByPrincipal().getId();
+		Assert.isTrue(principal == userId);
 
-			try {
-				Assert.isTrue(principal == userId);
-			} catch (final Throwable th) {
-				res = this.createEditModelAndViewError(user);
-				return res;
-			}
-			Assert.notNull(user);
-			res = this.createEditModelAndView(user);
+		try {
+			Assert.isTrue(principal == userId);
+		} catch (final Throwable th) {
+			res = this.createEditModelAndViewError(user);
 			return res;
 		}
+		Assert.notNull(user);
+		res = this.createEditModelAndView(user);
+		return res;
+	}
 
-		@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
-		public ModelAndView save(final User user, final BindingResult binding) {
-			ModelAndView result;
-			if (binding.hasErrors()) {
-				if (binding.getGlobalError() != null)
-					result = this.createEditModelAndView(user, binding.getGlobalError().getCode());
-				else
-					result = this.createEditModelAndView(user);
-			} else
-				try {
-					final User user1 = this.userService.reconstruct(user, binding);
-					this.userService.save(user1);
-					result = new ModelAndView("redirect:../user/profile.do?userId=" + user.getId());
-				} catch (final Throwable oops) {
-					result = this.createEditModelAndView(user, "user.commit.error");
-				}
-			return result;
-		}
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final User user, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			if (binding.getGlobalError() != null)
+				result = this.createEditModelAndView(user, binding.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(user);
+		} else
+			try {
+				final User user1 = this.userService.reconstruct(user, binding);
+				this.userService.save(user1);
+				result = new ModelAndView("redirect:../user/profile.do?userId=" + user.getId());
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(user, "user.commit.error");
+			}
+		return result;
+	}
 
-	
 	// Terms of Use -----------------------------------------------------------
 	@RequestMapping("/dataProtection")
 	public ModelAndView dataProtection() {
@@ -136,7 +137,7 @@ public class UserController extends AbstractController {
 	}
 
 	// Profile
-	
+
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int userId) {
 		ModelAndView result;
@@ -169,7 +170,7 @@ public class UserController extends AbstractController {
 	}
 
 	//CreditCard
-	
+
 	@RequestMapping(value = "/createCreditCard", method = RequestMethod.GET)
 	public ModelAndView createCreditCard() {
 		ModelAndView result;
@@ -234,10 +235,9 @@ public class UserController extends AbstractController {
 		} else
 			try {
 				final User t = this.userService.findByPrincipal();
-				CreditCard creditCard1 = this.creditCardService.reconstruct(creditCard, binding);
-				if(binding.hasErrors()==false){
-				this.userService.saveAndFlush2(t, creditCard1);	
-				}
+				final CreditCard creditCard1 = this.creditCardService.reconstruct(creditCard, binding);
+				if (binding.hasErrors() == false)
+					this.userService.saveAndFlush2(t, creditCard1);
 				result = new ModelAndView("redirect:../user/profile.do?userId=" + t.getId());
 			} catch (final Throwable oops) {
 				result = new ModelAndView("user/editCreditCard");
@@ -248,8 +248,37 @@ public class UserController extends AbstractController {
 
 	}
 
-	
-	
+	@RequestMapping(value = "/listUnbanned", method = RequestMethod.GET)
+	public ModelAndView listNotBanned() {
+
+		final ModelAndView result;
+		Collection<User> users;
+
+		users = this.userService.findAllNotBannedActors();
+
+		result = new ModelAndView("user/listUnbanned");
+		result.addObject("users", users);
+		result.addObject("requestURI", "user/listUnbanned.do");
+
+		return result;
+	}
+	@RequestMapping(value = "/myFriends", method = RequestMethod.GET)
+	public ModelAndView listMyFriends() {
+
+		ModelAndView result;
+		Collection<User> users;
+
+		final User c = this.userService.findByPrincipal();
+
+		users = this.userService.findAllMyFriends(c.getId());
+
+		result = new ModelAndView("user/myFriends");
+		result.addObject("users", users);
+		result.addObject("requestURI", "user/myFriends.do");
+
+		return result;
+	}
+
 	// Other methods
 
 	protected ModelAndView createEditModelAndView(final RegistrationForm user) {
@@ -350,6 +379,4 @@ public class UserController extends AbstractController {
 
 	}
 
-
-	
 }

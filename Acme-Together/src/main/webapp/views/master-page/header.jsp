@@ -39,15 +39,18 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('USER')">
+		
+
 			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
+						code="master.page.followPeople" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
+					<li><a href="user/myFriends.do"><spring:message
+								code="master.page.yourFriends" /></a></li>
+					<li><a href="user/listUnbanned.do"><spring:message
+								code="master.page.followMorePeople" /></a></li>
 				</ul></li>
+
 			<li><a class="fNiv" href="user/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 			<li><a class="fNiv"
@@ -57,30 +60,14 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('COMMERCIAL')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
-				</ul></li>
+			
 			<li><a class="fNiv" href="commercial/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 
 		</security:authorize>
 
 		<security:authorize access="hasRole('DISTRIBUTOR')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.customer" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message
-								code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message
-								code="master.page.customer.action.2" /></a></li>
-				</ul></li>
+	
 			<li><a class="fNiv" href="distributor/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 

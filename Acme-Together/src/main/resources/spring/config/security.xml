@@ -49,13 +49,6 @@
 		<security:intercept-url pattern="/user/administrator/banUser.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/user/administrator/unBanUser.do" access="hasRole('ADMIN')" /> 
 		
-
-		<security:intercept-url pattern="/customer/action-1.do" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/customer/action-2.do" access="hasRole('CUSTOMER')" /> 
-
-		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
-		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
-		<security:intercept-url pattern="/profile/action-3.do" access="isAuthenticated()" /> 
 		
 		<security:intercept-url pattern="/privateMessage/listReceivedMessages.do"
 			access="isAuthenticated()" />
@@ -69,6 +62,10 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/privateMessage/deleteSent.do"
 			access="isAuthenticated()" />
+			
+			
+	    <security:intercept-url pattern="/user/listUnbanned.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/user/myFriends.do" access="hasRole('USER')" /> 
 
 	
 			<security:intercept-url pattern="/user/register.do"

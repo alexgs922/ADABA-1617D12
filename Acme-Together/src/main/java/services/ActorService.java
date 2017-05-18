@@ -108,12 +108,12 @@ public class ActorService {
 		final Actor principal = this.findByPrincipal();
 		Assert.notNull(principal);
 
-		Collection<Actor> chorbiesToShow;
+		Collection<Actor> actorsToShow;
 
-		chorbiesToShow = this.actorRepository.findAllNotBannedActors();
+		actorsToShow = this.actorRepository.findAllNotBannedActors();
 
-		Assert.notNull(chorbiesToShow);
+		Assert.notNull(actorsToShow);
 
-		return chorbiesToShow;
+		return actorsToShow;
 	}
 }
