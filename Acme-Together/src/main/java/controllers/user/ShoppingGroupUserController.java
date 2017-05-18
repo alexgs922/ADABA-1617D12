@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ShoppingGroupService;
@@ -47,7 +48,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		principal = this.userService.findByPrincipal();
 		shoppingGroups = principal.getShoppingGroup();
 
-		res = new ModelAndView("shoppingGroup/list");
+		res = new ModelAndView("shoppingGroup/list2");
 		res.addObject("shoppingGroups", shoppingGroups);
 		res.addObject("requestURI", "/shoppingGroup/user/joinedShoppingGroups.do");
 
@@ -72,6 +73,24 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("shoppingGroups", sGToShow);
 		result.addObject("requestURI", "shoppingGroup/user/list.do");
 		result.addObject("principal", principal);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam final int shoppingGroupId) {
+
+		ModelAndView result;
+		final ShoppingGroup sGToShow = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		result = new ModelAndView("shoppingGroup/display");
+		result.addObject("shoppingGroup", sGToShow);
+		result.addObject("requestURI", "shoppingGroup/user/display.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("category", sGToShow.getCategory());
+		result.addObject("users", sGToShow.getUsers());
+		result.addObject("products", sGToShow.getProducts());
+		result.addObject("comments", sGToShow.getComments());
 
 		return result;
 

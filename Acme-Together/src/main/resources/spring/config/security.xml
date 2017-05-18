@@ -40,7 +40,8 @@
 		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" /> 
 
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" /> 
-
+	
+			<security:intercept-url pattern="/category/list.do" access="permitAll" />
 		<security:intercept-url pattern="/category/administrator/list.do" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/category/administrator/edit.do" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/category/administrator/create.do" access="hasRole('ADMIN')" /> 
@@ -80,9 +81,10 @@
 		<security:intercept-url pattern="/user/editProfile.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/joinedShoppingGroups.do" access="hasRole('USER')" />  
 		<security:intercept-url pattern="/shoppingGroup/user/list.do" access="hasRole('USER')" /> 
+		<security:intercept-url pattern="/shoppingGroup/user/display.do" access="hasRole('USER')" /> 
 		
 	
-	
+		<security:intercept-url pattern="/distributor/list.do" access="permitAll" /> 
 		<security:intercept-url pattern="/distributor/profile.do" access="permitAll" /> 
 		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 		<security:intercept-url pattern="/distributor/editProfile.do" access="hasRole('DISTRIBUTOR')" /> 
