@@ -50,6 +50,8 @@
 
 
 
+
+
 <security:authorize access="hasRole('USER')">
 	<div>
 
@@ -115,4 +117,28 @@
 		</jstl:choose>
 	</div>
 </security:authorize>
+
+
+<display:table pagesize="5" class="displaytag" name="shoppingGroups" id="shoppingGroup">
+
+    <spring:message code="shoppingGroup.name" var="shoppingGroupName" />
+	<display:column property="name" title="${shoppingGroupName}" sortable="true" />
+	
+	<spring:message code="shoppingGroup.description" var="shoppingGroupDescription" />
+	<display:column property="description" title="${shoppingGroupDescription}" sortable="false" />
+	
+	<spring:message code="shoppingGroup.puntuation" var="shoppingGroupPuntuation" />
+	<display:column property="puntuation" title="${shoppingGroupPuntuation}" sortable="true" />
+	
+	<spring:message code="shoppingGroup.private" var="shoppingGroupPrivate" />
+	<display:column property="private_group" title="${shoppingGroupPrivate}" sortable="true" />
+	
+	<spring:message code="shoppingGroup.lastOrderDate" var="shoppingGroupLastOrderDate" />
+	<display:column property="lastOrderDate" title="${shoppingGroupLastOrderDate}" sortable="true" />
+	
+	<spring:message code="shoppingGroup.freePlaces" var="shoppingGroupFreePlaces" />
+	<display:column property="freePlaces" title="${shoppingGroupFreePlaces}" sortable="true" />
+
+</display:table>
+
 

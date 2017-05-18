@@ -148,6 +148,8 @@ public class UserController extends AbstractController {
 		user = this.userService.findOne(userId);
 		principal = this.userService.findByPrincipal();
 
+		final Collection<ShoppingGroup> sg = user.getMyShoppingGroups();
+
 		boolean toCreditCard = false;
 
 		final CreditCard creditCard = user.getCreditCard();
@@ -157,6 +159,7 @@ public class UserController extends AbstractController {
 		result = new ModelAndView("user/profile");
 		result.addObject("user", user);
 		result.addObject("principal", principal);
+		result.addObject("shoppingGroups", sg);
 		result.addObject("creditCard", creditCard);
 		result.addObject("toCreditCard", toCreditCard);
 		result.addObject("requestURI", "user/profile.do?userId=" + userId);

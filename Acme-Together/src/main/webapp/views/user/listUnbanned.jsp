@@ -38,13 +38,14 @@
 	<spring:message code="user.email" var="userEmail" />
 	<display:column property="email" title="${userEmail}" sortable="false" />
 	
-	<spring:message code="user.email" var="userEmail" />
-	<display:column>
-				<a href="user/myShopping.do?userId=${row.id}"> <spring:message
-						code="user.shoppingGroup" />
+	<security:authorize access="isAuthenticated()">
+		<display:column>
+			<a href="user/profile.do?userId=${row.id}"> <spring:message
+					code="user.profile" />
+			</a>
 
-				</a>
-	</display:column>
+		</display:column>
+	</security:authorize>
 
 	
 
