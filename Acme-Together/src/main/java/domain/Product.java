@@ -56,6 +56,7 @@ public class Product extends DomainEntity {
 		this.url = url;
 	}
 
+	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getReferenceNumber() {
 		return this.referenceNumber;
@@ -84,7 +85,6 @@ public class Product extends DomainEntity {
 
 	@ManyToOne(optional = true)
 	@Valid
-	@NotNull
 	public OrderDomain getOrderProduct() {
 		return this.orderProduct;
 	}

@@ -6,14 +6,18 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ProductService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
+import domain.Product;
 import domain.ShoppingGroup;
 import domain.User;
 
@@ -35,6 +39,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private UserService				userService;
+
+	@Autowired
+	private ProductService			productService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -109,6 +116,78 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		return result;
 
+	}
+
+	// Add product to shopping group ------------------------------------------------------
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
+	public ModelAndView addProduct(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Product product;
+		ShoppingGroup shoppingGroup;
+
+		product = this.productService.create();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		res = this.createCreateModelAndView(product);
+		res.addObject("shoppingGroup", shoppingGroup);
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, params = "save")
+	public ModelAndView addProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Product productRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		product.setShoppingGroupProducts(shoppingGroup);
+		product.setUserProduct(principal);
+
+		productRes = this.productService.reconstruct(product, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createCreateModelAndView(product);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				this.productService.saveAndFlush(productRes);
+				shoppingGroup.getProducts().add(productRes);
+				this.shoppingGroupService.save(shoppingGroup);
+				res = new ModelAndView("redirect: display.do");
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	// Edit product in shopping group ------------------------------------------
+
+	//  Ancillary methods -------------------------------------------------------
+
+	protected ModelAndView createCreateModelAndView(final Product product) {
+		ModelAndView res;
+
+		res = this.createCreateModelAndView(product, null);
+
+		return res;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Product product, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("product/addProduct");
+		result.addObject("product", product);
+		result.addObject("message", message);
+
+		return result;
 	}
 
 }
