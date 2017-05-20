@@ -34,13 +34,9 @@
 
 			<li><a class="fNiv" href="category/administrator/list.do"><spring:message
 						code="master.page.listCategories" /></a></li>
-
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('USER')">
-		
-
 			<li><a class="fNiv"><spring:message
 						code="master.page.followPeople" /></a>
 				<ul>
@@ -49,26 +45,20 @@
 								code="master.page.yourFriends" /></a></li>
 					<li><a href="user/listUnbanned.do"><spring:message
 								code="master.page.followMorePeople" /></a></li>
-				</ul></li>
-
+				</ul>
+			</li>
 			<li><a class="fNiv" href="user/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
-			
 			<li><a class="fNiv" href="shoppingGroup/user/list.do"><spring:message
-						code="master.page.shoppingGroupsPublic" /></a>
-			</li>	
-			
+						code="master.page.shoppingGroupsPublic" /></a></li>	
 			<li><a class="fNiv"
 				href="shoppingGroup/user/joinedShoppingGroups.do"><spring:message
 						code="master.page.UserJoinedShoppingGroups" /></a></li>
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('COMMERCIAL')">
-			
 			<li><a class="fNiv" href="commercial/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('DISTRIBUTOR')">
@@ -77,13 +67,16 @@
 						code="master.page.viewProfile" /></a></li>
 
 		</security:authorize>
+		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="user/register.do"><spring:message
 						code="master.page.registerUser" /></a></li>
-
-
+			<li><a class="fNiv" href="category/list.do"><spring:message
+						code="master.page.listCategories" /></a></li>
+			<li><a class="fNiv" href="distributor/list.do"><spring:message
+						code="master.page.listDistributors" /></a></li>			
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">

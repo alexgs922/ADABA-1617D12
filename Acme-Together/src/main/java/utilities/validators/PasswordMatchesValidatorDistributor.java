@@ -4,11 +4,9 @@ package utilities.validators;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import forms.CommercialForm;
 import forms.DistributorForm;
-import forms.RegistrationForm;
-	
-public class PasswordMatchesValidatorDistributor implements ConstraintValidator<PasswordMatchesDistributor,DistributorForm> {
+
+public class PasswordMatchesValidatorDistributor implements ConstraintValidator<PasswordMatchesDistributor, DistributorForm> {
 
 	@Override
 	public void initialize(final PasswordMatchesDistributor constraintAnnotation) {
@@ -18,4 +16,3 @@ public class PasswordMatchesValidatorDistributor implements ConstraintValidator<
 		return form.getPassword().equals(form.getPasswordCheck());
 	}
 }
-

@@ -10,6 +10,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.DistributorService;
 import domain.Distributor;
-import domain.Distributor;
-import domain.CreditCard;
-import domain.Distributor;
-import domain.User;
 import forms.DistributorForm;
 
 @Controller
@@ -43,7 +41,7 @@ public class DistributorController extends AbstractController {
 
 
 	@Autowired
-	private DistributorService distributorService;
+	private DistributorService	distributorService;
 
 
 	// Creation ---------------------------------------------------------------
@@ -91,56 +89,50 @@ public class DistributorController extends AbstractController {
 		return result;
 
 	}
-	
 
 	//Edit profile
 
-			@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
-			public ModelAndView edit(@RequestParam final int distributorId) {
-				ModelAndView res;
-				Distributor distributor;
-				int principal;
-				distributor = this.distributorService.findOne(distributorId);
-				principal = this.distributorService.findByPrincipal().getId();
-				Assert.isTrue(principal == distributorId);
+	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int distributorId) {
+		ModelAndView res;
+		Distributor distributor;
+		int principal;
+		distributor = this.distributorService.findOne(distributorId);
+		principal = this.distributorService.findByPrincipal().getId();
+		Assert.isTrue(principal == distributorId);
 
-				try {
-					Assert.isTrue(principal == distributorId);
-				} catch (final Throwable th) {
-					res = this.createEditModelAndViewError(distributor);
-					return res;
-				}
-				Assert.notNull(distributor);
-				res = this.createEditModelAndView(distributor);
-				return res;
+		try {
+			Assert.isTrue(principal == distributorId);
+		} catch (final Throwable th) {
+			res = this.createEditModelAndViewError(distributor);
+			return res;
+		}
+		Assert.notNull(distributor);
+		res = this.createEditModelAndView(distributor);
+		return res;
+	}
+
+	@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(final Distributor distributor, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			if (binding.getGlobalError() != null)
+				result = this.createEditModelAndView(distributor, binding.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(distributor);
+		} else
+			try {
+				final Distributor distributor1 = this.distributorService.reconstruct(distributor, binding);
+				this.distributorService.save(distributor1);
+				result = new ModelAndView("redirect:../distributor/profile.do?distributorId=" + distributor.getId());
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(distributor, "distributor.commit.error");
 			}
-
-			@RequestMapping(value = "/editProfile", method = RequestMethod.POST, params = "save")
-			public ModelAndView save(final Distributor distributor, final BindingResult binding) {
-				ModelAndView result;
-				if (binding.hasErrors()) {
-					if (binding.getGlobalError() != null)
-						result = this.createEditModelAndView(distributor, binding.getGlobalError().getCode());
-					else
-						result = this.createEditModelAndView(distributor);
-				} else
-					try {
-						final Distributor distributor1 = this.distributorService.reconstruct(distributor, binding);
-						this.distributorService.save(distributor1);
-						result = new ModelAndView("redirect:../distributor/profile.do?distributorId=" + distributor.getId());
-					} catch (final Throwable oops) {
-						result = this.createEditModelAndView(distributor, "distributor.commit.error");
-					}
-				return result;
-			}
-
-
-	
-
-	
+		return result;
+	}
 
 	// Profile
-	
+
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int distributorId) {
 		ModelAndView result;
@@ -149,8 +141,6 @@ public class DistributorController extends AbstractController {
 
 		distributor = this.distributorService.findOne(distributorId);
 		principal = this.distributorService.findByPrincipal();
-
-		
 
 		result = new ModelAndView("distributor/profile");
 		result.addObject("distributor", distributor);
@@ -166,7 +156,23 @@ public class DistributorController extends AbstractController {
 
 	}
 
-	
+	// List Distributors
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+
+		ModelAndView res;
+		Collection<Distributor> distributors;
+
+		distributors = this.distributorService.findAll();
+
+		res = new ModelAndView("distributor/list");
+		res.addObject("distributors", distributors);
+		res.addObject("requestURI", "/distributor/list.do");
+
+		return res;
+	}
+
 	// Other methods
 
 	protected ModelAndView createEditModelAndView(final DistributorForm distributor) {
@@ -215,7 +221,5 @@ public class DistributorController extends AbstractController {
 		return res;
 
 	}
-	
-	
-	
+
 }

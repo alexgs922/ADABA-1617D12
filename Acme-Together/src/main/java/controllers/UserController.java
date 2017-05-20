@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CreditCardService;
 import services.UserService;
 import domain.CreditCard;
+import domain.ShoppingGroup;
 import domain.User;
 import forms.RegistrationForm;
 
@@ -147,6 +148,8 @@ public class UserController extends AbstractController {
 		user = this.userService.findOne(userId);
 		principal = this.userService.findByPrincipal();
 
+		final Collection<ShoppingGroup> sg = user.getMyShoppingGroups();
+
 		boolean toCreditCard = false;
 
 		final CreditCard creditCard = user.getCreditCard();
@@ -156,6 +159,7 @@ public class UserController extends AbstractController {
 		result = new ModelAndView("user/profile");
 		result.addObject("user", user);
 		result.addObject("principal", principal);
+		result.addObject("shoppingGroups", sg);
 		result.addObject("creditCard", creditCard);
 		result.addObject("toCreditCard", toCreditCard);
 		result.addObject("requestURI", "user/profile.do?userId=" + userId);
@@ -254,9 +258,12 @@ public class UserController extends AbstractController {
 		final ModelAndView result;
 		Collection<User> users;
 
+		final User principal = this.userService.findByPrincipal();
 		users = this.userService.findAllNotBannedActors();
+		users.remove(principal);
 
 		result = new ModelAndView("user/listUnbanned");
+		result.addObject("principal", principal);
 		result.addObject("users", users);
 		result.addObject("requestURI", "user/listUnbanned.do");
 
@@ -273,8 +280,73 @@ public class UserController extends AbstractController {
 		users = this.userService.findAllMyFriends(c.getId());
 
 		result = new ModelAndView("user/myFriends");
+		result.addObject("principal", c);
 		result.addObject("users", users);
 		result.addObject("requestURI", "user/myFriends.do");
+
+		return result;
+	}
+
+	@RequestMapping(value = "/follow", method = RequestMethod.GET)
+	public ModelAndView follow(@RequestParam final int userId) {
+		ModelAndView result;
+		User user;
+
+		final User principal = this.userService.findByPrincipal();
+		user = this.userService.findOne(userId);
+
+		try {
+			Assert.isTrue(principal.getId() != user.getId());
+			this.userService.follow(user.getId());
+			result = new ModelAndView("redirect:listUnbanned.do");
+
+		} catch (final Throwable th) {
+			result = new ModelAndView("forbiddenOperation");
+
+		}
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/unfollow", method = RequestMethod.GET)
+	public ModelAndView unFollow(@RequestParam final int userId) {
+		ModelAndView result;
+		User user;
+
+		final User principal = this.userService.findByPrincipal();
+		user = this.userService.findOne(userId);
+
+		try {
+			Assert.isTrue(principal.getId() != user.getId());
+			this.userService.unfollow(user.getId());
+			result = new ModelAndView("redirect:listUnbanned.do");
+
+		} catch (final Throwable th) {
+			result = new ModelAndView("forbiddenOperation");
+
+		}
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/myShopping", method = RequestMethod.GET)
+	public ModelAndView listMyShopping(@RequestParam final int userId) {
+
+		ModelAndView result;
+
+		Collection<ShoppingGroup> sg;
+		final User principal = this.userService.findByPrincipal();
+
+		final User c = this.userService.findOne(userId);
+
+		sg = c.getMyShoppingGroups();
+
+		result = new ModelAndView("user/myShopping");
+		result.addObject("principal", c);
+		result.addObject("shoppingGroups", sg);
+		result.addObject("requestURI", "user/myShopping.do");
 
 		return result;
 	}

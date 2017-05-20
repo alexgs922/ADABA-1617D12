@@ -56,6 +56,13 @@ public class CategoryService {
 		return res;
 	}
 
+	public Collection<Category> findAllLogout() {
+		Collection<Category> res;
+		res = this.categoryRepository.findAll();
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Category findOne(final int categoryId) {
 		Assert.isTrue(this.checkAdminPrincipal());
 		Category res;

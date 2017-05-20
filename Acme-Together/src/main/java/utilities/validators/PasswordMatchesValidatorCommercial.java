@@ -5,9 +5,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import forms.CommercialForm;
-import forms.RegistrationForm;
-	
-public class PasswordMatchesValidatorCommercial implements ConstraintValidator<PasswordMatchesCommercial,CommercialForm> {
+
+public class PasswordMatchesValidatorCommercial implements ConstraintValidator<PasswordMatchesCommercial, CommercialForm> {
 
 	@Override
 	public void initialize(final PasswordMatchesCommercial constraintAnnotation) {
@@ -17,4 +16,3 @@ public class PasswordMatchesValidatorCommercial implements ConstraintValidator<P
 		return form.getPassword().equals(form.getPasswordCheck());
 	}
 }
-
