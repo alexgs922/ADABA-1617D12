@@ -22,7 +22,7 @@ import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public abstract class Actor extends PuntuableEntity {
+public abstract class Actor extends DomainEntity {
 
 	//Constructor ---------------------------------------
 

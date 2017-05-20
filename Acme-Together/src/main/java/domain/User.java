@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -123,7 +124,17 @@ public class User extends Actor {
 	private Collection<ShoppingGroup>	myShoppingGroups;
 	private Collection<Product>			products;
 	private Collection<Comment>			comments;
+	private Collection<Punctuation>		punctuations;
 
+
+	@OneToMany(mappedBy = "userPunctuation")
+	public Collection<Punctuation> getPunctuations() {
+		return this.punctuations;
+	}
+
+	public void setPunctuations(final Collection<Punctuation> punctuations) {
+		this.punctuations = punctuations;
+	}
 
 	@OneToMany(mappedBy = "creator")
 	public Collection<ShoppingGroup> getMyShoppingGroups() {
@@ -134,6 +145,7 @@ public class User extends Actor {
 		this.myShoppingGroups = myShoppingGroups;
 	}
 
+	@Valid
 	@OneToOne
 	public CreditCard getCreditCard() {
 		return this.creditCard;
@@ -160,7 +172,7 @@ public class User extends Actor {
 		this.friends.remove(user);
 	}
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "users")
 	public Collection<ShoppingGroup> getShoppingGroup() {
 		return this.shoppingGroup;
 	}

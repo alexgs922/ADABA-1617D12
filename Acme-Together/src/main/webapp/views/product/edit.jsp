@@ -30,11 +30,11 @@
 
 	<acme:textbox code="product.name" path="name" />
 	<br>
-	<acme:textarea code="product.url" path="url" />
+	<acme:textbox code="product.url" path="url" />
 	<br>
-	<acme:textarea code="product.referenceNumber" path="referenceNumber" />
+	<acme:textbox code="product.referenceNumber" path="referenceNumber" />
 	<br>
-	<acme:textarea code="product.price" path="price" />
+	<acme:textbox code="product.price" path="price" />
 	<br>
 		
 

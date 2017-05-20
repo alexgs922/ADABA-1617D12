@@ -22,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class ShoppingGroup extends PuntuableEntity {
+public class ShoppingGroup extends DomainEntity {
 
 	//Constructor ------------------------------------
 
@@ -38,7 +38,7 @@ public class ShoppingGroup extends PuntuableEntity {
 	private String	description;
 	private Date	lastOrderDate;
 	private int		freePlaces;
-	private String	frecuentedSites;
+	private String	site;
 	private int		puntuation;
 
 
@@ -90,13 +90,14 @@ public class ShoppingGroup extends PuntuableEntity {
 		this.freePlaces = freePlaces;
 	}
 
+	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-	public String getFrecuentedSites() {
-		return this.frecuentedSites;
+	public String getSite() {
+		return this.site;
 	}
 
-	public void setFrecuentedSites(final String frecuentedSites) {
-		this.frecuentedSites = frecuentedSites;
+	public void setSite(final String site) {
+		this.site = site;
 	}
 
 	@NotNull
@@ -115,9 +116,18 @@ public class ShoppingGroup extends PuntuableEntity {
 	private Collection<Product>		products;
 	private Collection<Comment>		comments;
 	private Category				category;
-	private Collection<Engagement>	engagements;
 	private User					creator;
+	private Collection<Punctuation>	punctuations;
 
+
+	@OneToMany(mappedBy = "shoppingGroup")
+	public Collection<Punctuation> getPunctuations() {
+		return this.punctuations;
+	}
+
+	public void setPunctuations(final Collection<Punctuation> punctuations) {
+		this.punctuations = punctuations;
+	}
 
 	@ManyToOne(optional = false)
 	@Valid
@@ -169,17 +179,6 @@ public class ShoppingGroup extends PuntuableEntity {
 
 	public void setCategory(final Category category) {
 		this.category = category;
-	}
-
-	@OneToMany(mappedBy = "shoppingGroupEngagements")
-	@Valid
-	@NotNull
-	public Collection<Engagement> getEngagements() {
-		return this.engagements;
-	}
-
-	public void setEngagements(final Collection<Engagement> engagements) {
-		this.engagements = engagements;
 	}
 
 }

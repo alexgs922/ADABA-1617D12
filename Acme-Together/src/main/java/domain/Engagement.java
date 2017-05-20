@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -42,7 +43,18 @@ public class Engagement extends DomainEntity {
 	//Relationships
 
 	private ShoppingGroup	shoppingGroupEngagements;
+	private OrderDomain		order;
 
+
+	@Valid
+	@OneToOne(optional = false)
+	public OrderDomain getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(final OrderDomain order) {
+		this.order = order;
+	}
 
 	@Valid
 	@NotNull

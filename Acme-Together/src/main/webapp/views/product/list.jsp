@@ -24,7 +24,43 @@
 <display:table pagesize="5" class="displaytag" name="products"
 	requestURI="${requestURI}" id="row">
 
-	
+	<spring:message code="product.name" var="productName" />
+	<display:column property="name" title="${productName}" sortable="true" />
+
+	<spring:message code="product.url" var="productURL" />
+	<display:column property="url" title="${productURL}" sortable="true" />
+
+	<spring:message code="product.referenceNumber"
+		var="productReferenceNumber" />
+	<display:column property="name" title="${productReferenceNumber}"
+		sortable="true" />
+
+	<spring:message code="product.price" var="productPrice" />
+	<display:column property="price" title="${productPrice}"
+		sortable="true" />
+
+
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:if test=${row.userProduct.id == principal.id }>
+				<button
+					onclick="location.href='shoppingGroup/user/edit.do?productId=${row.id}'">
+					<spring:message code="product.edit" />
+				</button>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
+
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:if test=${row.userProduct.id == principal.id }>
+				<button
+					onclick="location.href='shoppingGroup/user/delete.do?productId=${row.id}'">
+					<spring:message code="product.delete" />
+				</button>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
 
 
 

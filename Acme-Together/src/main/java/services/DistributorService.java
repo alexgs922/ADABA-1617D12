@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -21,7 +20,6 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Distributor;
-import domain.PuntuableEntity;
 import forms.DistributorForm;
 
 @Service
@@ -65,27 +63,21 @@ public class DistributorService {
 		Authority authority;
 		Collection<Authority> authorities;
 		String pwdHash;
-		Collection<PuntuableEntity> puntuable;
-		
-		
+
 		result = this.create();
 		authorities = new HashSet<Authority>();
 		userAccount = new UserAccount();
-		puntuable = new ArrayList<PuntuableEntity>();
-		
-		
+
 		result.setName(customerForm.getName());
 		result.setSurName(customerForm.getSurName());
 		result.setPhone(customerForm.getPhone());
 		result.setEmail(customerForm.getEmail());
 		result.setCompanyAddress(customerForm.getCompanyAddress());
 		result.setCompanyName(customerForm.getCompanyName());
-		result.setToPuntuate(puntuable);
+
 		result.setVatNumber(customerForm.getVatNumber());
 		result.setWebPage(customerForm.getWebPage());
-		
-		
-		
+
 		authority = new Authority();
 		authority.setAuthority(Authority.DISTRIBUTOR);
 		authorities.add(authority);

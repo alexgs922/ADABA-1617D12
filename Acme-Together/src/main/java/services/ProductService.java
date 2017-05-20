@@ -64,12 +64,14 @@ public class ProductService {
 	}
 
 	public Product save(final Product p) {
+		Assert.isTrue(this.checkUserPrincipal());
 		Assert.notNull(p);
 		return this.productRepository.save(p);
 
 	}
 
 	public Product saveAndFlush(final Product p) {
+		Assert.isTrue(this.checkUserPrincipal());
 		Assert.notNull(p);
 		return this.productRepository.saveAndFlush(p);
 
@@ -81,6 +83,17 @@ public class ProductService {
 	}
 
 	//Other business methods --------------------------------------
+
+	public boolean checkUserPrincipal() {
+		final boolean res;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+
+		res = principal != null;
+
+		return res;
+	}
 
 	public void flush() {
 		this.productRepository.flush();

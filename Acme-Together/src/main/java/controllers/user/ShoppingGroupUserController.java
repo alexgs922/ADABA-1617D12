@@ -170,6 +170,53 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	// Edit product in shopping group ------------------------------------------
 
+	@RequestMapping(value = "/editProduct", method = RequestMethod.GET)
+	public ModelAndView editProduct(@RequestParam final int productId) {
+		ModelAndView res;
+
+		Product product;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		product = this.productService.findOne(productId);
+
+		try {
+			Assert.isTrue(product.getUserProduct().getId() == principal.getId());
+			res = this.createEditModelAndView(product);
+
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
+	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
+		ModelAndView res;
+
+		final Product productRes;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		product.setUserProduct(principal);
+
+		productRes = this.productService.reconstruct(product, binding);
+
+		if (binding.hasErrors())
+			res = this.createEditModelAndView(product);
+		else
+			try {
+				this.productService.saveAndFlush(productRes);
+				res = new ModelAndView("redirect: display.do");
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
 	//  Ancillary methods -------------------------------------------------------
 
 	protected ModelAndView createCreateModelAndView(final Product product) {
@@ -184,6 +231,24 @@ public class ShoppingGroupUserController extends AbstractController {
 		ModelAndView result;
 
 		result = new ModelAndView("product/addProduct");
+		result.addObject("product", product);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Product product) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(product, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final Product product, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("product/editProduct");
 		result.addObject("product", product);
 		result.addObject("message", message);
 

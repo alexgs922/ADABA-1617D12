@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -21,7 +20,6 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Commercial;
-import domain.PuntuableEntity;
 import forms.CommercialForm;
 
 @Service
@@ -47,9 +45,6 @@ public class CommercialService {
 	@Autowired
 	private AdministratorService	administratorService;
 
-	@Autowired
-	private PuntuableEntityService	puntuableEntity;
-
 
 	// Simple CRUD methods ----------------------------------------------------
 
@@ -69,12 +64,9 @@ public class CommercialService {
 		Collection<Authority> authorities;
 		String pwdHash;
 
-		Collection<PuntuableEntity> puntuable;
-
 		result = this.create();
 		authorities = new HashSet<Authority>();
 		userAccount = new UserAccount();
-		puntuable = new ArrayList<PuntuableEntity>();
 
 		result.setName(customerForm.getName());
 		result.setSurName(customerForm.getSurName());
@@ -82,7 +74,6 @@ public class CommercialService {
 		result.setEmail(customerForm.getEmail());
 		result.setCompanyName(customerForm.getCompanyName());
 		result.setVatNumber(customerForm.getVatNumber());
-		result.setToPuntuate(puntuable);
 
 		authority = new Authority();
 		authority.setAuthority(Authority.COMMERCIAL);

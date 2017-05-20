@@ -34,8 +34,6 @@ public class Coupon extends DomainEntity {
 	private double	discount;
 
 
-	//private boolean	used;
-
 	//Getters and Setters --------------------------
 
 	@NotBlank
@@ -58,14 +56,6 @@ public class Coupon extends DomainEntity {
 		this.discount = discount;
 	}
 
-
-	//	public boolean isUsed() {
-	//		return this.used;
-	//	}
-	//
-	//	public void setUsed(final boolean used) {
-	//		this.used = used;
-	//	}
 
 	//Relationships
 

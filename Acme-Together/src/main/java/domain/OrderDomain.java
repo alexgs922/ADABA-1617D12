@@ -9,9 +9,11 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,6 +34,7 @@ public class OrderDomain extends DomainEntity {
 	private Date	initDate;
 	private Date	finishDate;
 	private Status	status;
+	private double	totalPrice;
 
 
 	//Getters and Setters --------------------------
@@ -64,12 +67,32 @@ public class OrderDomain extends DomainEntity {
 		this.status = status;
 	}
 
+	@Min(0)
+	public double getTotalPrice() {
+		return this.totalPrice;
+	}
+
+	public void setTotalPrice(final double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 
 	// Relationships
 
 	private Collection<Product>	products;
 	private Coupon				coupon;
+	private Engagement			engagement;
 
+
+	@Valid
+	@OneToOne(optional = true)
+	public Engagement getEngagement() {
+		return this.engagement;
+	}
+
+	public void setEngagement(final Engagement engagement) {
+		this.engagement = engagement;
+	}
 
 	@ManyToOne(optional = true)
 	@Valid

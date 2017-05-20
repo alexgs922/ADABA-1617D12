@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -21,7 +20,6 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.CreditCard;
-import domain.PuntuableEntity;
 import domain.User;
 import forms.RegistrationForm;
 
@@ -68,12 +66,10 @@ public class UserService {
 		Authority authority;
 		Collection<Authority> authorities;
 		String pwdHash;
-		Collection<PuntuableEntity> puntuable;
 
 		result = this.create();
 		authorities = new HashSet<Authority>();
 		userAccount = new UserAccount();
-		puntuable = new ArrayList<PuntuableEntity>();
 
 		result.setName(customerForm.getName());
 		result.setSurName(customerForm.getSurName());
@@ -84,7 +80,6 @@ public class UserService {
 		result.setBirthDate(customerForm.getBirthDate());
 		result.setAddress(customerForm.getAdress());
 		result.setPicture(customerForm.getPicture());
-		result.setToPuntuate(puntuable);
 
 		authority = new Authority();
 		authority.setAuthority(Authority.USER);

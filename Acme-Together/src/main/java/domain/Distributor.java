@@ -83,7 +83,7 @@ public class Distributor extends Actor {
 	private Collection<Warehouse>	warehouses;
 
 
-	@OneToMany
+	@OneToMany(mappedBy = "distributor")
 	public Collection<Warehouse> getWarehouses() {
 		return this.warehouses;
 	}
