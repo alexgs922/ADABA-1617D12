@@ -78,6 +78,7 @@ public class ProductService {
 	}
 
 	public void delete(final Product p) {
+		Assert.isTrue(this.checkUserPrincipal());
 		Assert.notNull(p);
 		this.productRepository.delete(p);
 	}

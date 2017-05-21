@@ -3,8 +3,6 @@ package controllers.user;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -115,7 +113,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("users", sGToShow.getUsers());
 		result.addObject("products", sGToShow.getProducts());
 		result.addObject("comments", sGToShow.getComments());
-
+		result.addObject("principal", this.userService.findByPrincipal());
 		return result;
 
 	}
@@ -192,6 +190,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		try {
 			Assert.isTrue(product.getUserProduct().getId() == principal.getId());
 			res = this.createEditModelAndView(product);
+			res.addObject("shoppingGroup", product.getShoppingGroupProducts());
 
 		} catch (final Throwable th) {
 			res = new ModelAndView("forbiddenOperation");
@@ -202,7 +201,7 @@ public class ShoppingGroupUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView editProduct(@ModelAttribute("product") @Valid final Product product, final BindingResult binding) {
+	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
 		ModelAndView res;
 
 		final Product productRes;
@@ -210,6 +209,8 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		product.setUserProduct(principal);
+
+		productRes = this.productService.reconstruct(product, binding);
 
 		if (binding.hasErrors())
 			if (binding.getGlobalError() != null)
@@ -221,14 +222,39 @@ public class ShoppingGroupUserController extends AbstractController {
 				res = this.createEditModelAndView(product);
 		else
 			try {
-				productRes = this.productService.reconstruct(product, binding);
+
 				this.productService.saveAndFlush(productRes);
-				res = new ModelAndView("redirect: display.do");
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + productRes.getShoppingGroupProducts().getId());
 			} catch (final Throwable th) {
 				res = new ModelAndView("forbiddenOperation");
 			}
 
 		return res;
+	}
+
+	// Delete product ----------------------------------------------------------------------
+
+	@RequestMapping(value = "/deleteProduct", method = RequestMethod.GET)
+	public ModelAndView deleteProduct(@RequestParam final int productId) {
+		ModelAndView res;
+
+		Product product;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		product = this.productService.findOne(productId);
+
+		try {
+			Assert.isTrue(product.getUserProduct().getId() == principal.getId());
+			this.productService.delete(product);
+			res = new ModelAndView("redirect: display.do?shoppingGroupId=" + product.getShoppingGroupProducts().getId());
+
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
 	}
 
 	//  Ancillary methods -------------------------------------------------------

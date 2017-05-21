@@ -119,8 +119,19 @@
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id}">
 				<button
-					onclick="location.href='shoppingGroup/user/edit.do?productId=${p.id}'">
+					onclick="location.href='shoppingGroup/user/editProduct.do?productId=${p.id}'">
 					<spring:message code="product.edit" />
+				</button>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:if test="${p.userProduct.id == principal.id }">
+				<button
+					onclick="location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
+					<spring:message code="product.delete" />
 				</button>
 			</jstl:if>
 		</display:column>
