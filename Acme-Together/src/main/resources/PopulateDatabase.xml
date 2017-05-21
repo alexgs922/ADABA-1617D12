@@ -648,6 +648,8 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation1" />
+				
 			</list>
 		</property>
 		<property name="friends">
@@ -709,6 +711,7 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation2" />
 			</list>
 		</property>
 		<property name="friends">
@@ -774,6 +777,7 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation2" />
 			</list>
 		</property>
 		<property name="friends">
@@ -838,6 +842,8 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation4" />
+				<ref bean="punctuation5" />
 			</list>
 		</property>
 		<property name="friends">
@@ -1250,6 +1256,10 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation1" />
+				<ref bean="punctuation2" />
+				<ref bean="punctuation3" />
+				<ref bean="punctuation4" />
 			</list>
 		</property>
 	</bean>
@@ -1261,7 +1271,7 @@
 		<property name="lastOrderDate" value="2017/05/10" />
 		<property name="freePlaces" value="0" />
 		<property name="site" value="houseofcb" />
-		<property name="puntuation" value="3" />
+		<property name="puntuation" value="-1" />
 		<property name="category" ref="category3" />
 		<property name="creator" ref="user3" />
 		<property name="users">
@@ -1289,6 +1299,7 @@
 		</property>
 		<property name="punctuations">
 			<list>
+				<ref bean="punctuation5" />
 			</list>
 		</property>
 	</bean>
@@ -1300,7 +1311,7 @@
 		<property name="lastOrderDate" value="2017/05/21" />
 		<property name="freePlaces" value="0" />
 		<property name="site" value="homedepot" />
-		<property name="puntuation" value="3" />
+		<property name="puntuation" value="0" />
 		<property name="category" ref="category7" />
 		<property name="creator" ref="user1" />
 		<property name="users">
@@ -1374,7 +1385,43 @@
 	
 	</bean>
 	
-
+	<!--  PUNCTUATION -->
+	
+	<bean id="punctuation1" class="domain.Punctuation">
+		<property name="value" value="1" />
+		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="user" ref="user1" />
+	
+	</bean>
+	
+	<bean id="punctuation2" class="domain.Punctuation">
+		<property name="value" value="1" />
+		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="user" ref="user2" />
+	
+	</bean>
+	
+	<bean id="punctuation3" class="domain.Punctuation">
+		<property name="value" value="1" />
+		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="user" ref="user3" />
+	
+	</bean>
+	
+	<bean id="punctuation4" class="domain.Punctuation">
+		<property name="value" value="-1" />
+		<property name="shoppingGroup" ref="shoppingGroup1" />
+		<property name="user" ref="user4" />
+	
+	</bean>
+	
+	<bean id="punctuation5" class="domain.Punctuation">
+		<property name="value" value="-1" />
+		<property name="shoppingGroup" ref="shoppingGroup2" />
+		<property name="user" ref="user4" />
+	
+	</bean>
+	
 
 
 </beans>

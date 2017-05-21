@@ -100,7 +100,6 @@ public class ShoppingGroup extends DomainEntity {
 		this.site = site;
 	}
 
-	@NotNull
 	public int getPuntuation() {
 		return this.puntuation;
 	}

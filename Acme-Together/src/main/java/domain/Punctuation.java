@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Punctuation extends DomainEntity {
@@ -21,6 +23,7 @@ public class Punctuation extends DomainEntity {
 
 	// Attributes
 
+	@Range(min = -1, max = 1)
 	private int	value;
 
 
