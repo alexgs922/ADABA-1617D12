@@ -188,10 +188,6 @@
 				<ref bean="message1copy" />
 			</list>
 		</property>
-		<property name="toPuntuate">
-			<list>
-			</list>
-		</property>
 	</bean>
 
 	<!-- COMMERCIAL -->
@@ -211,10 +207,6 @@
 			</list>
 		</property>
 		<property name="messageWrites">
-			<list>
-			</list>
-		</property>
-		<property name="toPuntuate">
 			<list>
 			</list>
 		</property>
@@ -244,10 +236,6 @@
 			<list>
 			</list>
 		</property>
-		<property name="toPuntuate">
-			<list>
-			</list>
-		</property>
 		<property name="coupon">
 			<list>
 				<ref bean="coupon4" />
@@ -269,10 +257,6 @@
 			</list>
 		</property>
 		<property name="messageWrites">
-			<list>
-			</list>
-		</property>
-		<property name="toPuntuate">
 			<list>
 			</list>
 		</property>
@@ -350,10 +334,6 @@
 			<list>
 			</list>
 		</property>
-		<property name="toPuntuate">
-			<list>
-			</list>
-		</property>
 		<property name="warehouses">
 			<list>
 				<ref bean="warehouse1" />
@@ -376,10 +356,6 @@
 			</list>
 		</property>
 		<property name="messageWrites">
-			<list>
-			</list>
-		</property>
-		<property name="toPuntuate">
 			<list>
 			</list>
 		</property>
@@ -408,10 +384,6 @@
 			<list>
 			</list>
 		</property>
-		<property name="toPuntuate">
-			<list>
-			</list>
-		</property>
 		<property name="warehouses">
 			<list>
 				<ref bean="warehouse3" />
@@ -423,152 +395,97 @@
 
 	<bean id="category1" class="domain.Category">
 		<property name="name" value="Música" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Navega y compra el albúm o canción que tanto deseas!" />
 	</bean>
 
 	<bean id="category2" class="domain.Category">
 		<property name="name" value="Videojuegos" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Podrás conseguir todos los videojuegos, consolas y pcs gamers que desees!" />
 	</bean>
 
 	<bean id="category3" class="domain.Category">
 		<property name="name" value="Moda" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-				<ref bean="shoppingGroup2" />
-			</list>
-		</property> -->
+		<property name="description" value="¡Siempre es un buen momento para crear un nuevo look!" />
 	</bean>
 
 	<bean id="category4" class="domain.Category">
 		<property name="name" value="Libros" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Hazte con los mejores bestsellers!" />
 	</bean>
 
 	<bean id="category5" class="domain.Category">
 		<property name="name" value="Juguetes y Bebés" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Muñecas, triciclos, juguetes de construcción, trenes, tractores, aviones, coches y pistas de juguete, juguetes educativos y didácticos, videojuegos, y todo tipo de juguetes para bebés, niñas y niños!" />
 	</bean>
 
 	<bean id="category6" class="domain.Category">
 		<property name="name" value="Cine y televisión" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Encuentra las últimas novedades en DVD y Blu-ray, las películas y series de televisión más vendidas y disfruta de todas las ofertas y promociones!" />
 	</bean>
 
 	<bean id="category7" class="domain.Category">
 		<property name="name" value="Hogar, jardín y bricolaje" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¿Cuándo ha sido más sencillo ser un manitas?" />
 	</bean>
 
 	<bean id="category8" class="domain.Category">
-		<property name="name" value="Libros" />
-		<property name="description" value="Deportes y aire libre" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="name" value="Deportes y aire libre" />
+		<property name="description" value="¡Encuentra tu deporte favorito!" />
 	</bean>
 
 	<bean id="category9" class="domain.Category">
 		<property name="name" value="Electrónica" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡No pierdas la oportunidad de disfrutar de la última tecnología!" />
 	</bean>
 
 	<bean id="category10" class="domain.Category">
 		<property name="name" value="Coche y moto" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="Para los amantes del motor" />
 	</bean>
 
 	<bean id="category11" class="domain.Category">
 		<property name="name" value="Supermercado" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Ya puedes hacerlo desde casa!" />
 	</bean>
 
 	<bean id="category12" class="domain.Category">
 		<property name="name" value="Belleza y salud" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¿A quién no le gusta estar guapo?" />
 	</bean>
 
 	<bean id="category13" class="domain.Category">
 		<property name="name" value="Informática" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-				<ref bean="shoppingGroup1" />
-			</list>
-		</property> -->
+		<property name="description" value="Encuentra más allá de ordenadores, tablets y smartphones, ¡Descubre los últimos componentes y mucho más!" />
 	</bean>
 
 	<bean id="category14" class="domain.Category">
 		<property name="name" value="Hecho a mano" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="¡Para los fans de la filosofía handmade!" />
 	</bean>
 
 	<bean id="category15" class="domain.Category">
 		<property name="name" value="Industria, empresas y ciencia" />
-		<property name="description" value="Descripción de la categoría" />
-		<!-- <property name="shoppingGroups">
-			<list>
-
-			</list>
-		</property> -->
+		<property name="description" value="Trabaja con el mejor equipamiento" />
+	</bean>
+	
+	<bean id="category16" class="domain.Category">
+		<property name="name" value="Comida" />
+		<property name="description" value="¡Para los más glotones!" />
+	</bean>
+	
+	<bean id="category17" class="domain.Category">
+		<property name="name" value="Ropa" />
+		<property name="description" value="¡Para los más fashionistas!" />
+	</bean>
+	
+	<bean id="category18" class="domain.Category">
+		<property name="name" value="Adultos" />
+		<property name="description" value="¡Esto está que arde!" />
+	</bean>
+	
+	<bean id="category19" class="domain.Category">
+		<property name="name" value="Mascotas" />
+		<property name="description" value="¡Para los más mimados de la casa!" />
 	</bean>
 
 
@@ -709,9 +626,8 @@
 		<property name="birthDate" value="1995/03/22" />
 		<property name="identification" value="77863541F" />
 		<property name="puntuation" value="1" />
-		<property name="creditCard" ref="creditCardUser1" />
-
 		<property name="banned" value="false" />
+		<property name="creditCard" ref="creditCardUser1" />	
 		<property name="shoppingGroup">
 			<list>
 				<ref bean="shoppingGroup1" />
@@ -722,7 +638,6 @@
 		<property name="myShoppingGroups">
 			<list>
 				<ref bean="shoppingGroup1" />
-				<ref bean="shoppingGroup2" />
 				<ref bean="shoppingGroup3" />
 			</list>
 		</property>
@@ -741,12 +656,17 @@
 
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
 		<property name="friends">
 			<list>
+				<ref bean="user2" />
+				<ref bean="user3" />
+				<ref bean="user4" />
+				<ref bean="user5" />
+				<ref bean="user6" />
 			</list>
 		</property>
 		<property name="products">
@@ -797,17 +717,18 @@
 				<ref bean="message2copy" />
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
 		<property name="friends">
 			<list>
+				<ref bean="user1" />
 			</list>
 		</property>
 		<property name="products">
 			<list>
-				<ref bean="product1" />
+				<ref bean="product2" />
 			</list>
 		</property>
 		<property name="comments">
@@ -845,6 +766,8 @@
 		<property name="myShoppingGroups">
 			<list>
 				
+				<ref bean="shoppingGroup2" />
+				
 			</list>
 		</property>
 		<property name="messageReceives">
@@ -859,12 +782,15 @@
 				<ref bean="message3copy" />
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
 		<property name="friends">
 			<list>
+				<ref bean="user1" />
+				<ref bean="user2" />
+				<ref bean="user5" />
 			</list>
 		</property>
 		<property name="products">
@@ -920,12 +846,17 @@
 
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
 		<property name="friends">
 			<list>
+				<ref bean="user1" />
+				<ref bean="user2" />
+				<ref bean="user3" />
+				<ref bean="user5" />
+				<ref bean="user6" />
 			</list>
 		</property>
 		<property name="products">
@@ -979,7 +910,7 @@
 
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
@@ -1013,10 +944,11 @@
 				<value>"usuario3 --> Disco duro sata3 -- 135.00 .....</value>
 				<value>"usuario4 --> Móvil Sony Experia -- 259.00</value>
 				<value>"usuario5 --> Go Pro Hero Negra -- 169.00</value>
-				<value>"TOTAL --> 5 items -- 1316.00</value>
+				<value>"FEE --> 2  -- 0.4 € cada uno</value>
+				<value>"TOTAL --> 5 items -- 1318.00</value>
 			</list>
 		</property>
-		<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
+		<property name="order" ref="order1" />
 	</bean>
 
 	<bean id="engagement2" class="domain.Engagement">
@@ -1024,10 +956,11 @@
 			<list>
 				<value>"usuario3 --> KHALILA -- 78.00</value>
 				<value>"usuario4 --> PARIS -- 158.00</value>
-				<value>"TOTAL --> 2 items -- 236.00</value>
+				<value>"FEE --> 2  -- 1 € cada uno</value>
+				<value>"TOTAL --> 2 items -- 238.00</value>
 			</list>
 		</property>
-		<property name="shoppingGroupEngagements" ref="shoppingGroup1" />
+		<property name="order" ref="order2" />
 	</bean>
 
 	<bean id="engagement3" class="domain.Engagement">
@@ -1035,10 +968,11 @@
 			<list>
 				<value>"usuario3 --> Quatrefoil -- 97.33</value>
 				<value>"usuario5 --> Dc to Ac inverter -- 279.99</value>
-				<value>"TOTAL --> 2 items -- 377.32</value>
+				<value>"FEE --> 2  -- 1 € cada uno</value>
+				<value>"TOTAL --> 2 items -- 379.32</value>
 			</list>
 		</property>
-		<property name="shoppingGroupEngagements" ref="shoppingGroup2" />
+		<property name="order" ref="order3" />
 	</bean>
 
 
@@ -1046,8 +980,10 @@
 	<!-- ORDERS -->
 
 	<bean id="order1" class="domain.OrderDomain">
-		<property name="initDate" value="2017/04/25 12:00" />
-		<property name="status" value="INPROCESS" />
+		<property name="initDate" value="2017/04/15 12:00" />
+		<property name="finishDate" value="2017/05/15 20:00" />
+		<property name="status" value="RECEIVED" />
+		<property name="totalPrice" value="1318.00" />
 		<property name="coupon" ref="coupon1" />
 		<property name="products">
 			<list>
@@ -1062,9 +998,11 @@
 	</bean>
 
 	<bean id="order2" class="domain.OrderDomain">
-		<property name="initDate" value="2017/03/10 10:00" />
+		<property name="initDate" value="2017/05/10 10:00" />
 		<property name="status" value="SENT" />
-		<property name="coupon" ref="coupon1" />
+		<property name="totalPrice" value="238.00" />
+		<!-- <property name="finishDate" value="" /> -->
+		<!-- <property name="coupon" ref="" /> -->
 		<property name="products">
 			<list>
 				<ref bean="product6" />
@@ -1075,9 +1013,11 @@
 	</bean>
 
 	<bean id="order3" class="domain.OrderDomain">
-		<property name="initDate" value="2017/02/14 22:00" />
-		<property name="status" value="RECEIVED" />
-		<property name="coupon" ref="coupon2" />
+		<property name="initDate" value="2017/05/21 10:00" />
+		<property name="status" value="INPROCESS" />
+		<property name="totalPrice" value="379.32" />
+		<!-- <property name="finishDate" value="" /> -->
+		<!-- <property name="coupon" ref="" /> -->
 		<property name="products">
 			<list>
 				<ref bean="product8" />
@@ -1282,9 +1222,9 @@
 		<property name="private_group" value="true" />
 		<property name="name" value="Sh1" />
 		<property name="description" value="Sh1 descreiption" />
-		<property name="lastOrderDate" value="2017/04/25" />
-		<property name="freePlaces" value="4" />
-		<property name="frecuentedSites" value="https://www.pccomponentes.com/, http://es.gearbest.com/" />
+		<!-- <property name="lastOrderDate" value="2017/04/25" /> es null porque no tiene ningun order en curso-->
+		<property name="freePlaces" value="2" />
+		<property name="site" value="PcComponentes" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category13" />
 		<property name="creator" ref="user1" />
@@ -1323,7 +1263,7 @@
 				<ref bean="engagement1" />
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
@@ -1333,12 +1273,12 @@
 		<property name="private_group" value="true" />
 		<property name="name" value="Sh2" />
 		<property name="description" value="Sh2 descreiption" />
-		<property name="lastOrderDate" value="2017/03/10" />
-		<property name="freePlaces" value="4" />
-		<property name="frecuentedSites" value="http://es.shein.com/,http://shop.nordstrom.com/,https://www.lolashoetique.com/" />
+		<property name="lastOrderDate" value="2017/05/10" />
+		<property name="freePlaces" value="0" />
+		<property name="site" value="houseofcb" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category3" />
-		<property name="creator" ref="user1" />
+		<property name="creator" ref="user3" />
 		<property name="users">
 			<list>
 			
@@ -1367,7 +1307,7 @@
 				<ref bean="engagement2" />
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
@@ -1377,9 +1317,9 @@
 		<property name="private_group" value="false" />
 		<property name="name" value="Sh3" />
 		<property name="description" value="Sh3 descreiption" />
-		<!-- <property name="lastOrderDate" value="" /> -->
-		<property name="freePlaces" value="15" />
-		<property name="frecuentedSites" value="" />
+		<property name="lastOrderDate" value="2017/05/21" />
+		<property name="freePlaces" value="0" />
+		<property name="site" value="homedepot" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category7" />
 		<property name="creator" ref="user1" />
@@ -1410,7 +1350,7 @@
 				<ref bean="engagement3" />
 			</list>
 		</property>
-		<property name="toPuntuate">
+		<property name="punctuations">
 			<list>
 			</list>
 		</property>
@@ -1451,6 +1391,14 @@
 		</property>
 
 	</bean>
+	
+	<!-- CONFIGURATION -->
+	
+	<bean id="conf" class="domain.Configuration">
+		<property name="fee" value="2.0" />
+	
+	</bean>
+	
 
 
 

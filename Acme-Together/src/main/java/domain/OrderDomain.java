@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -68,6 +69,7 @@ public class OrderDomain extends DomainEntity {
 	}
 
 	@Min(0)
+	@Digits(integer = 32, fraction = 2)
 	public double getTotalPrice() {
 		return this.totalPrice;
 	}
