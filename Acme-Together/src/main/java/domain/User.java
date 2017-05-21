@@ -127,7 +127,7 @@ public class User extends Actor {
 	private Collection<Punctuation>		punctuations;
 
 
-	@OneToMany(mappedBy = "userPunctuation")
+	@OneToMany(mappedBy = "user")
 	public Collection<Punctuation> getPunctuations() {
 		return this.punctuations;
 	}

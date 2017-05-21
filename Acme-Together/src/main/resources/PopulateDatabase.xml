@@ -156,17 +156,7 @@
 		</property>
 	</bean>
 
-	<bean id="userAccount13" class="security.UserAccount">
-		<property name="username" value="user6" />
-		<property name="password" value="affec3b64cf90492377a8114c86fc093" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="USER" />
-				</bean>
-			</list>
-		</property>
-	</bean>
+	
 
 	<!-- Other domain beans come here -->
 
@@ -666,7 +656,7 @@
 				<ref bean="user3" />
 				<ref bean="user4" />
 				<ref bean="user5" />
-				<ref bean="user6" />
+				
 			</list>
 		</property>
 		<property name="products">
@@ -856,7 +846,7 @@
 				<ref bean="user2" />
 				<ref bean="user3" />
 				<ref bean="user5" />
-				<ref bean="user6" />
+				
 			</list>
 		</property>
 		<property name="products">
@@ -1258,11 +1248,6 @@
 				<ref bean="comment7" />
 			</list>
 		</property>
-		<property name="engagements">
-			<list>
-				<ref bean="engagement1" />
-			</list>
-		</property>
 		<property name="punctuations">
 			<list>
 			</list>
@@ -1302,11 +1287,6 @@
 				<ref bean="comment4" />
 			</list>
 		</property>
-		<property name="engagements">
-			<list>
-				<ref bean="engagement2" />
-			</list>
-		</property>
 		<property name="punctuations">
 			<list>
 			</list>
@@ -1343,11 +1323,6 @@
 
 				<ref bean="comment8" />
 
-			</list>
-		</property>
-		<property name="engagements">
-			<list>
-				<ref bean="engagement3" />
 			</list>
 		</property>
 		<property name="punctuations">

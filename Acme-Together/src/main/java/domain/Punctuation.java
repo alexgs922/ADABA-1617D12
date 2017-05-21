@@ -6,6 +6,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -34,27 +35,29 @@ public class Punctuation extends DomainEntity {
 
 	// Relationships ------------------------------------
 
-	private User	userPunctuation;
-	private User	shoppingGroup;
+	private ShoppingGroup	shoppingGroup;
+	private User			user;
 
 
+	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	public User getUserPunctuation() {
-		return this.userPunctuation;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setUserPunctuation(final User userPunctuation) {
-		this.userPunctuation = userPunctuation;
+	public void setUser(final User user) {
+		this.user = user;
 	}
 
+	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	public User getShoppingGroup() {
+	public ShoppingGroup getShoppingGroup() {
 		return this.shoppingGroup;
 	}
 
-	public void setShoppingGroup(final User shoppingGroup) {
+	public void setShoppingGroup(final ShoppingGroup shoppingGroup) {
 		this.shoppingGroup = shoppingGroup;
 	}
 

@@ -64,10 +64,6 @@
 		<bean class="converters.StringToProductConverter" />
 
 
-		<bean class="converters.PuntuableEntityToStringConverter" />
-		<bean class="converters.StringToPuntuableEntityConverter" />
-
-
 		<bean class="converters.ShoppingGroupToStringConverter" />
 		<bean class="converters.StringToShoppingGroupConverter" />
 
