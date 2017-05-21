@@ -41,7 +41,7 @@
 	
 	<input type="button" name="cancel"
 		value="<spring:message code="product.cancel" />"
-		onclick="javascript: window.location.replace('shoppingGroup/user/display.do');" />
+		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
 	<br />
 
 </form:form>

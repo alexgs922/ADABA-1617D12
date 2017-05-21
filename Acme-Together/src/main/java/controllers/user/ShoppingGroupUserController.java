@@ -3,6 +3,8 @@ package controllers.user;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -126,12 +128,19 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		Product product;
 		ShoppingGroup shoppingGroup;
+		User principal;
 
+		principal = this.userService.findByPrincipal();
 		product = this.productService.create();
 		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
 
-		res = this.createCreateModelAndView(product);
-		res.addObject("shoppingGroup", shoppingGroup);
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createCreateModelAndView(product);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
 
 		return res;
 
@@ -160,7 +169,7 @@ public class ShoppingGroupUserController extends AbstractController {
 				this.productService.saveAndFlush(productRes);
 				shoppingGroup.getProducts().add(productRes);
 				this.shoppingGroupService.save(shoppingGroup);
-				res = new ModelAndView("redirect: display.do");
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
 			} catch (final Throwable th) {
 				res = new ModelAndView("forbiddenOperation");
 			}
@@ -193,7 +202,7 @@ public class ShoppingGroupUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
+	public ModelAndView editProduct(@ModelAttribute("product") @Valid final Product product, final BindingResult binding) {
 		ModelAndView res;
 
 		final Product productRes;
@@ -202,12 +211,17 @@ public class ShoppingGroupUserController extends AbstractController {
 		principal = this.userService.findByPrincipal();
 		product.setUserProduct(principal);
 
-		productRes = this.productService.reconstruct(product, binding);
-
 		if (binding.hasErrors())
-			res = this.createEditModelAndView(product);
+			if (binding.getGlobalError() != null)
+
+				res = this.createEditModelAndView(product, binding.getGlobalError().getCode());
+
+			else
+
+				res = this.createEditModelAndView(product);
 		else
 			try {
+				productRes = this.productService.reconstruct(product, binding);
 				this.productService.saveAndFlush(productRes);
 				res = new ModelAndView("redirect: display.do");
 			} catch (final Throwable th) {

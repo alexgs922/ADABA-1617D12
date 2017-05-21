@@ -45,43 +45,7 @@
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
 
-	<spring:message code="sh.frecuentedSites" var="shFrecuentedSites" />
-	<display:column title="${shFrecuentedSites}">
-
-		<spring:message code="sh.puntuation" var="shPuntuation" />
-		<display:column property="puntuation" title="${shPuntuation}"
-			sortable="true" />
-
-		<jstl:choose>
-
-			<jstl:when test="${empty(sh.frecuentedSites)}">
-				<spring:message code="sh.emptyFc" var="shEmptyFs" />
-				<jstl:out value="${shEmptyFs}"></jstl:out>
-
-			</jstl:when>
-
-			<jstl:when test="${fn:contains(sh.frecuentedSites, ',')}">
-				<jstl:set var="attachparts"
-					value="${fn:split(sh.frecuentedSites, ',')}" />
-
-
-				<jstl:forEach var="i" begin="0" end="${fn:length(attachparts)}">
-					<a href="${attachparts[i]}"> <jstl:out
-							value="${attachparts[i]}"></jstl:out></a>
-						&nbsp; &nbsp;
-			</jstl:forEach>
-
-			</jstl:when>
-
-			<jstl:otherwise>
-				<a href="${sh.frecuentedSites}"> <jstl:out
-						value="${sh.frecuentedSites}  "></jstl:out></a>
-			</jstl:otherwise>
-
-		</jstl:choose>
-
-	</display:column>
-
+	
 </display:table>
 
 <spring:message code="sh.category" var="shCategory" />
@@ -151,8 +115,29 @@
 	<spring:message code="product.price" var="productPrice" />
 	<display:column property="price" title="${productPrice}" sortable="false" />
 	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:if test="${p.userProduct.id == principal.id}">
+				<button
+					onclick="location.href='shoppingGroup/user/edit.do?productId=${p.id}'">
+					<spring:message code="product.edit" />
+				</button>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
+	
+	
 	
 </display:table>
+
+<security:authorize access="hasRole('USER')">
+	<button
+		onclick="location.href='shoppingGroup/user/addProduct.do?shoppingGroupId=${sh.id}'">
+		<spring:message code="shoppingGroup.addProduct" />
+	</button>
+
+
+</security:authorize>
 
 
 <spring:message code="sh.cooments" var="shComments" />

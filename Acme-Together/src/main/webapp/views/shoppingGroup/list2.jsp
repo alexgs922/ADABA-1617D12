@@ -45,42 +45,8 @@
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
 
-	<spring:message code="sh.frecuentedSites" var="shFrecuentedSites" />
-	<display:column title="${shFrecuentedSites}">
-
-		<spring:message code="sh.puntuation" var="shPuntuation" />
-		<display:column property="puntuation" title="${shPuntuation}"
-			sortable="true" />
-
-		<jstl:choose>
-
-			<jstl:when test="${empty(sh.frecuentedSites)}">
-				<spring:message code="sh.emptyFc" var="shEmptyFs" />
-				<jstl:out value="${shEmptyFs}"></jstl:out>
-
-			</jstl:when>
-
-			<jstl:when test="${fn:contains(sh.frecuentedSites, ',')}">
-				<jstl:set var="attachparts"
-					value="${fn:split(sh.frecuentedSites, ',')}" />
 
 
-				<jstl:forEach var="i" begin="0" end="${fn:length(attachparts)}">
-					<a href="${attachparts[i]}"> <jstl:out
-							value="${attachparts[i]}"></jstl:out></a>
-						&nbsp; &nbsp;
-			</jstl:forEach>
-
-			</jstl:when>
-
-			<jstl:otherwise>
-				<a href="${sh.frecuentedSites}"> <jstl:out
-						value="${sh.frecuentedSites}  "></jstl:out></a>
-			</jstl:otherwise>
-
-		</jstl:choose>
-
-	</display:column>
 
 	<display:column>
 			<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}"> <spring:message
