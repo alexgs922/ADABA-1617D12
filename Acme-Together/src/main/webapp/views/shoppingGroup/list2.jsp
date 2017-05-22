@@ -57,8 +57,24 @@
 		</a>
 
 	</display:column>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/edit.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.edit" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.noteditableInList"/>
+			</jstl:when>
+			</jstl:choose>
 
-	<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
+		</display:column>
+	</security:authorize>
+
+	<%-- <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${row.creator.id == principal.id }">
@@ -70,7 +86,7 @@
 			</jstl:if>
 
 		</display:column>
-	</security:authorize>
+	</security:authorize> --%>
 
 
 </display:table>

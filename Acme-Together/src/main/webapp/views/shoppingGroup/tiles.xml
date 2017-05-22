@@ -36,6 +36,11 @@
 		<put-attribute name="body" value="/views/shoppingGroup/edit.jsp"/>
 	</definition>
 	
+	<definition name="errorOperation" extends="master.page">	
+		<put-attribute name="title" value="Forbidden Operation" />
+		<put-attribute name="body" value="/views/shoppingGroup/forbiddenOperation.jsp"/>
+	</definition>
+	
 	
 	
 </tiles-definitions>

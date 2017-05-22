@@ -104,6 +104,15 @@ public class ShoppingGroupService {
 		return shoppingGroups;
 	}
 
+	public Collection<ShoppingGroup> ShoppingGroupsToWichBelongsAndNotCreatedBy(final User u) {
+		Collection<ShoppingGroup> shoppingGroups;
+
+		shoppingGroups = this.shoppingGroupRepository.ShoppingGroupsToWichBelongsAndNotCreatedBy(u.getId());
+
+		return shoppingGroups;
+
+	}
+
 
 	@Autowired
 	private Validator	validator;

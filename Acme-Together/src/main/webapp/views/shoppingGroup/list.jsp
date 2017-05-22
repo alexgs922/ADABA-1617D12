@@ -19,38 +19,139 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<!-- Listing grid -->
+<jstl:if test="${not empty myShoppingGroups}">
+<spring:message code="sh.MySh" var="mySh"/>
+<h2><jstl:out value="${mySh}"/></h2>
+<br>
+<display:table pagesize="5" class="displaytag" name="myShoppingGroups"
+	requestURI="${requestURI}" id="sh">
 
-<display:table pagesize="5" class="displaytag" name="shoppingGroups"
+	<jstl:if test="${sh.private_group eq true}">
+		<spring:message code="sh.privateGroup" var="shPrivate" />
+		<display:column title="${shPrivate}" sortable="true">
+			<spring:message code="sh.privateGroupTrue" var="shPrivateTrue" />
+			<jstl:out value="${shPrivateTrue}"></jstl:out>
+		</display:column>
+
+	</jstl:if>
+
+	<jstl:if test="${sh.private_group eq false}">
+		<spring:message code="sh.privateGroup" var="shPrivate" />
+		<display:column title="${shPrivate}" sortable="true">
+			<spring:message code="sh.privateGroupFalse" var="shPrivateFalse" />
+			<jstl:out value="${shPrivateFalse}"></jstl:out>
+		</display:column>
+
+	</jstl:if>
+
+
+	<spring:message code="sh.name" var="shName" />
+	<display:column property="name" title="${shName}" sortable="false" />
+
+	<spring:message code="sh.description" var="shDescription" />
+	<display:column property="description" title="${shDescription}"
+		sortable="false" />
+
+	<spring:message code="sh.freePlaces" var="shFreePlaces" />
+	<display:column property="freePlaces" title="${shFreePlaces}"
+		sortable="true" />
+
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}" sortable="false" />
+
+
+
+
+	<display:column>
+		<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
+			<spring:message code="sh.display" />
+		</a>
+
+	</display:column>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate == null}">
+				<a href="shoppingGroup/user/edit.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.edit" />
+				</a>
+			</jstl:when>
+			<jstl:otherwise>
+				<spring:message code="sh.noteditableInList"/>
+			</jstl:otherwise>
+			</jstl:choose>
+
+		</display:column>
+	</security:authorize>
+
+
+</display:table>
+
+</jstl:if>
+
+<br>
+
+<jstl:if test="${ not empty shoppingGroupsBelongs}">
+<spring:message code="sh.ShIBelong" var="shIBelong"/>
+<h2><jstl:out value="${shIBelong}"/></h2>
+<br>
+<display:table pagesize="5" class="displaytag" name="shoppingGroupsBelongs"
 	requestURI="${requestURI}" id="row">
-	
-	<!-- Attributes -->
+
+	<jstl:if test="${row.private_group eq true}">
+		<spring:message code="sh.privateGroup" var="shPrivate" />
+		<display:column title="${shPrivate}" sortable="true">
+			<spring:message code="sh.privateGroupTrue" var="shPrivateTrue" />
+			<jstl:out value="${shPrivateTrue}"></jstl:out>
+		</display:column>
+
+	</jstl:if>
+
+	<jstl:if test="${row.private_group eq false}">
+		<spring:message code="sh.privateGroup" var="shPrivate" />
+		<display:column title="${shPrivate}" sortable="true">
+			<spring:message code="sh.privateGroupFalse" var="shPrivateFalse" />
+			<jstl:out value="${shPrivateFalse}"></jstl:out>
+		</display:column>
+
+	</jstl:if>
 
 
-	<spring:message code="shoppingGroup.name" var="shoppingGroupName" />
-	<display:column property="name" title="${shoppingGroupName}" sortable="true" />
-	
-	<spring:message code="shoppingGroup.description" var="shoppingGroupDescription" />
-	<display:column property="description" title="${shoppingGroupDescription}" sortable="false" />
-	
-	<spring:message code="shoppingGroup.puntuation" var="shoppingGroupPuntuation" />
-	<display:column property="puntuation" title="${shoppingGroupPuntuation}" sortable="true" />
-	
-	<spring:message code="shoppingGroup.private" var="shoppingGroupPrivate" />
-	<display:column property="private_group" title="${shoppingGroupPrivate}" sortable="true" />
-	
-	<spring:message code="shoppingGroup.lastOrderDate" var="shoppingGroupLastOrderDate" />
-	<display:column property="lastOrderDate" title="${shoppingGroupLastOrderDate}" sortable="true" />
-	
-	<spring:message code="shoppingGroup.freePlaces" var="shoppingGroupFreePlaces" />
-	<display:column property="freePlaces" title="${shoppingGroupFreePlaces}" sortable="true" />
-	
-	
+	<spring:message code="sh.name" var="shName" />
+	<display:column property="name" title="${shName}" sortable="false" />
 
+	<spring:message code="sh.description" var="shDescription" />
+	<display:column property="description" title="${shDescription}"
+		sortable="false" />
 
-</display:table>	
+	<spring:message code="sh.freePlaces" var="shFreePlaces" />
+	<display:column property="freePlaces" title="${shFreePlaces}"
+		sortable="true" />
+
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}" sortable="false" />
+
+	<display:column>
+		<a href="shoppingGroup/user/display.do?shoppingGroupId=${row.id}">
+			<spring:message code="sh.display" />
+		</a>
+
+	</display:column>
 	
+</display:table>
 
+</jstl:if>
+<br>
+
+<security:authorize access="hasRole('USER')">
+
+	<button
+		onclick="location.href='shoppingGroup/user/create.do?'">
+		<spring:message code="shoppingGroup.create" />
+	</button>
+
+</security:authorize>
 
 
 
