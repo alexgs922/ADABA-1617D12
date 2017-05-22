@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -8,11 +9,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ShoppingGroupRepository;
 import domain.Category;
+import domain.Comment;
+import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.ShoppingGroupForm;
 
 @Service
 @Transactional
@@ -59,6 +66,9 @@ public class ShoppingGroupService {
 
 	public ShoppingGroup save(final ShoppingGroup s) {
 		Assert.notNull(s);
+		final User principal = this.userService.findByPrincipal();
+		principal.getMyShoppingGroups().add(s);
+		principal.getShoppingGroup().add(s);
 		return this.shoppingGroupRepository.save(s);
 
 	}
@@ -93,4 +103,45 @@ public class ShoppingGroupService {
 
 		return shoppingGroups;
 	}
+
+
+	@Autowired
+	private Validator	validator;
+
+
+	public ShoppingGroup reconstruct(final ShoppingGroupForm form, final BindingResult bindingResult) {
+		ShoppingGroup result;
+		Collection<Comment> cs;
+		User principal;
+		Collection<Product> products;
+		Collection<Punctuation> punctuations;
+		Collection<User> users;
+
+		result = new ShoppingGroup();
+		cs = new ArrayList<Comment>();
+		principal = this.userService.findByPrincipal();
+		products = new ArrayList<Product>();
+		punctuations = new ArrayList<Punctuation>();
+		users = new ArrayList<User>();
+		users.add(principal);
+
+		result.setCategory(form.getCategory());
+		result.setComments(cs);
+		result.setCreator(principal);
+		result.setDescription(form.getDescription());
+		result.setFreePlaces(form.getFreePlaces());
+		result.setLastOrderDate(null);
+		result.setName(form.getName());
+		result.setPrivate_group(form.isPrivate_group());
+		result.setProducts(products);
+		result.setPunctuations(punctuations);
+		result.setPuntuation(0);
+		result.setSite(form.getSite());
+		result.setUsers(users);
+
+		this.validator.validate(result, bindingResult);
+
+		return result;
+	}
+
 }

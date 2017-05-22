@@ -3,6 +3,8 @@ package controllers.user;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -13,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CategoryService;
 import services.ProductService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
+import domain.Category;
 import domain.Product;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.ShoppingGroupForm;
 
 @Controller
 @RequestMapping("/shoppingGroup/user")
@@ -42,6 +47,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private ProductService			productService;
+
+	@Autowired
+	private CategoryService			categoryService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -118,6 +126,51 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	//Create a new Shopping Group  ------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+		final ShoppingGroupForm shoppingGroupForm;
+		Collection<Category> cats;
+
+		shoppingGroupForm = new ShoppingGroupForm();
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit");
+		result.addObject("shoppingGroup", shoppingGroupForm);
+		result.addObject("categories", cats);
+		result.addObject("requestURI", "shoppingGroup/user/create.do");
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@ModelAttribute("shoppingGroup") @Valid final ShoppingGroupForm shoppingGroupForm, final BindingResult bindingResult) {
+
+		ModelAndView result;
+		ShoppingGroup shoppingGroup;
+
+		if (bindingResult.hasErrors()) {
+
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView(shoppingGroupForm, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(shoppingGroupForm);
+
+		} else
+			try {
+				shoppingGroup = this.shoppingGroupService.reconstruct(shoppingGroupForm, bindingResult);
+				this.shoppingGroupService.save(shoppingGroup);
+				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(shoppingGroupForm, "sh.commit.error");
+			}
+
+		return result;
+
+	}
 	// Add product to shopping group ------------------------------------------------------
 
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
@@ -290,6 +343,29 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		result = new ModelAndView("product/editProduct");
 		result.addObject("product", product);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final ShoppingGroupForm form) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(form, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final ShoppingGroupForm form, final String message) {
+		ModelAndView result;
+
+		Collection<Category> cats;
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit");
+		result.addObject("shoppingGroup", form);
+		result.addObject("categories", cats);
+		result.addObject("requestURI", "shoppingGroup/user/create.do");
 		result.addObject("message", message);
 
 		return result;

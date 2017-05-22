@@ -621,14 +621,14 @@
 		<property name="shoppingGroup">
 			<list>
 				<ref bean="shoppingGroup1" />
-				<ref bean="shoppingGroup3" />
+				
 			</list>
 		</property>
 		
 		<property name="myShoppingGroups">
 			<list>
 				<ref bean="shoppingGroup1" />
-				<ref bean="shoppingGroup3" />
+				
 			</list>
 		</property>
 
@@ -826,6 +826,8 @@
 		
 		<property name="myShoppingGroups">
 			<list>
+				
+				<ref bean="shoppingGroup3" />
 				
 			</list>
 		</property>
@@ -1180,7 +1182,7 @@
 	</bean>
 
 	<bean id="product7" class="domain.Product">
-		<property name="name" value="Producto6" />
+		<property name="name" value="Producto7" />
 		<property name="url" value="http://www.houseofcb.com/paris-mocha-suede-pointy-toe-heels-4-es.html" />
 		<property name="referenceNumber" value="PARIS" />
 		<property name="price" value="158.00" />
@@ -1313,7 +1315,7 @@
 		<property name="site" value="homedepot" />
 		<property name="puntuation" value="0" />
 		<property name="category" ref="category7" />
-		<property name="creator" ref="user1" />
+		<property name="creator" ref="user4" />
 		<property name="users">
 			<list>
 

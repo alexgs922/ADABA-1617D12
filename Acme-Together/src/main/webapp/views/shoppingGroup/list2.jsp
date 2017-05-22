@@ -45,16 +45,19 @@
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
 
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}" sortable="false" />
+
 
 
 
 	<display:column>
-			<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}"> <spring:message
-					code="sh.display" />
-			</a>
+		<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
+			<spring:message code="sh.display" />
+		</a>
 
-		</display:column>
-		
+	</display:column>
+
 	<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
 	<security:authorize access="hasRole('USER')">
 		<display:column>
@@ -68,14 +71,21 @@
 
 		</display:column>
 	</security:authorize>
-	
-
-
-
-
-
-
 
 
 </display:table>
+
+<br>
+
+<security:authorize access="hasRole('USER')">
+
+	<button
+		onclick="location.href='shoppingGroup/user/create.do?'">
+		<spring:message code="shoppingGroup.create" />
+	</button>
+
+</security:authorize>
+
+
+
 
