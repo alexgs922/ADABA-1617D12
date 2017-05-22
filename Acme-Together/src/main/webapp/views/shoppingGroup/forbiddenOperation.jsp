@@ -16,6 +16,6 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code = "${errorOperation}" /></p> 
+<p><font color="red"><spring:message code = "${errorOperation}" /></font></p>
 
-<font color="red"></font><p><a href="<spring:url value='${returnUrl}' />"><spring:message code = "back" /></a><p></p>
+<a href="<spring:url value='${returnUrl}' />"><spring:message code = "back" /></a>

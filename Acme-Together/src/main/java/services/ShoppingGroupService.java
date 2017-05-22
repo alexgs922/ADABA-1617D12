@@ -20,6 +20,7 @@ import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
+import forms.ShoppingGroupForm2;
 
 @Service
 @Transactional
@@ -66,9 +67,13 @@ public class ShoppingGroupService {
 
 	public ShoppingGroup save(final ShoppingGroup s) {
 		Assert.notNull(s);
-		final User principal = this.userService.findByPrincipal();
-		principal.getMyShoppingGroups().add(s);
-		principal.getShoppingGroup().add(s);
+
+		if (s.getId() == 0) {
+			final User principal = this.userService.findByPrincipal();
+			principal.getMyShoppingGroups().add(s);
+			principal.getShoppingGroup().add(s);
+		}
+
 		return this.shoppingGroupRepository.save(s);
 
 	}
@@ -147,6 +152,28 @@ public class ShoppingGroupService {
 		result.setPuntuation(0);
 		result.setSite(form.getSite());
 		result.setUsers(users);
+
+		this.validator.validate(result, bindingResult);
+
+		return result;
+	}
+
+	public ShoppingGroup reconstruct2(final ShoppingGroupForm2 form, final int shoppingGroupId, final BindingResult bindingResult) {
+		ShoppingGroup result;
+
+		result = this.shoppingGroupRepository.findOne(shoppingGroupId);
+
+		Assert.isTrue(result.getLastOrderDate() == null);
+		final User principal = this.userService.findByPrincipal();
+		Assert.isTrue(principal.getId() == result.getCreator().getId());
+
+		result.setCategory(form.getCategory());
+		result.setDescription(form.getDescription());
+		result.setFreePlaces(form.getFreePlaces());
+		result.setLastOrderDate(null);
+		result.setName(form.getName());
+		result.setPrivate_group(form.isPrivate_group());
+		result.setSite(form.getSite());
 
 		this.validator.validate(result, bindingResult);
 
