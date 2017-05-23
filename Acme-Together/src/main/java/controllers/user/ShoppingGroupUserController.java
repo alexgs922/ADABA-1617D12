@@ -460,6 +460,23 @@ public class ShoppingGroupUserController extends AbstractController {
 		final ModelAndView result;
 
 		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		final User principal = this.userService.findByPrincipal();
+
+		try {
+
+			Assert.isTrue(sh.getLastOrderDate() == null);
+			Assert.isTrue(sh.isPrivate_group() == false);
+			Assert.isTrue(sh.getCreator().getId() != principal.getId());
+			Assert.isTrue(!sh.getUsers().contains(principal));
+
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.join.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
 
 		final JoinToForm form = new JoinToForm();
 
@@ -471,7 +488,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 
 	}
-
 	@RequestMapping(value = "/join", method = RequestMethod.POST, params = "save")
 	public ModelAndView joinToGroup(final JoinToForm joinToForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
 		ModelAndView result;

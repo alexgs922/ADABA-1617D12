@@ -209,6 +209,11 @@ public class ShoppingGroupService {
 
 		final User principal = this.userService.findByPrincipal();
 
+		Assert.isTrue(sh.getLastOrderDate() == null);
+		Assert.isTrue(sh.isPrivate_group() == false);
+		Assert.isTrue(sh.getCreator().getId() != principal.getId());
+		Assert.isTrue(!sh.getUsers().contains(principal));
+
 		principal.getShoppingGroup().add(sh);
 		sh.getUsers().add(principal);
 
