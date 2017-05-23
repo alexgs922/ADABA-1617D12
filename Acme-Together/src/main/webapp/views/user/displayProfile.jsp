@@ -119,6 +119,10 @@
 </security:authorize>
 
 
+<spring:message code="user.ShoppingGroups" var="userShoppingInfo" />
+<h2>
+	<jstl:out value="${userShoppingInfo}" />
+</h2>
 <display:table pagesize="5" class="displaytag" name="shoppingGroups" id="shoppingGroup">
 
     <spring:message code="shoppingGroup.name" var="shoppingGroupName" />

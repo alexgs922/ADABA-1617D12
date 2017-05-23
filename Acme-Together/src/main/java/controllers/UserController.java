@@ -148,7 +148,7 @@ public class UserController extends AbstractController {
 		user = this.userService.findOne(userId);
 		principal = this.userService.findByPrincipal();
 
-		final Collection<ShoppingGroup> sg = user.getMyShoppingGroups();
+		final Collection<ShoppingGroup> sg = this.userService.findAllShoppingGroupsNoPrivate(userId);
 
 		boolean toCreditCard = false;
 
