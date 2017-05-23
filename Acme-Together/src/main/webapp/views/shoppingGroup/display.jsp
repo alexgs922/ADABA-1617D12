@@ -126,11 +126,13 @@
 		</display:column>
 	</security:authorize>
 	
+	<spring:message code = "product.confirm.delete" var = "productConfirmDelete" />
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
 				<button
-					onclick="location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
+					onclick="confirm('${productConfirmDelete }')
+					location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
 					<spring:message code="product.delete" />
 				</button>
 			</jstl:if>

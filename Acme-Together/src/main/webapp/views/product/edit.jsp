@@ -21,7 +21,7 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="shoppingGroup/user/editProduct.do"
+<form:form action="shoppingGroup/user/editProduct.do?shoppingGroupId=${shoppingGroup.id }"
 	modelAttribute="product">
 	
 	

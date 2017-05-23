@@ -201,14 +201,17 @@ public class ShoppingGroupUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
+	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
 		ModelAndView res;
 
 		final Product productRes;
 		User principal;
+		ShoppingGroup shoppingGroup;
 
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
 		principal = this.userService.findByPrincipal();
 		product.setUserProduct(principal);
+		product.setShoppingGroupProducts(shoppingGroup);
 
 		productRes = this.productService.reconstruct(product, binding);
 
@@ -217,9 +220,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 				res = this.createEditModelAndView(product, binding.getGlobalError().getCode());
 
-			else
+			else {
 
 				res = this.createEditModelAndView(product);
+				res.addObject("shoppingGroup", product.getShoppingGroupProducts());
+			}
 		else
 			try {
 

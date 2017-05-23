@@ -108,10 +108,9 @@ public class ProductService {
 	public Product reconstruct(final Product product, final BindingResult binding) {
 		Product result;
 
-		if (product.getId() == 0) {
+		if (product.getId() == 0)
 			result = product;
-			this.validator.validate(result, binding);
-		} else {
+		else {
 			result = this.productRepository.findOne(product.getId());
 
 			result.setName(product.getName());
@@ -119,8 +118,9 @@ public class ProductService {
 			result.setReferenceNumber(product.getReferenceNumber());
 			result.setPrice(product.getPrice());
 
-			this.validator.validate(result, binding);
 		}
+
+		this.validator.validate(result, binding);
 
 		return result;
 	}
