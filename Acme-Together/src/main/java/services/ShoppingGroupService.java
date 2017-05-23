@@ -36,6 +36,15 @@ public class ShoppingGroupService {
 	@Autowired
 	private UserService				userService;
 
+	@Autowired
+	private PrivateMessageService	privateMessageService;
+
+	@Autowired
+	private ProductService			productService;
+
+	@Autowired
+	private CommentService			commentService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -80,9 +89,25 @@ public class ShoppingGroupService {
 
 	public void delete(final ShoppingGroup s) {
 		Assert.notNull(s);
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(s.getLastOrderDate() == null);
+		Assert.isTrue(s.getCreator().getId() == principal.getId());
+
+		this.privateMessageService.deleteGroupMessage(s, principal);
+
+		for (final Product p : s.getProducts()) {
+			this.productService.delete(p);
+			this.productService.flush();
+		}
+
+		for (final Comment c : s.getComments()) {
+			this.commentService.delete(c);
+			this.commentService.flush();
+		}
+
 		this.shoppingGroupRepository.delete(s);
 	}
-
 	//Other business methods --------------------------------------
 
 	public void flush() {

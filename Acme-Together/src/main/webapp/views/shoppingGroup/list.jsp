@@ -84,6 +84,22 @@
 
 		</display:column>
 	</security:authorize>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/delete.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.delete" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.notdeletableInList"/>
+			</jstl:when>
+			</jstl:choose>
+
+		</display:column>
+	</security:authorize>
 
 
 </display:table>

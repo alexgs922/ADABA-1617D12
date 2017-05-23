@@ -263,6 +263,56 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 
 	}
+
+	//Delete a shoppingGroup ------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		Assert.notNull(sh);
+
+		try {
+
+			final User principal = this.userService.findByPrincipal();
+			Assert.isTrue(principal.getId() == sh.getCreator().getId());
+
+		} catch (final Exception e) {
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.mine");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+		}
+
+		try {
+
+			Assert.isNull(sh.getLastOrderDate());
+
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.noteditableInList");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		try {
+			this.shoppingGroupService.delete(sh);
+			result = new ModelAndView("redirect:joinedShoppingGroups.do");
+
+		} catch (final Throwable th) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.commit.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+
+		}
+
+		return result;
+	}
+
 	// Add product to shopping group ------------------------------------------------------
 
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
