@@ -52,6 +52,23 @@
 	
 </display:table>
 
+<br>
+
+<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
+	<security:authorize access="hasRole('USER')">
+	
+			<jstl:if test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)}">
+				<button
+					onclick="if(confirm('${confirmJoin}'))
+						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
+					<spring:message code="shoppingGroup.join" />
+				</button>
+			</jstl:if>
+
+	</security:authorize> 
+
+<br>
+
 <spring:message code="sh.category" var="shCategory" />
 <h2><jstl:out value="${shCategory}"></jstl:out></h2>
 <display:table pagesize="5" class="displaytag" name="category" requestURI="${requestURI}" id="cat">

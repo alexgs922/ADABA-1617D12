@@ -205,4 +205,17 @@ public class ShoppingGroupService {
 		return result;
 	}
 
+	public void jointToAShoppingGroup(final ShoppingGroup sh) {
+
+		final User principal = this.userService.findByPrincipal();
+
+		principal.getShoppingGroup().add(sh);
+		sh.getUsers().add(principal);
+
+		this.shoppingGroupRepository.save(sh);
+		this.shoppingGroupRepository.flush();
+		this.userService.save(principal);
+
+	}
+
 }

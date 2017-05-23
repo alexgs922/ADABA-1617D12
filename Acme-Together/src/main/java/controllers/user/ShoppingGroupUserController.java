@@ -24,6 +24,7 @@ import domain.Category;
 import domain.Product;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.JoinToForm;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupForm2;
 
@@ -452,8 +453,56 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//  Ancillary methods -------------------------------------------------------
+	//Join to a group  ----------------------------------------------------------------------
 
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	public ModelAndView joinToGroup(@RequestParam final int shoppingGroupId) {
+		final ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		final JoinToForm form = new JoinToForm();
+
+		result = new ModelAndView("joinToShFormulario");
+		result.addObject("joinToForm", form);
+		result.addObject("shToJoinName", sh.getName());
+		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/join", method = RequestMethod.POST, params = "save")
+	public ModelAndView joinToGroup(final JoinToForm joinToForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+		ShoppingGroup sh;
+
+		sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		if (bindingResult.hasErrors()) {
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId);
+		} else
+			try {
+
+				Assert.isTrue(joinToForm.isTermsOfUse() == true);
+				this.shoppingGroupService.jointToAShoppingGroup(sh);
+				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+
+			} catch (final IllegalArgumentException iae) {
+
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.jointTo.must.accept.conditions");
+
+			} catch (final Throwable th) {
+
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.commit.error");
+
+			}
+		return result;
+	}
+	//  Ancillary methods -------------------------------------------------------
 	protected ModelAndView createCreateModelAndView(final Product product) {
 		ModelAndView res;
 
@@ -530,6 +579,28 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("shoppingGroup", form);
 		result.addObject("categories", cats);
 		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final JoinToForm form, final int shoppingGroupId) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(form, shoppingGroupId, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final JoinToForm form, final int shoppingGroupId, final String message) {
+		ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		result = new ModelAndView("joinToShFormulario");
+		result.addObject("joinToForm", form);
+		result.addObject("shToJoinName", sh.getName());
+		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
 		result.addObject("message", message);
 
 		return result;
