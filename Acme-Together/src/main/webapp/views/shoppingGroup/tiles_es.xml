@@ -31,6 +31,21 @@
 		<put-attribute name="body" value="/views/shoppingGroup/display.jsp"/>
 	</definition>
 	
+	<definition name="shoppingGroup/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar Grupo de Compra" />
+		<put-attribute name="body" value="/views/shoppingGroup/edit.jsp"/>
+	</definition>
+	
+	<definition name="shoppingGroup/edit2" extends="master.page">	
+		<put-attribute name="title" value="Editar Grupo de Compra" />
+		<put-attribute name="body" value="/views/shoppingGroup/edit2.jsp"/>
+	</definition>
+	
+	<definition name="errorOperation" extends="master.page">	
+		<put-attribute name="title" value="Operación no permitida" />
+		<put-attribute name="body" value="/views/shoppingGroup/forbiddenOperation.jsp"/>
+	</definition>
+	
 
 	
 </tiles-definitions>

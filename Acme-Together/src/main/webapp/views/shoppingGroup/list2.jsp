@@ -45,17 +45,52 @@
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
 
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}" sortable="false" />
+
 
 
 
 	<display:column>
-			<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}"> <spring:message
-					code="sh.display" />
-			</a>
+		<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
+			<spring:message code="sh.display" />
+		</a>
+
+	</display:column>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/edit.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.edit" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.noteditableInList"/>
+			</jstl:when>
+			</jstl:choose>
 
 		</display:column>
-		
-	<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
+	</security:authorize>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/delete.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.delete" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.notdeletableInList"/>
+			</jstl:when>
+			</jstl:choose>
+
+		</display:column>
+	</security:authorize>
+
+	<%-- <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${row.creator.id == principal.id }">
@@ -67,15 +102,22 @@
 			</jstl:if>
 
 		</display:column>
-	</security:authorize>
-	
-
-
-
-
-
-
+	</security:authorize> --%>
 
 
 </display:table>
+
+<br>
+
+<security:authorize access="hasRole('USER')">
+
+	<button
+		onclick="location.href='shoppingGroup/user/create.do?'">
+		<spring:message code="shoppingGroup.create" />
+	</button>
+
+</security:authorize>
+
+
+
 

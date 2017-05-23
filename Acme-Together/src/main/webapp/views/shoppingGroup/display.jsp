@@ -44,6 +44,10 @@
 	<spring:message code="sh.freePlaces" var="shFreePlaces" />
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
+		
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}"
+		sortable="false" />
 
 	
 </display:table>
