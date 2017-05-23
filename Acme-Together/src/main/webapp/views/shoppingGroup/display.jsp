@@ -12,8 +12,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <spring:message code="sh.Info" var="shInfo" />
-<h2><jstl:out value="${shInfo}"></jstl:out></h2>
-<display:table pagesize="5" class="displaytag" name="shoppingGroup" requestURI="${requestURI}" id="sh">
+<h2>
+	<jstl:out value="${shInfo}"></jstl:out>
+</h2>
+<display:table pagesize="5" class="displaytag" name="shoppingGroup"
+	requestURI="${requestURI}" id="sh">
 
 	<jstl:if test="${sh.private_group eq true}">
 		<spring:message code="sh.privateGroup" var="shPrivate" />
@@ -44,47 +47,55 @@
 	<spring:message code="sh.freePlaces" var="shFreePlaces" />
 	<display:column property="freePlaces" title="${shFreePlaces}"
 		sortable="true" />
-		
-	<spring:message code="sh.site" var="shSite" />
-	<display:column property="site" title="${shSite}"
-		sortable="false" />
 
-	
+	<spring:message code="sh.site" var="shSite" />
+	<display:column property="site" title="${shSite}" sortable="false" />
+
+
 </display:table>
 
 <br>
 
 <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
-	<security:authorize access="hasRole('USER')">
-	
-			<jstl:if test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)}">
-				<button
-					onclick="if(confirm('${confirmJoin}'))
-						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
-					<spring:message code="shoppingGroup.join" />
-				</button>
-			</jstl:if>
+<security:authorize access="hasRole('USER')">
 
-	</security:authorize> 
+	<jstl:if
+		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)}">
+		<button
+			onclick="if(confirm('${confirmJoin}'))
+						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
+			<spring:message code="shoppingGroup.join" />
+		</button>
+	</jstl:if>
+
+</security:authorize>
 
 <br>
 
 <spring:message code="sh.category" var="shCategory" />
-<h2><jstl:out value="${shCategory}"></jstl:out></h2>
-<display:table pagesize="5" class="displaytag" name="category" requestURI="${requestURI}" id="cat">
+<h2>
+	<jstl:out value="${shCategory}"></jstl:out>
+</h2>
+<display:table pagesize="5" class="displaytag" name="category"
+	requestURI="${requestURI}" id="cat">
 
 	<spring:message code="category.name" var="categoryName" />
-	<display:column property="name" title="${categoryName}" sortable="false" />
-	
+	<display:column property="name" title="${categoryName}"
+		sortable="false" />
+
 	<spring:message code="category.description" var="categoryDescription" />
-	<display:column property="description" title="${categoryDescription}" sortable="false" />
-			
+	<display:column property="description" title="${categoryDescription}"
+		sortable="false" />
+
 </display:table>
 
 
 <spring:message code="sh.users" var="shUsers" />
-<h2><jstl:out value="${shUsers}"></jstl:out></h2>
-<display:table pagesize="5" class="displaytag" name="users" requestURI="${requestURI}" id="u">
+<h2>
+	<jstl:out value="${shUsers}"></jstl:out>
+</h2>
+<display:table pagesize="5" class="displaytag" name="users"
+	requestURI="${requestURI}" id="u">
 
 
 	<spring:message code="user.picture" var="userPicture" />
@@ -94,48 +105,56 @@
 
 	<spring:message code="user.name" var="userName" />
 	<display:column property="name" title="${userName}" sortable="false" />
-	
+
 	<spring:message code="user.surname" var="userSurname" />
-	<display:column property="surName" title="${userSurname}" sortable="false" />
-	
+	<display:column property="surName" title="${userSurname}"
+		sortable="false" />
+
 	<spring:message code="user.identification" var="userIdentification" />
-	<display:column property="identification" title="${userIdentification}" sortable="false" />
-	
+	<display:column property="identification" title="${userIdentification}"
+		sortable="false" />
+
 	<spring:message code="user.email" var="userEmail" />
 	<display:column property="email" title="${userEmail}" sortable="false" />
-	
+
 	<display:column>
-		<a href="user/profile.do?userId=${u.id}"> <spring:message code="user.profile" />
+		<a href="user/profile.do?userId=${u.id}"> <spring:message
+				code="user.profile" />
 		</a>
 
 	</display:column>
-	
+
 
 </display:table>
 
 
 <spring:message code="sh.products" var="shProducts" />
-<h2><jstl:out value="${shProducts}"></jstl:out></h2>
-<display:table pagesize="5" class="displaytag" name="products" requestURI="${requestURI}" id="p">
+<h2>
+	<jstl:out value="${shProducts}"></jstl:out>
+</h2>
+<display:table pagesize="5" class="displaytag" name="products"
+	requestURI="${requestURI}" id="p">
 
 
 	<spring:message code="product.name" var="productName" />
 	<display:column property="name" title="${productName}" sortable="false" />
-	
-	
+
+
 	<display:column>
 		<spring:message code="product.enlace" var="shEnlace" />
-		<a href="${p.url}"><jstl:out value="${shEnlace}"></jstl:out>
-		</a>
+		<a href="${p.url}"><jstl:out value="${shEnlace}"></jstl:out> </a>
 
 	</display:column>
-	
-	<spring:message code="product.referenceNumber" var="productreferenceNumber" />
-	<display:column property="referenceNumber" title="${productreferenceNumber}" sortable="false" />
-	
+
+	<spring:message code="product.referenceNumber"
+		var="productreferenceNumber" />
+	<display:column property="referenceNumber"
+		title="${productreferenceNumber}" sortable="false" />
+
 	<spring:message code="product.price" var="productPrice" />
-	<display:column property="price" title="${productPrice}" sortable="false" />
-	
+	<display:column property="price" title="${productPrice}"
+		sortable="false" />
+
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id}">
@@ -146,7 +165,7 @@
 			</jstl:if>
 		</display:column>
 	</security:authorize>
-	
+
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
@@ -157,42 +176,54 @@
 			</jstl:if>
 		</display:column>
 	</security:authorize>
-	
-	
-	
+
+
+
 </display:table>
 
 <security:authorize access="hasRole('USER')">
-	<button
-		onclick="location.href='shoppingGroup/user/addProduct.do?shoppingGroupId=${sh.id}'">
-		<spring:message code="shoppingGroup.addProduct" />
-	</button>
+	<jstl:if test="${principal.shoppingGroup.contains(sh)}">
+		<button
+			onclick="location.href='shoppingGroup/user/addProduct.do?shoppingGroupId=${sh.id}'">
+			<spring:message code="shoppingGroup.addProduct" />
+		</button>
+	</jstl:if>
 
 
 </security:authorize>
 
 
 <spring:message code="sh.cooments" var="shComments" />
-<h2><jstl:out value="${shComments}"></jstl:out></h2>
-<display:table pagesize="5" class="displaytag" name="comments" requestURI="${requestURI}" id="com">
+<h2>
+	<jstl:out value="${shComments}"></jstl:out>
+</h2>
+<display:table pagesize="5" class="displaytag" name="comments"
+	requestURI="${requestURI}" id="com">
 
 
 	<spring:message code="comment.title" var="commentTitle" />
-	<display:column property="title" title="${commentTitle}" sortable="false" />
-	
+	<display:column property="title" title="${commentTitle}"
+		sortable="false" />
+
 	<spring:message code="comment.text" var="commentText" />
 	<display:column property="text" title="${commentText}" sortable="false" />
-	
+
 	<spring:message code="comment.moment" var="commentMoment" />
-	<display:column property="moment" title="${commentMoment}" sortable="false" />
-	
+	<display:column property="moment" title="${commentMoment}"
+		sortable="false" />
+
 	<display:column>
-		<a href="user/profile.do?userId=${com.userComment.id}"><jstl:out value="${com.userComment.name}"></jstl:out>
-		</a>
+		<a href="user/profile.do?userId=${com.userComment.id}"><jstl:out
+				value="${com.userComment.name}"></jstl:out> </a>
 
 	</display:column>
-	
-	
-	
+
+
+
 </display:table>
+<jstl:if test="${principal.shoppingGroup.contains(sh)}">
+<a href="shoppingGroup/user/comment.do?shoppingGroupId=${sh.id}"> <spring:message
+						code="user.comment" /></a>
+</jstl:if>
+
 

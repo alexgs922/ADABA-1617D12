@@ -2,15 +2,20 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CommentRepository;
 import domain.Comment;
+import domain.ShoppingGroup;
+import domain.User;
 
 @Service
 @Transactional
@@ -19,10 +24,18 @@ public class CommentService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	private CommentRepository	commentRepository;
-
+	private CommentRepository		commentRepository;
 
 	// Supporting services ----------------------------------------------------
+	@Autowired
+	private UserService				userService;
+
+	@Autowired
+	private ShoppingGroupService	shoppingGroupService;
+
+	@Autowired
+	private Validator				validator;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -32,10 +45,30 @@ public class CommentService {
 
 	//Simple CRUD -------------------------------------------------------------
 
-	public Comment create() {
+	public Comment create(final ShoppingGroup sh) {
 		Comment res;
 		res = new Comment();
+
+		res.setMoment(new Date());
 		return res;
+	}
+
+	public Comment reconstruct(final Comment comment, final BindingResult binding) {
+		Comment result;
+
+		if (comment.getId() == 0) {
+			result = comment;
+			this.validator.validate(result, binding);
+		} else {
+			result = this.commentRepository.findOne(comment.getId());
+
+			result.setText(comment.getText());
+			result.setTitle(comment.getTitle());
+
+			this.validator.validate(result, binding);
+		}
+
+		return result;
 	}
 
 	public Collection<Comment> findAll() {
@@ -55,6 +88,24 @@ public class CommentService {
 	public Comment save(final Comment c) {
 		Assert.notNull(c);
 		return this.commentRepository.save(c);
+
+	}
+
+	public boolean checkUserPrincipal() {
+		final boolean res;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+
+		res = principal != null;
+
+		return res;
+	}
+
+	public Comment saveAndFlush(final Comment c) {
+		Assert.isTrue(this.checkUserPrincipal());
+		Assert.notNull(c);
+		return this.commentRepository.saveAndFlush(c);
 
 	}
 

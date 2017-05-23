@@ -2,6 +2,7 @@
 package controllers.user;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CategoryService;
+import services.CommentService;
 import services.ProductService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
 import domain.Category;
+import domain.Comment;
 import domain.Product;
 import domain.ShoppingGroup;
 import domain.User;
@@ -52,6 +55,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private CommentService			commentService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -518,6 +524,63 @@ public class ShoppingGroupUserController extends AbstractController {
 			}
 		return result;
 	}
+
+	@RequestMapping(value = "/comment", method = RequestMethod.GET)
+	public ModelAndView comment(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Comment comment;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		comment = this.commentService.create(shoppingGroup);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createEditModelAndViewComment(comment);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/comment", method = RequestMethod.POST, params = "save")
+	public ModelAndView comment(@ModelAttribute("comment") final Comment comment, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Comment commentRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		comment.setShoppingGroupComments(shoppingGroup);
+		comment.setUserComment(principal);
+		comment.setMoment(new Date());
+
+		commentRes = this.commentService.reconstruct(comment, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createEditModelAndViewComment(comment);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				this.commentService.saveAndFlush(commentRes);
+				shoppingGroup.getComments().add(commentRes);
+				this.shoppingGroupService.save(shoppingGroup);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
 	//  Ancillary methods -------------------------------------------------------
 	protected ModelAndView createCreateModelAndView(final Product product) {
 		ModelAndView res;
@@ -532,6 +595,24 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		result = new ModelAndView("product/addProduct");
 		result.addObject("product", product);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewComment(final Comment comment) {
+		ModelAndView res;
+
+		res = this.createEditModelAndViewComment(comment, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndViewComment(final Comment comment, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("shoppingGroup/user/comment");
+		result.addObject("comment", comment);
 		result.addObject("message", message);
 
 		return result;
