@@ -12,10 +12,10 @@ import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import domain.Category;
 
-public class ShoppingGroupForm {
+public class ShoppingGroupFormPrivate {
 
 	// Constructors -----------------------------------------------------------
-	public ShoppingGroupForm() {
+	public ShoppingGroupFormPrivate() {
 		super();
 
 	}
@@ -23,6 +23,7 @@ public class ShoppingGroupForm {
 
 	// Attributes -------------------------------------------------------------
 
+	private boolean		private_group;
 	private String		name;
 	private String		description;
 	private int			freePlaces;
@@ -30,6 +31,14 @@ public class ShoppingGroupForm {
 	private Category	category;
 	private boolean		termsOfUse;
 
+
+	public boolean isPrivate_group() {
+		return this.private_group;
+	}
+
+	public void setPrivate_group(final boolean private_group) {
+		this.private_group = private_group;
+	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)

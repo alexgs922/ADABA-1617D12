@@ -60,7 +60,7 @@
 <security:authorize access="hasRole('USER')">
 
 	<jstl:if
-		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)}">
+		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)and shoppingGroup.freePlaces gt 0}">
 		<button
 			onclick="if(confirm('${confirmJoin}'))
 						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
@@ -170,6 +170,7 @@
 	<spring:message code = "product.confirm.delete" var = "productConfirmDelete" />
 
 
+
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
@@ -265,6 +266,7 @@
 	</jstl:choose>
 
 </security:authorize>
+
 
 
 

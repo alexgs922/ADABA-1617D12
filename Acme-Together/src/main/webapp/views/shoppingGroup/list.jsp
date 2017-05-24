@@ -100,8 +100,7 @@
 
 		</display:column>
 	</security:authorize>
-
-
+	
 </display:table>
 
 </jstl:if>
