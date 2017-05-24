@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
-import services.CommentService;
 import services.OrderDomainService;
 import services.ShoppingGroupService;
 import services.UserService;
@@ -25,12 +23,6 @@ public class DashboardAdministratorController extends AbstractController {
 
 	@Autowired
 	private UserService				userService;
-
-	@Autowired
-	private ActorService			actorService;
-
-	@Autowired
-	private CommentService			commentService;
 
 	@Autowired
 	private OrderDomainService		orderDomainService;

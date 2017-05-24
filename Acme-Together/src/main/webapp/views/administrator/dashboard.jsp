@@ -20,6 +20,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
+
 <h3>
 	<spring:message code="administrator.numberOfUserRegistered" />
 </h3>
