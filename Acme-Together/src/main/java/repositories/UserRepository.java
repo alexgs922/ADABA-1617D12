@@ -26,4 +26,14 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("select c from User u join u.shoppingGroup c where c.private_group=false and u.id = ?1")
 	Collection<ShoppingGroup> findAllShoppingGroupsNoPrivate(int userId);
 
+	//Dashboard
+	@Query("select user from User user where user.myShoppingGroups.size >= All(select user2.myShoppingGroups.size from User user2) group by user.id")
+	Collection<User> usersWhoCreateMoreShoppingGroup();
+
+	@Query("select user from User user where user.myShoppingGroups.size <= All(select user2.myShoppingGroups.size from User user2) group by user.id")
+	Collection<User> usersWhoCreateMinusShoppingGroup();
+
+	@Query("select count(user) from User user")
+	Double numberOfUserRegistered();
+
 }

@@ -68,4 +68,13 @@ public class OrderDomainService {
 	public void flush() {
 		this.orderRepository.flush();
 	}
+
+	public Double numberOfOrderLastMonth() {
+
+		Double p;
+
+		p = this.orderRepository.numberOfOrderLastMonth();
+
+		return p;
+	}
 }

@@ -292,4 +292,36 @@ public class UserService {
 		return sg;
 
 	}
+
+	//Dashboard
+
+	public Collection<User> usersWhoCreateMoreShoppingGroup() {
+
+		Collection<User> sg;
+
+		sg = this.userRepository.usersWhoCreateMoreShoppingGroup();
+
+		return sg;
+
+	}
+
+	public Collection<User> usersWhoCreateMinusShoppingGroup() {
+
+		Collection<User> sg;
+
+		sg = this.userRepository.usersWhoCreateMinusShoppingGroup();
+
+		return sg;
+
+	}
+
+	public Double numberOfUserRegistered() {
+
+		Double p;
+
+		p = this.userRepository.numberOfUserRegistered();
+
+		return p;
+	}
+
 }

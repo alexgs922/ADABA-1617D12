@@ -82,6 +82,13 @@
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
+		
+		<li><a class="fNiv"><spring:message code="master.page.dashboard" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="administrator/dashboard.do"><spring:message
+								code="master.page.admin.dashboard" /></a></li>
+				</ul></li>
 
 			<li><a class="fNiv"><spring:message code="master.page.chirp" /></a>
 				<ul>
