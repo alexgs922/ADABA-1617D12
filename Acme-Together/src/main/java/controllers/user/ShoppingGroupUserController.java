@@ -25,6 +25,7 @@ import controllers.AbstractController;
 import domain.Category;
 import domain.Comment;
 import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.JoinToForm;
@@ -55,6 +56,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private PunctuationService		punctuationService;
 
 	@Autowired
 	private CommentService			commentService;
@@ -129,9 +133,13 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("products", sGToShow.getProducts());
 		result.addObject("comments", sGToShow.getComments());
 		result.addObject("principal", this.userService.findByPrincipal());
+		result.addObject("alreadyPunctuate", this.shoppingGroupService.alreadyPunctuate(sGToShow, this.userService.findByPrincipal()));
+		result.addObject("principalPunctuation", this.punctuationService.getPunctuationByShoppingGroupAndUser(sGToShow, this.userService.findByPrincipal()));
 		return result;
 
 	}
+
+	// Create a new private Shopping Group ------------------------------------------------------
 
 	//Create a new Shopping Group  ------------------------------------------------------
 
@@ -179,7 +187,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//Edit a new Shopping Group  ------------------------------------------------------
+	//Edit a  Shopping Group  ------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int shoppingGroupId) {
@@ -320,6 +328,129 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 	}
 
+	// Punctuate a shopping group ---------------------------------------------------------
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.GET)
+	public ModelAndView punctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		punctuation = this.punctuationService.create();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.POST, params = "save")
+	public ModelAndView punctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+		principal.getPunctuations().add(punctuation);
+		shoppingGroup.getPunctuations().add(punctuation);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + punctuationRes.getValue());
+				this.userService.save(principal);
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuation);
+
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.GET)
+	public ModelAndView editPunctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+		int oldValue;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		punctuation = this.punctuationService.getPunctuationByShoppingGroupAndUser(shoppingGroup, principal);
+
+		oldValue = punctuation.getValue();
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+			res.addObject("oldValue", oldValue);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.POST, params = "save")
+	public ModelAndView editPnctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId, final int oldValue) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() - oldValue + punctuationRes.getValue());
+
+		if (binding.hasErrors()) {
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuationRes);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
 	// Add product to shopping group ------------------------------------------------------
 
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
@@ -403,14 +534,17 @@ public class ShoppingGroupUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
+	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
 		ModelAndView res;
 
 		final Product productRes;
 		User principal;
+		ShoppingGroup shoppingGroup;
 
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
 		principal = this.userService.findByPrincipal();
 		product.setUserProduct(principal);
+		product.setShoppingGroupProducts(shoppingGroup);
 
 		productRes = this.productService.reconstruct(product, binding);
 
@@ -419,9 +553,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 				res = this.createEditModelAndView(product, binding.getGlobalError().getCode());
 
-			else
+			else {
 
 				res = this.createEditModelAndView(product);
+				res.addObject("shoppingGroup", product.getShoppingGroupProducts());
+			}
 		else
 			try {
 
@@ -433,7 +569,6 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		return res;
 	}
-
 	// Delete product ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/deleteProduct", method = RequestMethod.GET)
@@ -459,7 +594,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//Join to a group  ----------------------------------------------------------------------
+	//Join to a public group  ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public ModelAndView joinToGroup(@RequestParam final int shoppingGroupId) {
@@ -474,6 +609,7 @@ public class ShoppingGroupUserController extends AbstractController {
 			Assert.isTrue(sh.isPrivate_group() == false);
 			Assert.isTrue(sh.getCreator().getId() != principal.getId());
 			Assert.isTrue(!sh.getUsers().contains(principal));
+			Assert.isTrue(sh.getFreePlaces() > 0);
 
 		} catch (final Exception e) {
 
@@ -524,6 +660,8 @@ public class ShoppingGroupUserController extends AbstractController {
 			}
 		return result;
 	}
+
+	// ------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/comment", method = RequestMethod.GET)
 	public ModelAndView comment(@RequestParam final int shoppingGroupId) {
@@ -698,6 +836,42 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("joinToForm", form);
 		result.addObject("shToJoinName", sh.getName());
 		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createCreateModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/create");
+		result.addObject("punctuation", punctuation);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/edit");
+		result.addObject("punctuation", punctuation);
 		result.addObject("message", message);
 
 		return result;

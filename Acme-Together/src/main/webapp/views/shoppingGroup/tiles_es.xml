@@ -47,10 +47,19 @@
 	</definition>
 	
 	<definition name="joinToShFormulario" extends="master.page">	
-		<put-attribute name="title" value="Condiciones para unirse a un grupo " />
+		<put-attribute name="title" value="Condiciones para unirse a un grupo" />
 		<put-attribute name="body" value="/views/shoppingGroup/joinTo.jsp"/>
 	</definition>
 	
+	<definition name="joinToShPrivateFormulario" extends="master.page">	
+		<put-attribute name="title" value="Invitación para unirse a un grupo privado" />
+		<put-attribute name="body" value="/views/shoppingGroup/joinToPrivate.jsp"/>
+	</definition>
+	
+	<definition name="inviteUsers" extends="master.page">	
+		<put-attribute name="title" value="Invitaciones para unirse a un grupo privado" />
+		<put-attribute name="body" value="/views/shoppingGroup/inviteUsers.jsp"/>
+	</definition>
 
 	
 </tiles-definitions>

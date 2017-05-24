@@ -60,7 +60,7 @@
 <security:authorize access="hasRole('USER')">
 
 	<jstl:if
-		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)}">
+		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)and shoppingGroup.freePlaces gt 0}">
 		<button
 			onclick="if(confirm('${confirmJoin}'))
 						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
@@ -166,11 +166,16 @@
 		</display:column>
 	</security:authorize>
 
+	
+<spring:message code = "product.confirm.delete" var = "productConfirmDelete" />
+
+
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
 				<button
-					onclick="location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
+					onclick="confirm('${productConfirmDelete }')
+					location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
 					<spring:message code="product.delete" />
 				</button>
 			</jstl:if>
@@ -225,5 +230,39 @@
 <a href="shoppingGroup/user/comment.do?shoppingGroupId=${sh.id}"> <spring:message
 						code="user.comment" /></a>
 </jstl:if>
+
+
+<spring:message code="sh.puntuation" var="shPuntuation" />
+<h2><jstl:out value="${shPuntuation}"></jstl:out></h2>
+
+<font size=5>
+	<jstl:out value ="${sh.puntuation}"/>
+</font>
+
+<br/>
+<br/>
+
+<security:authorize access="hasRole('USER')">
+	<jstl:choose>
+		<jstl:when test="${alreadyPunctuate == false}">
+			<button
+				onclick="location.href='shoppingGroup/user/punctuate.do?shoppingGroupId=${sh.id}'">
+				<spring:message code="shoppingGroup.punctuate" />
+			</button>
+		</jstl:when>	
+		<jstl:when test="${alreadyPunctuate == true}">
+			<button
+				onclick="location.href='shoppingGroup/user/editPunctuation.do?shoppingGroupId=${sh.id}'">
+				<spring:message code="shoppingGroup.punctuate" />
+			</button>
+			<br/>
+			<br/>
+			<a><b><spring:message code = "shoppingGroup.alreadyPunctuated"/> <jstl:out value = "${principalPunctuation.value}"/></b></a>
+			<br/>
+			<a><b><spring:message code = "shoppingGroup.alreadyPunctuated2"/></b></a>
+		</jstl:when>
+	</jstl:choose>
+
+</security:authorize>
 
 
