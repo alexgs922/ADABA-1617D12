@@ -228,7 +228,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		shoppingGroupForm.setCategory(shoppingGroup.getCategory());
 		shoppingGroupForm.setDescription(shoppingGroup.getDescription());
 		shoppingGroupForm.setFreePlaces(shoppingGroup.getFreePlaces());
-		shoppingGroupForm.setPrivate_group(shoppingGroup.isPrivate_group());
 		shoppingGroupForm.setSite(shoppingGroup.getSite());
 
 		cats = this.categoryService.findAll2();

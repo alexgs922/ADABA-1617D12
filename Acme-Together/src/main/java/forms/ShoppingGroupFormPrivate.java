@@ -1,16 +1,19 @@
 
 package forms;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
 import domain.Category;
+import domain.User;
 
 public class ShoppingGroupFormPrivate {
 
@@ -23,13 +26,26 @@ public class ShoppingGroupFormPrivate {
 
 	// Attributes -------------------------------------------------------------
 
-	private boolean		private_group;
-	private String		name;
-	private String		description;
-	private int			freePlaces;
-	private String		site;
-	private Category	category;
-	private boolean		termsOfUse;
+	private boolean				private_group;
+	private String				name;
+	private String				description;
+	private String				site;
+	private Category			category;
+	private Collection<User>	users;
+
+
+	@NotNull
+	@NotEmpty
+	public Collection<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(final Collection<User> users) {
+		this.users = users;
+	}
+
+
+	private boolean	termsOfUse;
 
 
 	public boolean isPrivate_group() {
@@ -58,15 +74,6 @@ public class ShoppingGroupFormPrivate {
 
 	public void setDescription(final String description) {
 		this.description = description;
-	}
-
-	@Min(0)
-	public int getFreePlaces() {
-		return this.freePlaces;
-	}
-
-	public void setFreePlaces(final int freePlaces) {
-		this.freePlaces = freePlaces;
 	}
 
 	@NotBlank

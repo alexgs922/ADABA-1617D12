@@ -215,7 +215,6 @@ public class ShoppingGroupService {
 		result.setFreePlaces(form.getFreePlaces());
 		result.setLastOrderDate(null);
 		result.setName(form.getName());
-		result.setPrivate_group(form.isPrivate_group());
 		result.setSite(form.getSite());
 
 		this.validator.validate(result, bindingResult);
