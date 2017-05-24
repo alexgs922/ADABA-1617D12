@@ -17,11 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CategoryService;
 import services.ProductService;
+import services.PunctuationService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
 import domain.Category;
 import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
@@ -51,6 +53,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private PunctuationService		punctuationService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -122,6 +127,8 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("products", sGToShow.getProducts());
 		result.addObject("comments", sGToShow.getComments());
 		result.addObject("principal", this.userService.findByPrincipal());
+		result.addObject("alreadyPunctuate", this.shoppingGroupService.alreadyPunctuate(sGToShow, this.userService.findByPrincipal()));
+		result.addObject("principalPunctuation", this.punctuationService.getPunctuationByShoppingGroupAndUser(sGToShow, this.userService.findByPrincipal()));
 		return result;
 
 	}
@@ -311,6 +318,129 @@ public class ShoppingGroupUserController extends AbstractController {
 		}
 
 		return result;
+	}
+
+	// Punctuate a shopping group ---------------------------------------------------------
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.GET)
+	public ModelAndView punctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		punctuation = this.punctuationService.create();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.POST, params = "save")
+	public ModelAndView punctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+		principal.getPunctuations().add(punctuation);
+		shoppingGroup.getPunctuations().add(punctuation);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + punctuationRes.getValue());
+				this.userService.save(principal);
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuation);
+
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.GET)
+	public ModelAndView editPunctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+		int oldValue;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		punctuation = this.punctuationService.getPunctuationByShoppingGroupAndUser(shoppingGroup, principal);
+
+		oldValue = punctuation.getValue();
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+			res.addObject("oldValue", oldValue);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.POST, params = "save")
+	public ModelAndView editPnctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId, final int oldValue) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() - oldValue + punctuationRes.getValue());
+
+		if (binding.hasErrors()) {
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuationRes);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
 	}
 
 	// Add product to shopping group ------------------------------------------------------
@@ -535,6 +665,42 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("shoppingGroup", form);
 		result.addObject("categories", cats);
 		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createCreateModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/create");
+		result.addObject("punctuation", punctuation);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/edit");
+		result.addObject("punctuation", punctuation);
 		result.addObject("message", message);
 
 		return result;

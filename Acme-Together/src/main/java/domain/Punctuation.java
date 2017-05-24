@@ -23,15 +23,15 @@ public class Punctuation extends DomainEntity {
 
 	// Attributes
 
-	@Range(min = -1, max = 1)
-	private int	value;
+	private Integer	value;
 
 
-	public int getValue() {
+	@Range(min = -5, max = 5)
+	public Integer getValue() {
 		return this.value;
 	}
 
-	public void setValue(final int value) {
+	public void setValue(final Integer value) {
 		this.value = value;
 	}
 

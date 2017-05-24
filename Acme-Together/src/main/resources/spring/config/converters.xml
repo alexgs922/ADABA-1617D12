@@ -78,6 +78,9 @@
 		
 		<bean class="converters.WarehouseToStringConverter" />
 		<bean class="converters.StringToWarehouseConverter" />
+		
+		<bean class="converters.PunctuationToStringConverter" />
+		<bean class="converters.StringToPunctuationConverter" />
 
 
 	</util:list>

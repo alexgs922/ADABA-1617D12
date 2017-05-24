@@ -143,6 +143,24 @@ public class ShoppingGroupService {
 
 	}
 
+	public boolean alreadyPunctuate(final ShoppingGroup shoppingGroup, final User user) {
+		Assert.notNull(shoppingGroup);
+
+		Collection<Punctuation> userPunctuation;
+		boolean res = false;
+
+		userPunctuation = user.getPunctuations();
+
+		for (final Punctuation userPunc : userPunctuation)
+			if (userPunc.getShoppingGroup().getId() == shoppingGroup.getId()) {
+				res = true;
+				break;
+			}
+
+		return res;
+
+	}
+
 
 	@Autowired
 	private Validator	validator;

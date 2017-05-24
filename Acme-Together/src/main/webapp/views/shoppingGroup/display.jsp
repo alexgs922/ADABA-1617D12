@@ -181,3 +181,40 @@
 	
 </display:table>
 
+
+<spring:message code="sh.puntuation" var="shPuntuation" />
+<h2><jstl:out value="${shPuntuation}"></jstl:out></h2>
+
+<font size=5>
+	<jstl:out value ="${sh.puntuation}"/>
+</font>
+
+<br/>
+<br/>
+
+<security:authorize access="hasRole('USER')">
+	<jstl:choose>
+		<jstl:when test="${alreadyPunctuate == false}">
+			<button
+				onclick="location.href='shoppingGroup/user/punctuate.do?shoppingGroupId=${sh.id}'">
+				<spring:message code="shoppingGroup.punctuate" />
+			</button>
+		</jstl:when>	
+		<jstl:when test="${alreadyPunctuate == true}">
+			<button
+				onclick="location.href='shoppingGroup/user/editPunctuation.do?shoppingGroupId=${sh.id}'">
+				<spring:message code="shoppingGroup.punctuate" />
+			</button>
+			<br/>
+			<br/>
+			<a><b><spring:message code = "shoppingGroup.alreadyPunctuated"/> <jstl:out value = "${principalPunctuation.value}"/></b></a>
+			<br/>
+			<a><b><spring:message code = "shoppingGroup.alreadyPunctuated2"/></b></a>
+		</jstl:when>
+	</jstl:choose>
+
+</security:authorize>
+
+
+
+
