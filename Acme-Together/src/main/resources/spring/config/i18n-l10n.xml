@@ -24,7 +24,6 @@
 		<value>/views/welcome/messages</value>
 		
 		<value>/views/administrator/messages</value>
-		<value>/views/customer/messages</value>
 		<value>/views/profile/messages</value>
 		<value>/views/user/messages</value>
 		<value>/views/commercial/messages</value>
@@ -36,6 +35,7 @@
 		<value>/views/warehouse/messages</value>
 		<value>/views/punctuation/messages</value>
 		<value>/views/comment/messages</value>
+		<value>/views/coupon/messages</value>
 	
 	</util:list>
 

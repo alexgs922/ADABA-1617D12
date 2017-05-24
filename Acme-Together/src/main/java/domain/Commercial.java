@@ -56,16 +56,16 @@ public class Commercial extends Actor {
 
 	//Relationships
 
-	private Collection<Coupon>	coupon;
+	private Collection<Coupon>	coupons;
 
 
 	@OneToMany(mappedBy = "commercial")
-	public Collection<Coupon> getCoupon() {
-		return this.coupon;
+	public Collection<Coupon> getCoupons() {
+		return this.coupons;
 	}
 
-	public void setCoupon(final Collection<Coupon> coupon) {
-		this.coupon = coupon;
+	public void setCoupons(final Collection<Coupon> coupons) {
+		this.coupons = coupons;
 	}
 
 }

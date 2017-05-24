@@ -54,11 +54,15 @@
 			<li><a class="fNiv"
 				href="shoppingGroup/user/joinedShoppingGroups.do"><spring:message
 						code="master.page.UserJoinedShoppingGroups" /></a></li>
+			<li><a class="fNiv" href="coupon/user/list.do"><spring:message
+ 						code="master.page.listCoupons" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('COMMERCIAL')">
 			<li><a class="fNiv" href="commercial/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
+			<li><a class="fNiv" href="coupon/commercial/list.do"><spring:message
+ 						code="master.page.listCoupons" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('DISTRIBUTOR')">

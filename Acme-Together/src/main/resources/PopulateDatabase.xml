@@ -200,7 +200,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="coupon">
+		<property name="coupons">
 			<list>
 				<ref bean="coupon1" />
 				<ref bean="coupon2" />
@@ -226,7 +226,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="coupon">
+		<property name="coupons">
 			<list>
 				<ref bean="coupon4" />
 			</list>
@@ -250,7 +250,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="coupon">
+		<property name="coupons">
 			<list>
 
 			</list>

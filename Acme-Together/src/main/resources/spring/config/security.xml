@@ -101,6 +101,8 @@
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
 		<security:intercept-url pattern="/commercial/editProfile.do" access="hasRole('COMMERCIAL')" /> 
+		<security:intercept-url pattern="/coupon/commercial/**" access="hasRole('COMMERCIAL')" />
+ 		<security:intercept-url pattern="/coupon/user/list.do" access="hasRole('USER')" /> 
 	
 
 		

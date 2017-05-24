@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -8,8 +7,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CouponRepository;
+import domain.Commercial;
 import domain.Coupon;
 
 @Service
@@ -21,8 +23,11 @@ public class CouponService {
 	@Autowired
 	private CouponRepository	couponRepository;
 
-
 	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private CommercialService	commercialService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -34,7 +39,11 @@ public class CouponService {
 
 	public Coupon create() {
 		Coupon res;
+		final Commercial principal = this.commercialService.findByPrincipal();
+		Assert.notNull(principal);
+
 		res = new Coupon();
+
 		return res;
 	}
 
@@ -55,7 +64,24 @@ public class CouponService {
 	public Coupon save(final Coupon c) {
 		Assert.notNull(c);
 		return this.couponRepository.save(c);
+	}
 
+	public Coupon save2(Coupon coupon) {
+		Assert.notNull(coupon);
+		final Commercial c = this.commercialService.findByPrincipal();
+		coupon = this.couponRepository.save(coupon);
+		c.getCoupons().add(coupon);
+		this.commercialService.save(c);
+		return coupon;
+	}
+
+	public Coupon saveEdit(Coupon coupon) {
+		Assert.notNull(coupon);
+		final Commercial c = this.commercialService.findByPrincipal();
+		Assert.isTrue(c.getId() == coupon.getCommercial().getId());
+		coupon = this.couponRepository.save(coupon);
+
+		return coupon;
 	}
 
 	public void delete(final Coupon c) {
@@ -67,5 +93,32 @@ public class CouponService {
 
 	public void flush() {
 		this.couponRepository.flush();
+	}
+
+
+	@Autowired
+	private Validator	validator;
+
+
+	public Coupon reconstruct(final Coupon coupon, final BindingResult binding) {
+		Coupon result;
+
+		if (coupon.getId() == 0) {
+			result = coupon;
+			this.validator.validate(result, binding);
+
+		} else {
+
+			result = this.couponRepository.findOne(coupon.getId());
+
+			result.setCouponNumber(coupon.getCouponNumber());
+			result.setDiscount(coupon.getDiscount());
+
+			this.validator.validate(result, binding);
+
+		}
+
+		return result;
+
 	}
 }

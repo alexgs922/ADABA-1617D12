@@ -36,11 +36,11 @@
 		sortable="false" />
 
 	<display:column >
-	<a 	href="distributor/profile.do?distributorId=${row.distributor.id}"/><spring:message
+		<a href="distributor/profile.do?distributorId=${row.distributor.id}" ><spring:message
 					code="warehouse.profile" />
-			</a>
-		</display:column>
-	</display:table>
+		</a>
+	</display:column>
+</display:table>
 
 
 
