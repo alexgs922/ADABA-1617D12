@@ -203,7 +203,7 @@
 <h2>
 	<jstl:out value="${shComments}"></jstl:out>
 </h2>
-<display:table pagesize="5" class="displaytag" name="comments"
+<display:table pagesize="10" class="displaytag" name="comments"
 	requestURI="${requestURI}" id="com">
 
 

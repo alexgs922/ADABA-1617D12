@@ -24,6 +24,10 @@
 
 	<acme:submit name="save" code="comment.save" />
 
-	<acme:cancel url="welcome/index.do" code="comment.cancel" />
+	<input type="button" name="cancel"
+		value="<spring:message code="comment.cancel" />"
+		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
+	<br />
+	
 
 </form:form>

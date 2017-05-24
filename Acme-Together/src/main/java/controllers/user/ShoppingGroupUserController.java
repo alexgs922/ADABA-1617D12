@@ -450,63 +450,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		return res;
 	}
 
-	// Add product to shopping group ------------------------------------------------------
-
-	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
-	public ModelAndView addProduct(@RequestParam final int shoppingGroupId) {
-		ModelAndView res;
-
-		Product product;
-		ShoppingGroup shoppingGroup;
-		User principal;
-
-		principal = this.userService.findByPrincipal();
-		product = this.productService.create();
-		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-
-		try {
-			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
-			res = this.createCreateModelAndView(product);
-			res.addObject("shoppingGroup", shoppingGroup);
-		} catch (final Throwable th) {
-			res = new ModelAndView("forbiddenOperation");
-		}
-
-		return res;
-
-	}
-
-	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView addProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
-		ModelAndView res;
-
-		final Product productRes;
-		ShoppingGroup shoppingGroup;
-		User principal;
-
-		principal = this.userService.findByPrincipal();
-		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-		product.setShoppingGroupProducts(shoppingGroup);
-		product.setUserProduct(principal);
-
-		productRes = this.productService.reconstruct(product, binding);
-
-		if (binding.hasErrors()) {
-			res = this.createCreateModelAndView(product);
-			res.addObject("shoppingGroup", shoppingGroup);
-		} else
-			try {
-				this.productService.saveAndFlush(productRes);
-				shoppingGroup.getProducts().add(productRes);
-				this.shoppingGroupService.save(shoppingGroup);
-				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
-			} catch (final Throwable th) {
-				res = new ModelAndView("forbiddenOperation");
-			}
-
-		return res;
-	}
-
 	// Edit product in shopping group ------------------------------------------
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.GET)
@@ -660,7 +603,64 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 	}
 
-	// ------------------------------------------------------------------------------------------------------
+	// Add product to shopping group ------------------------------------------------------
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
+	public ModelAndView addProduct(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Product product;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		product = this.productService.create();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createCreateModelAndView(product);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, params = "save")
+	public ModelAndView addProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Product productRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		product.setShoppingGroupProducts(shoppingGroup);
+		product.setUserProduct(principal);
+
+		productRes = this.productService.reconstruct(product, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createCreateModelAndView(product);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				this.productService.saveAndFlush(productRes);
+				shoppingGroup.getProducts().add(productRes);
+				this.shoppingGroupService.save(shoppingGroup);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	// Post comment ------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/comment", method = RequestMethod.GET)
 	public ModelAndView comment(@RequestParam final int shoppingGroupId) {
@@ -672,7 +672,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-		comment = this.commentService.create(shoppingGroup);
+		comment = this.productService.create(shoppingGroup);
 
 		try {
 			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
@@ -700,14 +700,14 @@ public class ShoppingGroupUserController extends AbstractController {
 		comment.setUserComment(principal);
 		comment.setMoment(new Date());
 
-		commentRes = this.commentService.reconstruct(comment, binding);
+		commentRes = this.productService.reconstruct(comment, binding);
 
 		if (binding.hasErrors()) {
 			res = this.createEditModelAndViewComment(comment);
 			res.addObject("shoppingGroup", shoppingGroup);
 		} else
 			try {
-				this.commentService.saveAndFlush(commentRes);
+				this.productService.saveAndFlush(commentRes);
 				shoppingGroup.getComments().add(commentRes);
 				this.shoppingGroupService.save(shoppingGroup);
 				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());

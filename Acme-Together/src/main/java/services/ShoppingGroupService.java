@@ -105,7 +105,6 @@ public class ShoppingGroupService {
 			this.commentService.delete(c);
 			this.commentService.flush();
 		}
-
 		this.shoppingGroupRepository.delete(s);
 	}
 	//Other business methods --------------------------------------

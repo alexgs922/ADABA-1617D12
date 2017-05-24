@@ -24,6 +24,14 @@
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMIN')">
 
+			<li><a class="fNiv"><spring:message
+						code="master.page.dashboard" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="administrator/dashboard.do"><spring:message
+								code="master.page.admin.dashboard" /></a></li>
+				</ul></li>
+
 			<li><a class="fNiv" href="distributor/register.do"><spring:message
 						code="master.page.registerDistributor" /></a></li>
 			<li><a class="fNiv" href="commercial/register.do"><spring:message
@@ -45,35 +53,34 @@
 								code="master.page.yourFriends" /></a></li>
 					<li><a href="user/listUnbanned.do"><spring:message
 								code="master.page.followMorePeople" /></a></li>
-				</ul>
-			</li>
+				</ul></li>
 			<li><a class="fNiv" href="user/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 			<li><a class="fNiv" href="shoppingGroup/user/list.do"><spring:message
-						code="master.page.shoppingGroupsPublic" /></a></li>	
+						code="master.page.shoppingGroupsPublic" /></a></li>
 			<li><a class="fNiv"
 				href="shoppingGroup/user/joinedShoppingGroups.do"><spring:message
 						code="master.page.UserJoinedShoppingGroups" /></a></li>
 			<li><a class="fNiv" href="coupon/user/list.do"><spring:message
- 						code="master.page.listCoupons" /></a></li>
+						code="master.page.listCoupons" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('COMMERCIAL')">
 			<li><a class="fNiv" href="commercial/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 			<li><a class="fNiv" href="coupon/commercial/list.do"><spring:message
- 						code="master.page.listCoupons" /></a></li>
+						code="master.page.listCoupons" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('DISTRIBUTOR')">
-	
+
 			<li><a class="fNiv" href="distributor/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
 			<li><a class="fNiv" href="warehouse/myWarehouses.do"><spring:message
 						code="master.page.viewMyWarehouses" /></a></li>
 
 		</security:authorize>
-		
+
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
@@ -82,17 +89,12 @@
 			<li><a class="fNiv" href="category/list.do"><spring:message
 						code="master.page.listCategories" /></a></li>
 			<li><a class="fNiv" href="distributor/list.do"><spring:message
-						code="master.page.listDistributors" /></a></li>			
+						code="master.page.listDistributors" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
-		
-		<li><a class="fNiv"><spring:message code="master.page.dashboard" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="administrator/dashboard.do"><spring:message
-								code="master.page.admin.dashboard" /></a></li>
-				</ul></li>
+
+
 
 			<li><a class="fNiv"><spring:message code="master.page.chirp" /></a>
 				<ul>
