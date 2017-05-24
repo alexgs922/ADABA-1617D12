@@ -33,7 +33,11 @@
 		<value>/views/shoppingGroup/tiles.xml</value>
 		<value>/views/product/tiles.xml</value>
 		<value>/views/privateMessage/tiles.xml</value>
+
 		<value>/views/punctuation/tiles.xml</value>
+
+		<value>/views/comment/tiles.xml</value>
+
 	
 	
 	</util:list>

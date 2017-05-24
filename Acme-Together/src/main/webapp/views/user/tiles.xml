@@ -66,7 +66,7 @@
 	</definition>
 	
 	<definition name="user/myFriends" extends="master.page">
-		<put-attribute name="title" value="My friends"/>
+		<put-attribute name="title" value="Users that you follow"/>
 		<put-attribute name="body" value="/views/user/listUnbanned.jsp"/>
 	</definition>
 	

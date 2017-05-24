@@ -46,6 +46,11 @@
 		<put-attribute name="body" value="/views/shoppingGroup/forbiddenOperation.jsp"/>
 	</definition>
 	
+	<definition name="joinToShFormulario" extends="master.page">	
+		<put-attribute name="title" value="Condiciones para unirse a un grupo " />
+		<put-attribute name="body" value="/views/shoppingGroup/joinTo.jsp"/>
+	</definition>
+	
 
 	
 </tiles-definitions>

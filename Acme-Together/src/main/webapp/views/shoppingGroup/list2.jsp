@@ -90,21 +90,6 @@
 		</display:column>
 	</security:authorize>
 
-	<%-- <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
-	<security:authorize access="hasRole('USER')">
-		<display:column>
-			<jstl:if test="${row.creator.id == principal.id }">
-				<button
-					onclick="if(confirm('${confirmJoin }'))
-						location.href='shoppingGroup/user/join.do?shoppingGroupId=${row.id}'">
-					<spring:message code="shoppingGroup.join" />
-				</button>
-			</jstl:if>
-
-		</display:column>
-	</security:authorize> --%>
-
-
 </display:table>
 
 <br>

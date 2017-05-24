@@ -223,4 +223,22 @@ public class ShoppingGroupService {
 		return result;
 	}
 
+	public void jointToAShoppingGroup(final ShoppingGroup sh) {
+
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(sh.getLastOrderDate() == null);
+		Assert.isTrue(sh.isPrivate_group() == false);
+		Assert.isTrue(sh.getCreator().getId() != principal.getId());
+		Assert.isTrue(!sh.getUsers().contains(principal));
+
+		principal.getShoppingGroup().add(sh);
+		sh.getUsers().add(principal);
+
+		this.shoppingGroupRepository.save(sh);
+		this.shoppingGroupRepository.flush();
+		this.userService.save(principal);
+
+	}
+
 }
