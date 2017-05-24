@@ -15,17 +15,7 @@
 	
 	<fieldset>
 		<legend><spring:message code="sh.Info"/></legend>
-		<br>
-		
-		<form:label path="private_group">
-		<spring:message code="sh.privateGroup" />
-		</form:label>
-		<input type="radio" name="private_group" value="true">
-		<spring:message code="sh.privateGroupTrue" />
-		<input type="radio" name="private_group" value="false" checked="checked"/>
-		<spring:message code="sh.privateGroupFalse" />
-		<br>
-		
+			
 		<br>
 		<acme:textbox code="sh.name" path="name"/>
 		<br>

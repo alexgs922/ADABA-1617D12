@@ -139,6 +139,8 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	// Create a new private Shopping Group ------------------------------------------------------
+
 	//Create a new Shopping Group  ------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -185,7 +187,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//Edit a new Shopping Group  ------------------------------------------------------
+	//Edit a  Shopping Group  ------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int shoppingGroupId) {
@@ -226,7 +228,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		shoppingGroupForm.setCategory(shoppingGroup.getCategory());
 		shoppingGroupForm.setDescription(shoppingGroup.getDescription());
 		shoppingGroupForm.setFreePlaces(shoppingGroup.getFreePlaces());
-		shoppingGroupForm.setPrivate_group(shoppingGroup.isPrivate_group());
 		shoppingGroupForm.setSite(shoppingGroup.getSite());
 
 		cats = this.categoryService.findAll2();
@@ -567,7 +568,6 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		return res;
 	}
-
 	// Delete product ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/deleteProduct", method = RequestMethod.GET)
@@ -593,7 +593,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//Join to a group  ----------------------------------------------------------------------
+	//Join to a public group  ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public ModelAndView joinToGroup(@RequestParam final int shoppingGroupId) {
@@ -608,6 +608,7 @@ public class ShoppingGroupUserController extends AbstractController {
 			Assert.isTrue(sh.isPrivate_group() == false);
 			Assert.isTrue(sh.getCreator().getId() != principal.getId());
 			Assert.isTrue(!sh.getUsers().contains(principal));
+			Assert.isTrue(sh.getFreePlaces() > 0);
 
 		} catch (final Exception e) {
 
@@ -658,6 +659,8 @@ public class ShoppingGroupUserController extends AbstractController {
 			}
 		return result;
 	}
+
+	// ------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/comment", method = RequestMethod.GET)
 	public ModelAndView comment(@RequestParam final int shoppingGroupId) {
@@ -815,24 +818,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView createCreateModelAndView(final Punctuation punctuation) {
-		ModelAndView res;
-
-		res = this.createCreateModelAndView(punctuation, null);
-
-		return res;
-	}
-
-	protected ModelAndView createCreateModelAndView(final Punctuation punctuation, final String message) {
-		ModelAndView result;
-
-		result = new ModelAndView("punctuation/create");
-		result.addObject("punctuation", punctuation);
-		result.addObject("message", message);
-
-		return result;
-	}
-
 	protected ModelAndView createEditModelAndView(final Punctuation punctuation) {
 		ModelAndView res;
 
@@ -868,6 +853,24 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("joinToForm", form);
 		result.addObject("shToJoinName", sh.getName());
 		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createCreateModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/create");
+		result.addObject("punctuation", punctuation);
 		result.addObject("message", message);
 
 		return result;

@@ -22,21 +22,12 @@ public class ShoppingGroupForm2 {
 
 	// Attributes -------------------------------------------------------------
 
-	private boolean		private_group;
 	private String		name;
 	private String		description;
 	private int			freePlaces;
 	private String		site;
 	private Category	category;
 
-
-	public boolean isPrivate_group() {
-		return this.private_group;
-	}
-
-	public void setPrivate_group(final boolean private_group) {
-		this.private_group = private_group;
-	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)

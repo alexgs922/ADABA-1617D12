@@ -17,26 +17,6 @@
 		<legend><spring:message code="sh.Info"/></legend>
 		<br>
 		
-		<form:label path="private_group">
-		<spring:message code="sh.privateGroup" />
-		</form:label>
-		<jstl:choose>
-			<jstl:when test="${shoppingGroup.private_group eq true}">
-				<input type="radio" name="private_group" value="true" checked="checked">
-				<spring:message code="sh.privateGroupTrue" />
-				<input type="radio" name="private_group" value="false" />
-				<spring:message code="sh.privateGroupFalse" />
-			</jstl:when>
-			<jstl:otherwise>
-				<input type="radio" name="private_group" value="true">
-				<spring:message code="sh.privateGroupTrue" />
-				<input type="radio" name="private_group" value="false" checked="checked"/>
-				<spring:message code="sh.privateGroupFalse" />
-			</jstl:otherwise>
-		</jstl:choose>
-		<br>
-		
-		<br>
 		<acme:textbox code="sh.name" path="name"/>
 		<br>
 		<acme:textarea code="sh.description" path="description"/>
