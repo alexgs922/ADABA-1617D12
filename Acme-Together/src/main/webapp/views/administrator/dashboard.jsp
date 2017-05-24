@@ -56,48 +56,130 @@
 
 
 <h3>
-	<spring:message
-		code="administrator.usersWhoCreateMoreShoppingGroup" />
+	<spring:message code="administrator.usersWhoCreateMoreShoppingGroup" />
 </h3>
 
 <display:table class="displaytag" keepStatus="true"
 	name="usersWhoCreateMoreShoppingGroup" id="row">
 
 	<spring:message code="administrator.actor.name" var="nameActor" />
-	<display:column property="userAccount.username" title="${nameActor}" sortable="false" />
+	<display:column property="userAccount.username" title="${nameActor}"
+		sortable="false" />
 
 	<spring:message code="administrator.actor.sg" var="sgActor" />
 	<display:column sortable="false">
-		<fmt:formatNumber value="${row.myShoppingGroups.size()}" type="number" maxFractionDigits="3"
-			minFractionDigits="3" />
+		<fmt:formatNumber value="${row.myShoppingGroups.size()}" type="number"
+			maxFractionDigits="3" minFractionDigits="3" />
 	</display:column>
-	
+
 
 
 </display:table>
 
 <h3>
-	<spring:message
-		code="administrator.usersWhoCreateMinusShoppingGroup" />
+	<spring:message code="administrator.usersWhoCreateMinusShoppingGroup" />
 </h3>
 
 <display:table class="displaytag" keepStatus="true"
 	name="usersWhoCreateMinusShoppingGroup" id="row">
 
 	<spring:message code="administrator.actor.name" var="nameActor" />
-	<display:column property="userAccount.username" title="${nameActor}" sortable="false" />
-	
-	
+	<display:column property="userAccount.username" title="${nameActor}"
+		sortable="false" />
+
+
 	<spring:message code="administrator.actor.sg" var="sgActor" />
 	<display:column sortable="false">
-		<fmt:formatNumber value="${row.myShoppingGroups.size()}" type="number" maxFractionDigits="3"
-			minFractionDigits="3" />
+		<fmt:formatNumber value="${row.myShoppingGroups.size()}" type="number"
+			maxFractionDigits="3" minFractionDigits="3" />
 	</display:column>
 
 
 
 </display:table>
 
+<h3>
+	<spring:message code="administrator.shoppingGroupsWithMorePuntuation" />
+</h3>
+
+<display:table class="displaytag" keepStatus="true"
+	name="shoppingGroupsWithMorePuntuation" id="row">
+
+	<spring:message code="administrator.sg.name" var="nameSG" />
+	<display:column property="name" title="${nameSG}" sortable="false" />
+
+	<spring:message code="administrator.sg.description" var="descriptionSG" />
+	<display:column property="description" title="${descriptionSG}"
+		sortable="false" />
+
+	<spring:message code="administrator.sg.puntuation" var="puntuationSG" />
+	<display:column property="puntuation" title="${puntuationSG}"
+		sortable="false" />
+
+	<spring:message code="administrator.sg.creator" var="creatoSG" />
+	<display:column property="creator.userAccount.username"
+		title="${creatoSG}" sortable="false" />
+
+</display:table>
+
+
+<h3>
+	<spring:message code="administrator.shoppingGroupsWithLessPuntuation" />
+</h3>
+
+<display:table class="displaytag" keepStatus="true"
+	name="shoppingGroupsWithLessPuntuation" id="row">
+
+	<spring:message code="administrator.sg.name" var="nameSG" />
+	<display:column property="name" title="${nameSG}" sortable="false" />
+
+	<spring:message code="administrator.sg.description" var="descriptionSG" />
+	<display:column property="description" title="${descriptionSG}"
+		sortable="false" />
+
+	<spring:message code="administrator.sg.puntuation" var="puntuationSG" />
+	<display:column property="puntuation" title="${puntuationSG}"
+		sortable="false" />
+
+	<spring:message code="administrator.sg.creator" var="creatoSG" />
+	<display:column property="creator.userAccount.username"
+		title="${creatoSG}" sortable="false" />
+
+</display:table>
+
+<h3>
+	<spring:message code="administrator.percentShoppingGroupsWithFreePlaces" />
+</h3>
+
+<display:table class="displaytag" keepStatus="true"
+	name="percentShoppingGroupsWithFreePlaces" id="row">
+
+	<spring:message code="administrator.percentShoppingGroupsWithFreePlaces"
+		var="percentShoppingGroupsWithFreePlaces" />
+	<display:column title="${percentShoppingGroupsWithFreePlaces}" sortable="false">
+		<fmt:formatNumber value="${row}" type="number" maxFractionDigits="3"
+			minFractionDigits="3" />
+	</display:column>
+
+
+</display:table>
+
+<h3>
+	<spring:message code="administrator.percentShoppingGroupsWithoutFreePlaces" />
+</h3>
+
+<display:table class="displaytag" keepStatus="true"
+	name="percentShoppingGroupsWithoutFreePlaces" id="row">
+
+	<spring:message code="administrator.percentShoppingGroupsWithoutFreePlaces"
+		var="percentShoppingGroupsWithoutFreePlaces" />
+	<display:column title="${percentShoppingGroupsWithoutFreePlaces}" sortable="false">
+		<fmt:formatNumber value="${row}" type="number" maxFractionDigits="3"
+			minFractionDigits="3" />
+	</display:column>
+
+
+</display:table>
 
 
 

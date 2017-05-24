@@ -14,6 +14,7 @@ import services.OrderDomainService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
+import domain.ShoppingGroup;
 import domain.User;
 
 @Controller
@@ -58,11 +59,23 @@ public class DashboardAdministratorController extends AbstractController {
 
 		final Collection<User> q4 = this.userService.usersWhoCreateMinusShoppingGroup();
 
+		final Collection<ShoppingGroup> q5 = this.shoppingGroupService.shoppingGroupsWithMorePuntuation();
+
+		final Collection<ShoppingGroup> q6 = this.shoppingGroupService.shoppingGroupsWithLessPuntuation();
+
+		final Double q7 = this.shoppingGroupService.percentShoppingGroupsWithFreePlaces();
+
+		final Double q8 = this.shoppingGroupService.percentShoppingGroupsWithoutFreePlaces();
+
 		res = new ModelAndView("administrator/dashboard");
 		res.addObject("numberOfUserRegistered", q1);
 		res.addObject("numberOfOrderLastMonth", q2);
 		res.addObject("usersWhoCreateMoreShoppingGroup", q3);
 		res.addObject("usersWhoCreateMinusShoppingGroup", q4);
+		res.addObject("shoppingGroupsWithMorePuntuation", q5);
+		res.addObject("shoppingGroupsWithLessPuntuation", q6);
+		res.addObject("percentShoppingGroupsWithFreePlaces", q7);
+		res.addObject("percentShoppingGroupsWithoutFreePlaces", q8);
 
 		return res;
 

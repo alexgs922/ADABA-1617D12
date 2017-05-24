@@ -189,7 +189,7 @@ public class ShoppingGroupService {
 		result.setFreePlaces(form.getFreePlaces());
 		result.setLastOrderDate(null);
 		result.setName(form.getName());
-		result.setPrivate_group(form.isPrivate_group());
+		result.setPrivate_group(false);
 		result.setProducts(products);
 		result.setPunctuations(punctuations);
 		result.setPuntuation(0);
@@ -215,7 +215,6 @@ public class ShoppingGroupService {
 		result.setFreePlaces(form.getFreePlaces());
 		result.setLastOrderDate(null);
 		result.setName(form.getName());
-		result.setPrivate_group(form.isPrivate_group());
 		result.setSite(form.getSite());
 
 		this.validator.validate(result, bindingResult);
@@ -231,13 +230,56 @@ public class ShoppingGroupService {
 		Assert.isTrue(sh.isPrivate_group() == false);
 		Assert.isTrue(sh.getCreator().getId() != principal.getId());
 		Assert.isTrue(!sh.getUsers().contains(principal));
+		Assert.isTrue(sh.getFreePlaces() > 0);
 
 		principal.getShoppingGroup().add(sh);
 		sh.getUsers().add(principal);
 
+		sh.setFreePlaces(sh.getFreePlaces() - 1);
+
 		this.shoppingGroupRepository.save(sh);
 		this.shoppingGroupRepository.flush();
 		this.userService.save(principal);
+
+	}
+
+	public Collection<ShoppingGroup> shoppingGroupsWithMorePuntuation() {
+
+		Collection<ShoppingGroup> sg;
+
+		sg = this.shoppingGroupRepository.shoppingGroupsWithMorePuntuation();
+
+		return sg;
+
+	}
+
+	public Collection<ShoppingGroup> shoppingGroupsWithLessPuntuation() {
+
+		Collection<ShoppingGroup> sg;
+
+		sg = this.shoppingGroupRepository.shoppingGroupsWithLessPuntuation();
+
+		return sg;
+
+	}
+
+	public Double percentShoppingGroupsWithFreePlaces() {
+
+		Double sg;
+
+		sg = this.shoppingGroupRepository.percentShoppingGroupsWithFreePlaces();
+
+		return sg;
+
+	}
+
+	public Double percentShoppingGroupsWithoutFreePlaces() {
+
+		Double sg;
+
+		sg = this.shoppingGroupRepository.percentShoppingGroupsWithoutFreePlaces();
+
+		return sg;
 
 	}
 
