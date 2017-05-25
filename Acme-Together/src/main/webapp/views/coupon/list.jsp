@@ -25,7 +25,9 @@
 	<security:authorize access="hasRole('COMMERCIAL')">
 		<display:column>
 			<button onclick="location.href='coupon/commercial/edit.do?couponId=${row.id}'"> <spring:message code="coupon.edit" /></button>
-			<acme:confirmDelete url="coupon/commercial/delete.do?couponId=${row.id}" code="coupon.delete" codeConfirm="coupon.confirm.delete" />
+			<jstl:if test="${row.orders == null || empty row.orders }">
+				<acme:confirmDelete url="coupon/commercial/delete.do?couponId=${row.id}" code="coupon.delete" codeConfirm="coupon.confirm.delete" />
+			</jstl:if>
 		</display:column>
 	</security:authorize>
 	

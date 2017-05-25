@@ -12,7 +12,6 @@ package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.DistributorService;
 import services.OrderDomainService;
-import domain.Distributor;
 import domain.OrderDomain;
 import domain.Status;
 
@@ -34,25 +32,23 @@ public class OrderController extends AbstractController {
 	@Autowired
 	private DistributorService	distributorService;
 
-	
+
 	// Change Status of the Order ---------------------------------------------------------------		
 
 	@RequestMapping(value = "/changeStatus", method = RequestMethod.GET)
-	public ModelAndView listOrders(@RequestParam final int orderId)  {
-		
-			ModelAndView res;
+	public ModelAndView listOrders(@RequestParam final int orderId) {
 
-			OrderDomain order = 	this.orderDomainService.findOne(orderId);
-			if(order.getStatus().equals(Status.INPROCESS))
-			
+		ModelAndView res;
+
+		final OrderDomain order = this.orderDomainService.findOne(orderId);
+		if (order.getStatus().equals(Status.INPROCESS))
+
 			order.setStatus(Status.SENT);
-			this.orderDomainService.save(order);
-			
-			res = new ModelAndView("redirect:../warehouse/myWarehouses.do");
+		this.orderDomainService.save(order);
 
-			return res;
-		}
-	
-	
-	
+		res = new ModelAndView("redirect:../warehouse/myWarehouses.do");
+
+		return res;
+	}
+
 }

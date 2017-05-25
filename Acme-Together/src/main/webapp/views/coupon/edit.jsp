@@ -23,10 +23,9 @@
 		
 		<acme:textbox code="coupon.couponNumber" path="couponNumber" />
 		<br>
-		<acme:textbox code="coupon.discount" path="discount" />
+		<acme:number code="coupon.discount" path="discount" step="0.01" min="0.0" max="1.0"/>
 		<br>
 		
-	
 	</fieldset>
 	<br><br>
 

@@ -1,5 +1,7 @@
+
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -13,6 +15,7 @@ import org.springframework.validation.Validator;
 import repositories.CouponRepository;
 import domain.Commercial;
 import domain.Coupon;
+import domain.OrderDomain;
 
 @Service
 @Transactional
@@ -105,6 +108,12 @@ public class CouponService {
 
 		if (coupon.getId() == 0) {
 			result = coupon;
+			final Commercial commercial = this.commercialService.findByPrincipal();
+			Collection<OrderDomain> orders;
+			orders = new ArrayList<OrderDomain>();
+			result.setCommercial(commercial);
+			result.setOrders(orders);
+
 			this.validator.validate(result, binding);
 
 		} else {
