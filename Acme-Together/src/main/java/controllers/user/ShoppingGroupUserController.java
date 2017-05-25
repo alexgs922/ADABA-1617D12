@@ -2,6 +2,7 @@
 package controllers.user;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.validation.Valid;
 
@@ -16,15 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CategoryService;
+import services.CommentService;
 import services.ProductService;
+import services.PunctuationService;
 import services.ShoppingGroupService;
 import services.UserService;
 import controllers.AbstractController;
 import domain.Category;
+import domain.Comment;
 import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.JoinToForm;
 import forms.ShoppingGroupForm;
+import forms.ShoppingGroupForm2;
 
 @Controller
 @RequestMapping("/shoppingGroup/user")
@@ -51,6 +58,11 @@ public class ShoppingGroupUserController extends AbstractController {
 	@Autowired
 	private CategoryService			categoryService;
 
+	@Autowired
+	private PunctuationService		punctuationService;
+
+	private CommentService			commentService;
+
 
 	// List my joined shoppingGroups ----------------------------------------------
 
@@ -59,13 +71,16 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		ModelAndView res;
 		Collection<ShoppingGroup> shoppingGroups;
+		Collection<ShoppingGroup> sh;
 		User principal;
 
 		principal = this.userService.findByPrincipal();
-		shoppingGroups = principal.getShoppingGroup();
+		shoppingGroups = principal.getMyShoppingGroups();
+		sh = this.shoppingGroupService.ShoppingGroupsToWichBelongsAndNotCreatedBy(principal);
 
-		res = new ModelAndView("shoppingGroup/list2");
-		res.addObject("shoppingGroups", shoppingGroups);
+		res = new ModelAndView("shoppingGroup/list");
+		res.addObject("myShoppingGroups", shoppingGroups);
+		res.addObject("shoppingGroupsBelongs", sh);
 		res.addObject("requestURI", "/shoppingGroup/user/joinedShoppingGroups.do");
 		res.addObject("principal", principal);
 
@@ -80,18 +95,14 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		ModelAndView result;
 		Collection<ShoppingGroup> sGToShow;
-		Collection<ShoppingGroup> joinedGroups;
 		User principal;
 
 		sGToShow = this.shoppingGroupService.listPublicForUsersOfSH();
 
 		principal = this.userService.findByPrincipal();
 
-		joinedGroups = principal.getShoppingGroup();
-
 		result = new ModelAndView("shoppingGroup/list2");
 		result.addObject("shoppingGroups", sGToShow);
-		result.addObject("joinedGroups", joinedGroups);
 		result.addObject("requestURI", "shoppingGroup/user/list.do");
 		result.addObject("principal", principal);
 
@@ -122,6 +133,8 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("products", sGToShow.getProducts());
 		result.addObject("comments", sGToShow.getComments());
 		result.addObject("principal", this.userService.findByPrincipal());
+		result.addObject("alreadyPunctuate", this.shoppingGroupService.alreadyPunctuate(sGToShow, this.userService.findByPrincipal()));
+		result.addObject("principalPunctuation", this.punctuationService.getPunctuationByShoppingGroupAndUser(sGToShow, this.userService.findByPrincipal()));
 		return result;
 
 	}
@@ -171,6 +184,271 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 
 	}
+
+	//Edit a new Shopping Group  ------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+		final ShoppingGroup shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		final User principal = this.userService.findByPrincipal();
+
+		try {
+			//solo el creador del grupo puede editarlo
+			Assert.isTrue(principal.getId() == shoppingGroup.getCreator().getId());
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.mine");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		try {
+			//Si está a null significa que no está esperando ningún pedido, y por tanto está en estado 'inicial' y se puede modificar y eliminar
+			Assert.isTrue(shoppingGroup.getLastOrderDate() == null);
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.noteditableInList");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		final ShoppingGroupForm2 shoppingGroupForm;
+
+		Collection<Category> cats;
+
+		shoppingGroupForm = new ShoppingGroupForm2();
+		shoppingGroupForm.setName(shoppingGroup.getName());
+		shoppingGroupForm.setCategory(shoppingGroup.getCategory());
+		shoppingGroupForm.setDescription(shoppingGroup.getDescription());
+		shoppingGroupForm.setFreePlaces(shoppingGroup.getFreePlaces());
+		shoppingGroupForm.setPrivate_group(shoppingGroup.isPrivate_group());
+		shoppingGroupForm.setSite(shoppingGroup.getSite());
+
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit2");
+		result.addObject("shoppingGroup", shoppingGroupForm);
+		result.addObject("categories", cats);
+		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveEdit(@ModelAttribute("shoppingGroup") @Valid final ShoppingGroupForm2 shoppingGroupForm, @RequestParam final int shoppingGroupId, final BindingResult bindingResult) {
+
+		ModelAndView result;
+		ShoppingGroup shoppingGroup;
+
+		if (bindingResult.hasErrors()) {
+
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId);
+
+		} else
+			try {
+				try {
+
+					shoppingGroup = this.shoppingGroupService.reconstruct2(shoppingGroupForm, shoppingGroupId, bindingResult);
+
+				} catch (final IllegalArgumentException iae) {
+
+					result = new ModelAndView("errorOperation");
+					result.addObject("errorOperation", "sh.not.edit2");
+					result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+					return result;
+				}
+
+				this.shoppingGroupService.save(shoppingGroup);
+				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, "sh.commit.error");
+			}
+
+		return result;
+
+	}
+
+	//Delete a shoppingGroup ------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		Assert.notNull(sh);
+
+		try {
+
+			final User principal = this.userService.findByPrincipal();
+			Assert.isTrue(principal.getId() == sh.getCreator().getId());
+
+		} catch (final Exception e) {
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.mine");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+		}
+
+		try {
+
+			Assert.isNull(sh.getLastOrderDate());
+
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.noteditableInList");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		try {
+			this.shoppingGroupService.delete(sh);
+			result = new ModelAndView("redirect:joinedShoppingGroups.do");
+
+		} catch (final Throwable th) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.commit.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+
+		}
+
+		return result;
+	}
+
+	// Punctuate a shopping group ---------------------------------------------------------
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.GET)
+	public ModelAndView punctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		punctuation = this.punctuationService.create();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/punctuate", method = RequestMethod.POST, params = "save")
+	public ModelAndView punctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+		principal.getPunctuations().add(punctuation);
+		shoppingGroup.getPunctuations().add(punctuation);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createCreateModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + punctuationRes.getValue());
+				this.userService.save(principal);
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuation);
+
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.GET)
+	public ModelAndView editPunctuate(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Punctuation punctuation;
+		ShoppingGroup shoppingGroup;
+		User principal;
+		int oldValue;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		punctuation = this.punctuationService.getPunctuationByShoppingGroupAndUser(shoppingGroup, principal);
+
+		oldValue = punctuation.getValue();
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+			res.addObject("oldValue", oldValue);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/editPunctuation", method = RequestMethod.POST, params = "save")
+	public ModelAndView editPnctuate(@ModelAttribute("punctuation") final Punctuation punctuation, final BindingResult binding, @RequestParam final int shoppingGroupId, final int oldValue) {
+		ModelAndView res;
+
+		final Punctuation punctuationRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		punctuation.setShoppingGroup(shoppingGroup);
+		punctuation.setUser(principal);
+
+		punctuationRes = this.punctuationService.reconstruct(punctuation, binding);
+
+		shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() - oldValue + punctuationRes.getValue());
+
+		if (binding.hasErrors()) {
+			res = this.createEditModelAndView(punctuation);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+
+				this.shoppingGroupService.save(shoppingGroup);
+				this.punctuationService.saveAndFlush(punctuationRes);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
 	// Add product to shopping group ------------------------------------------------------
 
 	@RequestMapping(value = "/addProduct", method = RequestMethod.GET)
@@ -254,14 +532,17 @@ public class ShoppingGroupUserController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
-	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding) {
+	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
 		ModelAndView res;
 
 		final Product productRes;
 		User principal;
+		ShoppingGroup shoppingGroup;
 
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
 		principal = this.userService.findByPrincipal();
 		product.setUserProduct(principal);
+		product.setShoppingGroupProducts(shoppingGroup);
 
 		productRes = this.productService.reconstruct(product, binding);
 
@@ -270,9 +551,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 				res = this.createEditModelAndView(product, binding.getGlobalError().getCode());
 
-			else
+			else {
 
 				res = this.createEditModelAndView(product);
+				res.addObject("shoppingGroup", product.getShoppingGroupProducts());
+			}
 		else
 			try {
 
@@ -310,8 +593,129 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//  Ancillary methods -------------------------------------------------------
+	//Join to a group  ----------------------------------------------------------------------
 
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	public ModelAndView joinToGroup(@RequestParam final int shoppingGroupId) {
+		final ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		final User principal = this.userService.findByPrincipal();
+
+		try {
+
+			Assert.isTrue(sh.getLastOrderDate() == null);
+			Assert.isTrue(sh.isPrivate_group() == false);
+			Assert.isTrue(sh.getCreator().getId() != principal.getId());
+			Assert.isTrue(!sh.getUsers().contains(principal));
+
+		} catch (final Exception e) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.join.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		final JoinToForm form = new JoinToForm();
+
+		result = new ModelAndView("joinToShFormulario");
+		result.addObject("joinToForm", form);
+		result.addObject("shToJoinName", sh.getName());
+		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
+
+		return result;
+
+	}
+	@RequestMapping(value = "/join", method = RequestMethod.POST, params = "save")
+	public ModelAndView joinToGroup(final JoinToForm joinToForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+		ShoppingGroup sh;
+
+		sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		if (bindingResult.hasErrors()) {
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId);
+		} else
+			try {
+
+				Assert.isTrue(joinToForm.isTermsOfUse() == true);
+				this.shoppingGroupService.jointToAShoppingGroup(sh);
+				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+
+			} catch (final IllegalArgumentException iae) {
+
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.jointTo.must.accept.conditions");
+
+			} catch (final Throwable th) {
+
+				result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.commit.error");
+
+			}
+		return result;
+	}
+
+	@RequestMapping(value = "/comment", method = RequestMethod.GET)
+	public ModelAndView comment(@RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		Comment comment;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		comment = this.commentService.create(shoppingGroup);
+
+		try {
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			res = this.createEditModelAndViewComment(comment);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} catch (final Throwable th) {
+			res = new ModelAndView("forbiddenOperation");
+		}
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/comment", method = RequestMethod.POST, params = "save")
+	public ModelAndView comment(@ModelAttribute("comment") final Comment comment, final BindingResult binding, @RequestParam final int shoppingGroupId) {
+		ModelAndView res;
+
+		final Comment commentRes;
+		ShoppingGroup shoppingGroup;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		comment.setShoppingGroupComments(shoppingGroup);
+		comment.setUserComment(principal);
+		comment.setMoment(new Date());
+
+		commentRes = this.commentService.reconstruct(comment, binding);
+
+		if (binding.hasErrors()) {
+			res = this.createEditModelAndViewComment(comment);
+			res.addObject("shoppingGroup", shoppingGroup);
+		} else
+			try {
+				this.commentService.saveAndFlush(commentRes);
+				shoppingGroup.getComments().add(commentRes);
+				this.shoppingGroupService.save(shoppingGroup);
+				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
+			} catch (final Throwable th) {
+				res = new ModelAndView("forbiddenOperation");
+			}
+
+		return res;
+	}
+
+	//  Ancillary methods -------------------------------------------------------
 	protected ModelAndView createCreateModelAndView(final Product product) {
 		ModelAndView res;
 
@@ -325,6 +729,24 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		result = new ModelAndView("product/addProduct");
 		result.addObject("product", product);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndViewComment(final Comment comment) {
+		ModelAndView res;
+
+		res = this.createEditModelAndViewComment(comment, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndViewComment(final Comment comment, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("shoppingGroup/user/comment");
+		result.addObject("comment", comment);
 		result.addObject("message", message);
 
 		return result;
@@ -366,6 +788,86 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("shoppingGroup", form);
 		result.addObject("categories", cats);
 		result.addObject("requestURI", "shoppingGroup/user/create.do");
+		result.addObject("message", message);
+
+		return result;
+	}
+	protected ModelAndView createEditModelAndView(final ShoppingGroupForm2 form, final int shoppingGroupId) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(form, shoppingGroupId, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final ShoppingGroupForm2 form, final int shoppingGroupId, final String message) {
+		ModelAndView result;
+
+		Collection<Category> cats;
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit");
+		result.addObject("shoppingGroup", form);
+		result.addObject("categories", cats);
+		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createCreateModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createCreateModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/create");
+		result.addObject("punctuation", punctuation);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(punctuation, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final Punctuation punctuation, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("punctuation/edit");
+		result.addObject("punctuation", punctuation);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final JoinToForm form, final int shoppingGroupId) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(form, shoppingGroupId, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final JoinToForm form, final int shoppingGroupId, final String message) {
+		ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		result = new ModelAndView("joinToShFormulario");
+		result.addObject("joinToForm", form);
+		result.addObject("shToJoinName", sh.getName());
+		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
 		result.addObject("message", message);
 
 		return result;

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -15,6 +16,8 @@ import org.springframework.validation.Validator;
 import repositories.PrivateMessageRepository;
 import domain.Actor;
 import domain.PrivateMessage;
+import domain.ShoppingGroup;
+import domain.User;
 
 @Service
 @Transactional
@@ -176,6 +179,32 @@ public class PrivateMessageService {
 		final Collection<PrivateMessage> sm = this.privateMessageRepository.myRecivedMessages(actorId);
 
 		return sm;
+	}
+
+	public void deleteGroupMessage(final ShoppingGroup shGroup, final User principal) {
+
+		Assert.isTrue(principal.getMyShoppingGroups().contains(shGroup));
+		final Collection<User> usersToMessage = new ArrayList<User>();
+		usersToMessage.addAll(shGroup.getUsers());
+
+		for (final User user : usersToMessage)
+			if (user.getId() != principal.getId()) {
+
+				final PrivateMessage mensaje = this.create();
+				mensaje.setSubject("I have canceled this group:  " + shGroup.getName() + " // He cancelado este grupo: " + shGroup.getName());
+				mensaje.setText("I have canceled this group, you may want to know! // ¡He cancelado este grupo, quizás quieras saberlo!");
+				final Date current = new Date();
+				mensaje.setMoment(current);
+				mensaje.setAttachments("");
+				mensaje.setRecipient(user);
+				mensaje.setSender(principal);
+				mensaje.setCopy(false);
+
+				final Collection<PrivateMessage> cr = user.getMessageReceives();
+				cr.add(mensaje);
+
+				this.privateMessageRepository.save(mensaje);
+			}
 	}
 
 }

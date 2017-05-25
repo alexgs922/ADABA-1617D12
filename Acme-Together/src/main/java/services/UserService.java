@@ -20,6 +20,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.CreditCard;
+import domain.ShoppingGroup;
 import domain.User;
 import forms.RegistrationForm;
 
@@ -280,5 +281,15 @@ public class UserService {
 		myFriends = this.userRepository.findAllMyFriends(userId);
 
 		return myFriends;
+	}
+
+	public Collection<ShoppingGroup> findAllShoppingGroupsNoPrivate(final int userId) {
+
+		Collection<ShoppingGroup> sg;
+
+		sg = this.userRepository.findAllShoppingGroupsNoPrivate(userId);
+
+		return sg;
+
 	}
 }

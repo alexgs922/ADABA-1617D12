@@ -34,7 +34,10 @@
 		<value>/views/product/tiles.xml</value>
 		<value>/views/privateMessage/tiles.xml</value>	
 		<value>/views/warehouse/tiles.xml</value>
-	
+		<value>/views/privateMessage/tiles.xml</value>
+		<value>/views/punctuation/tiles.xml</value>
+		<value>/views/comment/tiles.xml</value>
+
 	</util:list>
 
 </beans>

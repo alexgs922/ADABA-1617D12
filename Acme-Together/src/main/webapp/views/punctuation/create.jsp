@@ -21,30 +21,61 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="shoppingGroup/user/editProduct.do?shoppingGroupId=${shoppingGroup.id }"
-	modelAttribute="product">
+<form:form action="shoppingGroup/user/punctuate.do?shoppingGroupId=${shoppingGroup.id }"
+	modelAttribute="punctuation">
 	
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/> 
 
-	<acme:textbox code="product.name" path="name" />
-	<br>
-	<acme:textbox code="product.url" path="url" />
-	<br>
-	<acme:textbox code="product.referenceNumber" path="referenceNumber" />
-	<br>
-	<acme:textbox code="product.price" path="price" />
-	<br>
-		
+	
+	<form:label path="value">
 
+		<spring:message code="punctuation.value"/>:
+
+	</form:label>
+
+	<form:select path="value">
+	
+		<option value ="-5">-5</option>
+		
+		<option value ="-4">-4</option>
+		
+		<option value ="-3">-3</option>
+		
+		<option value ="-2">-2</option>
+		
+		<option value ="-1">-1</option>
+
+		<option value ="0">0</option>
+
+		<option value ="1">1</option>
+
+		<option value ="2">2</option>
+
+		<option value ="3">3</option>
+
+		<option value ="4">4</option>
+
+		<option value ="5">5</option>
+
+	
+
+	</form:select>
+	
+	<form:errors cssClass="error" path="value"/>
+
+	<br />
+	<br />
+	<br />
+	
 	
 
 	<input type="submit" name="save"
-		value="<spring:message code="product.save" />" />&nbsp; 
+		value="<spring:message code="punctuation.save" />" />&nbsp; 
 	
 	<input type="button" name="cancel"
-		value="<spring:message code="product.cancel" />"
+		value="<spring:message code="punctuation.cancel" />"
 		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
 	<br />
 

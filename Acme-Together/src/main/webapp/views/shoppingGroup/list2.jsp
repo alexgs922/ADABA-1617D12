@@ -57,21 +57,38 @@
 		</a>
 
 	</display:column>
-
-	<spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
+	
 	<security:authorize access="hasRole('USER')">
 		<display:column>
-			<jstl:if test="${row.creator.id == principal.id }">
-				<button
-					onclick="if(confirm('${confirmJoin }'))
-						location.href='shoppingGroup/user/join.do?shoppingGroupId=${row.id}'">
-					<spring:message code="shoppingGroup.join" />
-				</button>
-			</jstl:if>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/edit.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.edit" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.noteditableInList"/>
+			</jstl:when>
+			</jstl:choose>
 
 		</display:column>
 	</security:authorize>
+	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			<jstl:choose>
+			<jstl:when test="${sh.creator.id == principal.id and sh.lastOrderDate eq null}">
+				<a href="shoppingGroup/user/delete.do?shoppingGroupId=${sh.id}">
+					<spring:message code="sh.delete" />
+				</a>
+			</jstl:when>
+			<jstl:when test ="${sh.creator.id == principal.id and sh.lastOrderDate ne null}">
+				<spring:message code="sh.notdeletableInList"/>
+			</jstl:when>
+			</jstl:choose>
 
+		</display:column>
+	</security:authorize>
 
 </display:table>
 

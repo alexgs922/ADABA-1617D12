@@ -34,6 +34,8 @@
 		<value>/views/product/messages</value>
 		<value>/views/privateMessage/messages</value>
 		<value>/views/warehouse/messages</value>
+		<value>/views/punctuation/messages</value>
+		<value>/views/comment/messages</value>
 	
 	</util:list>
 

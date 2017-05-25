@@ -20,6 +20,7 @@ import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
+import forms.ShoppingGroupForm2;
 
 @Service
 @Transactional
@@ -34,6 +35,15 @@ public class ShoppingGroupService {
 
 	@Autowired
 	private UserService				userService;
+
+	@Autowired
+	private PrivateMessageService	privateMessageService;
+
+	@Autowired
+	private ProductService			productService;
+
+	@Autowired
+	private CommentService			commentService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -66,18 +76,38 @@ public class ShoppingGroupService {
 
 	public ShoppingGroup save(final ShoppingGroup s) {
 		Assert.notNull(s);
-		final User principal = this.userService.findByPrincipal();
-		principal.getMyShoppingGroups().add(s);
-		principal.getShoppingGroup().add(s);
+
+		if (s.getId() == 0) {
+			final User principal = this.userService.findByPrincipal();
+			principal.getMyShoppingGroups().add(s);
+			principal.getShoppingGroup().add(s);
+		}
+
 		return this.shoppingGroupRepository.save(s);
 
 	}
 
 	public void delete(final ShoppingGroup s) {
 		Assert.notNull(s);
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(s.getLastOrderDate() == null);
+		Assert.isTrue(s.getCreator().getId() == principal.getId());
+
+		this.privateMessageService.deleteGroupMessage(s, principal);
+
+		for (final Product p : s.getProducts()) {
+			this.productService.delete(p);
+			this.productService.flush();
+		}
+
+		for (final Comment c : s.getComments()) {
+			this.commentService.delete(c);
+			this.commentService.flush();
+		}
+
 		this.shoppingGroupRepository.delete(s);
 	}
-
 	//Other business methods --------------------------------------
 
 	public void flush() {
@@ -102,6 +132,33 @@ public class ShoppingGroupService {
 		shoppingGroups = this.shoppingGroupRepository.listPublicForUsersOfSH(principal.getId());
 
 		return shoppingGroups;
+	}
+
+	public Collection<ShoppingGroup> ShoppingGroupsToWichBelongsAndNotCreatedBy(final User u) {
+		Collection<ShoppingGroup> shoppingGroups;
+
+		shoppingGroups = this.shoppingGroupRepository.ShoppingGroupsToWichBelongsAndNotCreatedBy(u.getId());
+
+		return shoppingGroups;
+
+	}
+
+	public boolean alreadyPunctuate(final ShoppingGroup shoppingGroup, final User user) {
+		Assert.notNull(shoppingGroup);
+
+		Collection<Punctuation> userPunctuation;
+		boolean res = false;
+
+		userPunctuation = user.getPunctuations();
+
+		for (final Punctuation userPunc : userPunctuation)
+			if (userPunc.getShoppingGroup().getId() == shoppingGroup.getId()) {
+				res = true;
+				break;
+			}
+
+		return res;
+
 	}
 
 
@@ -142,6 +199,46 @@ public class ShoppingGroupService {
 		this.validator.validate(result, bindingResult);
 
 		return result;
+	}
+
+	public ShoppingGroup reconstruct2(final ShoppingGroupForm2 form, final int shoppingGroupId, final BindingResult bindingResult) {
+		ShoppingGroup result;
+
+		result = this.shoppingGroupRepository.findOne(shoppingGroupId);
+
+		Assert.isTrue(result.getLastOrderDate() == null);
+		final User principal = this.userService.findByPrincipal();
+		Assert.isTrue(principal.getId() == result.getCreator().getId());
+
+		result.setCategory(form.getCategory());
+		result.setDescription(form.getDescription());
+		result.setFreePlaces(form.getFreePlaces());
+		result.setLastOrderDate(null);
+		result.setName(form.getName());
+		result.setPrivate_group(form.isPrivate_group());
+		result.setSite(form.getSite());
+
+		this.validator.validate(result, bindingResult);
+
+		return result;
+	}
+
+	public void jointToAShoppingGroup(final ShoppingGroup sh) {
+
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(sh.getLastOrderDate() == null);
+		Assert.isTrue(sh.isPrivate_group() == false);
+		Assert.isTrue(sh.getCreator().getId() != principal.getId());
+		Assert.isTrue(!sh.getUsers().contains(principal));
+
+		principal.getShoppingGroup().add(sh);
+		sh.getUsers().add(principal);
+
+		this.shoppingGroupRepository.save(sh);
+		this.shoppingGroupRepository.flush();
+		this.userService.save(principal);
+
 	}
 
 }
