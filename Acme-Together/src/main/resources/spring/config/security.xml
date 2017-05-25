@@ -95,6 +95,7 @@
 		<security:intercept-url pattern="/warehouse/edit.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/warehouse/create.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/warehouse/delete.do" access="hasRole('DISTRIBUTOR')" />
+		<security:intercept-url pattern="/warehouse/myOrders.do" access="hasRole('DISTRIBUTOR')" />
 		
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 

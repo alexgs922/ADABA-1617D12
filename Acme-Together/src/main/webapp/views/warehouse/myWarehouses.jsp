@@ -44,11 +44,18 @@
 			</a>
 	</display:column>
 
+	<display:column>
+			<a href="warehouse/myOrders.do?warehouseId=${row.id}"> <spring:message
+					code="warehouse.orders" />
+			</a>
+	</display:column>
+
+
 		
 </display:table>
-
-<spring:message code="warehouse.distributor" var="warehouseAddress" />
-<a href="/warehouse/create.do"></a>
+		<button onclick = "location.href='warehouse/create.do'"> 
+		<spring:message code="warehouse.create" />
+		</button>
 
 	
 

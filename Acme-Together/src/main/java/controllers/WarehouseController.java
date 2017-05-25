@@ -10,10 +10,7 @@
 
 package controllers;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.DistributorService;
 import services.WarehouseService;
-import domain.Category;
 import domain.Distributor;
+import domain.OrderDomain;
 import domain.Warehouse;
 
 @Controller
@@ -79,7 +76,27 @@ public class WarehouseController extends AbstractController {
 
 			return res;
 		}
+	//List my orders in a warehouse -------------------------------------------------------------------------------------
 
+			@RequestMapping(value = "/myOrders", method = RequestMethod.GET)
+			public ModelAndView listOrders(@RequestParam final int warehouseId)  {
+				
+					ModelAndView res;
+					Collection<OrderDomain> orders;
+					Warehouse w = 	this.warehouseService.findOne(warehouseId);
+					Distributor principal = this.distributorService.findByPrincipal();
+
+					Assert.isTrue(w.getDistributor().getId() == principal.getId());
+					
+					orders = w.getOrders();
+					
+					res = new ModelAndView("warehouse/myOrders");
+					res.addObject("orders", orders);
+
+					return res;
+				}
+		
+		
 	//Create Warehouse --------------------------------------------------------------------------------------
 
 		@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -181,6 +198,8 @@ public class WarehouseController extends AbstractController {
 			return res;
 		}
 
+		
+		
 		// OTHER METHODS
 		
 		
