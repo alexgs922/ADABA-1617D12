@@ -1,6 +1,7 @@
 
 package controllers.user;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -32,6 +33,7 @@ import domain.User;
 import forms.JoinToForm;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupForm2;
+import forms.ShoppingGroupFormPrivate;
 
 @Controller
 @RequestMapping("/shoppingGroup/user")
@@ -142,6 +144,58 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	// Create a new private Shopping Group ------------------------------------------------------
 
+	@RequestMapping(value = "/createPrivate", method = RequestMethod.GET)
+	public ModelAndView createPrivate() {
+		ModelAndView result;
+		final ShoppingGroupFormPrivate shoppingGroupForm;
+		Collection<Category> cats;
+		Collection<User> usuarios;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		usuarios = new ArrayList<User>();
+		usuarios.addAll(this.userService.findAllNotBannedActors());
+		usuarios.remove(principal);
+
+		shoppingGroupForm = new ShoppingGroupFormPrivate();
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit3");
+		result.addObject("shoppingGroup", shoppingGroupForm);
+		result.addObject("categories", cats);
+		result.addObject("usuarios", usuarios);
+		result.addObject("requestURI", "shoppingGroup/user/createPrivate.do");
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/createPrivate", method = RequestMethod.POST, params = "save")
+	public ModelAndView savePrivate(@ModelAttribute("shoppingGroup") @Valid final ShoppingGroupFormPrivate shoppingGroupForm, final BindingResult bindingResult) {
+
+		ModelAndView result;
+		ShoppingGroup shoppingGroup;
+
+		if (bindingResult.hasErrors()) {
+
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView3(shoppingGroupForm, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView3(shoppingGroupForm);
+
+		} else
+			try {
+				shoppingGroup = this.shoppingGroupService.reconstructPrivate(shoppingGroupForm, bindingResult);
+				this.shoppingGroupService.save(shoppingGroup);
+				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView3(shoppingGroupForm, "sh.commit.error");
+			}
+
+		return result;
+
+	}
+
 	//Create a new Shopping Group  ------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -188,96 +242,96 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	//Edit a  Shopping Group  ------------------------------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int shoppingGroupId) {
-		ModelAndView result;
-		final ShoppingGroup shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-		final User principal = this.userService.findByPrincipal();
-
-		try {
-			//solo el creador del grupo puede editarlo
-			Assert.isTrue(principal.getId() == shoppingGroup.getCreator().getId());
-		} catch (final Exception e) {
-
-			result = new ModelAndView("errorOperation");
-			result.addObject("errorOperation", "sh.not.mine");
-			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
-			return result;
-
-		}
-
-		try {
-			//Si está a null significa que no está esperando ningún pedido, y por tanto está en estado 'inicial' y se puede modificar y eliminar
-			Assert.isTrue(shoppingGroup.getLastOrderDate() == null);
-		} catch (final Exception e) {
-
-			result = new ModelAndView("errorOperation");
-			result.addObject("errorOperation", "sh.noteditableInList");
-			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
-			return result;
-
-		}
-
-		final ShoppingGroupForm2 shoppingGroupForm;
-
-		Collection<Category> cats;
-
-		shoppingGroupForm = new ShoppingGroupForm2();
-		shoppingGroupForm.setName(shoppingGroup.getName());
-		shoppingGroupForm.setCategory(shoppingGroup.getCategory());
-		shoppingGroupForm.setDescription(shoppingGroup.getDescription());
-		shoppingGroupForm.setFreePlaces(shoppingGroup.getFreePlaces());
-		shoppingGroupForm.setSite(shoppingGroup.getSite());
-
-		cats = this.categoryService.findAll2();
-
-		result = new ModelAndView("shoppingGroup/edit2");
-		result.addObject("shoppingGroup", shoppingGroupForm);
-		result.addObject("categories", cats);
-		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
-
-		return result;
-
-	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveEdit(@ModelAttribute("shoppingGroup") @Valid final ShoppingGroupForm2 shoppingGroupForm, @RequestParam final int shoppingGroupId, final BindingResult bindingResult) {
-
-		ModelAndView result;
-		ShoppingGroup shoppingGroup;
-
-		if (bindingResult.hasErrors()) {
-
-			if (bindingResult.getGlobalError() != null)
-				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
-			else
-				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId);
-
-		} else
-			try {
-				try {
-
-					shoppingGroup = this.shoppingGroupService.reconstruct2(shoppingGroupForm, shoppingGroupId, bindingResult);
-
-				} catch (final IllegalArgumentException iae) {
-
-					result = new ModelAndView("errorOperation");
-					result.addObject("errorOperation", "sh.not.edit2");
-					result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
-					return result;
-				}
-
-				this.shoppingGroupService.save(shoppingGroup);
-				result = new ModelAndView("redirect:joinedShoppingGroups.do");
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, "sh.commit.error");
-			}
-
-		return result;
-
-	}
+	//	//Edit a  Shopping Group  ------------------------------------------------------
+	//
+	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	//	public ModelAndView edit(@RequestParam final int shoppingGroupId) {
+	//		ModelAndView result;
+	//		final ShoppingGroup shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+	//		final User principal = this.userService.findByPrincipal();
+	//
+	//		try {
+	//			//solo el creador del grupo puede editarlo
+	//			Assert.isTrue(principal.getId() == shoppingGroup.getCreator().getId());
+	//		} catch (final Exception e) {
+	//
+	//			result = new ModelAndView("errorOperation");
+	//			result.addObject("errorOperation", "sh.not.mine");
+	//			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+	//			return result;
+	//
+	//		}
+	//
+	//		try {
+	//			//Si está a null significa que no está esperando ningún pedido, y por tanto está en estado 'inicial' y se puede modificar y eliminar
+	//			Assert.isTrue(shoppingGroup.getLastOrderDate() == null);
+	//		} catch (final Exception e) {
+	//
+	//			result = new ModelAndView("errorOperation");
+	//			result.addObject("errorOperation", "sh.noteditableInList");
+	//			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+	//			return result;
+	//
+	//		}
+	//
+	//		final ShoppingGroupForm2 shoppingGroupForm;
+	//
+	//		Collection<Category> cats;
+	//
+	//		shoppingGroupForm = new ShoppingGroupForm2();
+	//		shoppingGroupForm.setName(shoppingGroup.getName());
+	//		shoppingGroupForm.setCategory(shoppingGroup.getCategory());
+	//		shoppingGroupForm.setDescription(shoppingGroup.getDescription());
+	//		shoppingGroupForm.setFreePlaces(shoppingGroup.getFreePlaces());
+	//		shoppingGroupForm.setSite(shoppingGroup.getSite());
+	//
+	//		cats = this.categoryService.findAll2();
+	//
+	//		result = new ModelAndView("shoppingGroup/edit2");
+	//		result.addObject("shoppingGroup", shoppingGroupForm);
+	//		result.addObject("categories", cats);
+	//		result.addObject("requestURI", "shoppingGroup/user/edit.do?shoppingGroupId=" + shoppingGroupId);
+	//
+	//		return result;
+	//
+	//	}
+	//
+	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	//	public ModelAndView saveEdit(@ModelAttribute("shoppingGroup") @Valid final ShoppingGroupForm2 shoppingGroupForm, @RequestParam final int shoppingGroupId, final BindingResult bindingResult) {
+	//
+	//		ModelAndView result;
+	//		ShoppingGroup shoppingGroup;
+	//
+	//		if (bindingResult.hasErrors()) {
+	//
+	//			if (bindingResult.getGlobalError() != null)
+	//				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+	//			else
+	//				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId);
+	//
+	//		} else
+	//			try {
+	//				try {
+	//
+	//					shoppingGroup = this.shoppingGroupService.reconstruct2(shoppingGroupForm, shoppingGroupId, bindingResult);
+	//
+	//				} catch (final IllegalArgumentException iae) {
+	//
+	//					result = new ModelAndView("errorOperation");
+	//					result.addObject("errorOperation", "sh.not.edit2");
+	//					result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+	//					return result;
+	//				}
+	//
+	//				this.shoppingGroupService.save(shoppingGroup);
+	//				result = new ModelAndView("redirect:joinedShoppingGroups.do");
+	//			} catch (final Throwable oops) {
+	//				result = this.createEditModelAndView(shoppingGroupForm, shoppingGroupId, "sh.commit.error");
+	//			}
+	//
+	//		return result;
+	//
+	//	}
 
 	//Delete a shoppingGroup ------------------------------------------------------
 
@@ -872,6 +926,39 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		result = new ModelAndView("punctuation/create");
 		result.addObject("punctuation", punctuation);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView3(final ShoppingGroupFormPrivate form) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView3(form, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView3(final ShoppingGroupFormPrivate form, final String message) {
+
+		ModelAndView result;
+
+		Collection<User> usuarios;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		usuarios = new ArrayList<User>();
+		usuarios.addAll(this.userService.findAllNotBannedActors());
+		usuarios.remove(principal);
+
+		Collection<Category> cats;
+		cats = this.categoryService.findAll2();
+
+		result = new ModelAndView("shoppingGroup/edit3");
+		result.addObject("shoppingGroup", form);
+		result.addObject("categories", cats);
+		result.addObject("usuarios", usuarios);
+		result.addObject("requestURI", "shoppingGroup/user/createPrivate.do");
 		result.addObject("message", message);
 
 		return result;

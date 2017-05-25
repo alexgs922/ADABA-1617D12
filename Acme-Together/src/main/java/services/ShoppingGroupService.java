@@ -21,6 +21,7 @@ import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupForm2;
+import forms.ShoppingGroupFormPrivate;
 
 @Service
 @Transactional
@@ -215,6 +216,42 @@ public class ShoppingGroupService {
 		result.setLastOrderDate(null);
 		result.setName(form.getName());
 		result.setSite(form.getSite());
+
+		this.validator.validate(result, bindingResult);
+
+		return result;
+	}
+
+	public ShoppingGroup reconstructPrivate(final ShoppingGroupFormPrivate form, final BindingResult bindingResult) {
+		ShoppingGroup result;
+		Collection<Comment> cs;
+		User principal;
+		Collection<Product> products;
+		Collection<Punctuation> punctuations;
+		Collection<User> users;
+
+		result = new ShoppingGroup();
+		cs = new ArrayList<Comment>();
+		principal = this.userService.findByPrincipal();
+		products = new ArrayList<Product>();
+		punctuations = new ArrayList<Punctuation>();
+		users = new ArrayList<User>();
+		users.add(principal);
+		users.addAll(form.getUsers());
+
+		result.setCategory(form.getCategory());
+		result.setComments(cs);
+		result.setCreator(principal);
+		result.setDescription(form.getDescription());
+		result.setFreePlaces(0);
+		result.setLastOrderDate(null);
+		result.setName(form.getName());
+		result.setPrivate_group(true);
+		result.setProducts(products);
+		result.setPunctuations(punctuations);
+		result.setPuntuation(0);
+		result.setSite(form.getSite());
+		result.setUsers(users);
 
 		this.validator.validate(result, bindingResult);
 

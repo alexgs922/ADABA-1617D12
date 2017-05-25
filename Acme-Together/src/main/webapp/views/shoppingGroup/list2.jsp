@@ -103,6 +103,15 @@
 
 </security:authorize>
 
+<security:authorize access="hasRole('USER')">
+
+	<button
+		onclick="location.href='shoppingGroup/user/createPrivate.do?'">
+		<spring:message code="shoppingGroup.createPrivate" />
+	</button>
+
+</security:authorize>
+
 
 
 
