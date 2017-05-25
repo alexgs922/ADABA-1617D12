@@ -57,6 +57,7 @@
 		<security:intercept-url pattern="/privateMessage/response/create.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/privateMessage/deleteReceived.do"	access="isAuthenticated()" />
 		<security:intercept-url pattern="/privateMessage/deleteSent.do"	access="isAuthenticated()" />
+		<security:intercept-url pattern="/warehouse/list.do" access="isAuthenticated()" />
 			
 			
 	    <security:intercept-url pattern="/user/listUnbanned.do" access="hasRole('USER')" /> 
@@ -85,7 +86,11 @@
 		<security:intercept-url pattern="/distributor/profile.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/distributor/viewProfile.do" access="hasRole('DISTRIBUTOR')" /> 
 		<security:intercept-url pattern="/distributor/editProfile.do" access="hasRole('DISTRIBUTOR')" /> 
-	
+		<security:intercept-url pattern="/warehouse/myWarehouses.do" access="hasRole('DISTRIBUTOR')" />
+		<security:intercept-url pattern="/warehouse/edit.do" access="hasRole('DISTRIBUTOR')" />
+		<security:intercept-url pattern="/warehouse/create.do" access="hasRole('DISTRIBUTOR')" />
+		<security:intercept-url pattern="/warehouse/delete.do" access="hasRole('DISTRIBUTOR')" />
+		
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 

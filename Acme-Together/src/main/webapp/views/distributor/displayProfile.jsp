@@ -38,7 +38,7 @@
 		<jstl:choose>
 
 			<jstl:when test="${principal.id == row.id }">
-				<a href="distributor/editProfile.do?distributorId=${row.id}"> <spring:message
+				<a href="distributor/editProfile.do?distributorId=${principal.id}"> <spring:message
 						code="distributor.editprofile" />
 				</a>
 

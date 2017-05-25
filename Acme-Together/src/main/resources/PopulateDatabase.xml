@@ -1355,6 +1355,7 @@
 				<ref bean="order3" />
 			</list>
 		</property>
+		<property name="distributor" ref="distributor1"/>
 
 	</bean>
 
@@ -1366,6 +1367,7 @@
 				<ref bean="order2" />
 			</list>
 		</property>
+		<property name="distributor" ref="distributor2"/>
 
 	</bean>
 	
@@ -1377,6 +1379,7 @@
 				
 			</list>
 		</property>
+		<property name="distributor" ref="distributor3"/>
 
 	</bean>
 	

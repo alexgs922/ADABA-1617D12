@@ -62,6 +62,7 @@ public class Warehouse extends DomainEntity {
 
 
 	@Valid
+	@NotNull
 	@ManyToOne()
 	public Distributor getDistributor() {
 		return this.distributor;

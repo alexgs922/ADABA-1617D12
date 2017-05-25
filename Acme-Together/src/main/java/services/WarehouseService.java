@@ -1,15 +1,20 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.WarehouseRepository;
+import domain.OrderDomain;
 import domain.Warehouse;
 
 @Service
@@ -23,6 +28,12 @@ public class WarehouseService {
 
 
 	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private Validator				validator;
+
+	@Autowired
+	private DistributorService				distributorService;
 
 	// Constructors -----------------------------------------------------------
 
@@ -41,6 +52,24 @@ public class WarehouseService {
 
 	}
 
+	public Warehouse reconstruct(final Warehouse warehouse, final BindingResult binding) {
+		Warehouse result;
+		if (warehouse.getId() == 0){
+			result = warehouse;
+		List<OrderDomain> orders = new ArrayList<OrderDomain>();
+		result.setOrders(orders);
+		}
+		else {
+			
+			result = this.warehouseRepository.findOne(warehouse.getId());
+			result.setName(warehouse.getName());
+			result.setWarehouseAddress(warehouse.getWarehouseAddress());
+			this.validator.validate(result, binding);
+		}
+		return result;
+	}
+
+	
 	public Collection<Warehouse> findAll() {
 		Collection<Warehouse> result;
 		result = this.warehouseRepository.findAll();
@@ -59,12 +88,18 @@ public class WarehouseService {
 		return this.warehouseRepository.save(warehouse);
 	}
 
+	public Warehouse saveAndFlush(final Warehouse warehouse) {
+		Assert.notNull(warehouse);
+		return this.warehouseRepository.saveAndFlush(warehouse);
+	}
+
+	
 	public void delete(final Warehouse warehouse) {
 		Assert.notNull(warehouse);
 		this.warehouseRepository.delete(warehouse);
 
 	}
-
+	
 	// Other business methods ----------------------------------------------
 
 	public void flush() {

@@ -65,6 +65,8 @@
 	
 			<li><a class="fNiv" href="distributor/viewProfile.do"><spring:message
 						code="master.page.viewProfile" /></a></li>
+			<li><a class="fNiv" href="warehouse/myWarehouses.do"><spring:message
+						code="master.page.viewMyWarehouses" /></a></li>
 
 		</security:authorize>
 		

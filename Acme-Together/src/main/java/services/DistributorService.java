@@ -1,8 +1,10 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -20,6 +22,7 @@ import security.UserAccount;
 import domain.Actor;
 import domain.Administrator;
 import domain.Distributor;
+import domain.Warehouse;
 import forms.DistributorForm;
 
 @Service
@@ -33,6 +36,10 @@ public class DistributorService {
 
 	// Supporting services ------------------------------------------
 
+
+	@Autowired
+	private WarehouseService		warehouseService;
+	
 	@Autowired
 	private ActorService			actorService;
 
@@ -132,7 +139,27 @@ public class DistributorService {
 		return this.distributorRepository.save(distributor);
 
 	}
+	
+	public Distributor saveAndFlush2(Distributor distributor, Warehouse w) {
+		Assert.notNull(distributor);
+		Assert.notNull(w);
 
+		if (distributor.getId() != 0) {
+
+			w.setDistributor(distributor);
+			w = this.warehouseService.saveAndFlush(w);
+			Collection<Warehouse>coll = distributor.getWarehouses();
+			List<Warehouse> list = new ArrayList<Warehouse>(coll);
+			list.add(w);
+			distributor.setWarehouses(list);
+			this.save(distributor);
+		} else
+			distributor = this.save(distributor);
+		return distributor;
+
+	}
+
+	
 	public Distributor findOneToSent(final int distributorId) {
 
 		Distributor result;
