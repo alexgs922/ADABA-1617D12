@@ -61,6 +61,7 @@ public class ShoppingGroupUserController extends AbstractController {
 	@Autowired
 	private PunctuationService		punctuationService;
 
+	@Autowired
 	private CommentService			commentService;
 
 
@@ -672,7 +673,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-		comment = this.productService.create(shoppingGroup);
+		comment = this.commentService.create(shoppingGroup);
 
 		try {
 			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
@@ -700,14 +701,14 @@ public class ShoppingGroupUserController extends AbstractController {
 		comment.setUserComment(principal);
 		comment.setMoment(new Date());
 
-		commentRes = this.productService.reconstruct(comment, binding);
+		commentRes = this.commentService.reconstruct(comment, binding);
 
 		if (binding.hasErrors()) {
 			res = this.createEditModelAndViewComment(comment);
 			res.addObject("shoppingGroup", shoppingGroup);
 		} else
 			try {
-				this.productService.saveAndFlush(commentRes);
+				this.commentService.saveAndFlush(commentRes);
 				shoppingGroup.getComments().add(commentRes);
 				this.shoppingGroupService.save(shoppingGroup);
 				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());

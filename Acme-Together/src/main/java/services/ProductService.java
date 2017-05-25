@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -13,9 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ProductRepository;
-import domain.Comment;
 import domain.Product;
-import domain.ShoppingGroup;
 import domain.User;
 
 @Service
@@ -129,39 +126,6 @@ public class ProductService {
 		this.validator.validate(result, binding);
 
 		return result;
-	}
-
-	public Comment create(final ShoppingGroup sh) {
-		Comment res;
-		res = new Comment();
-
-		res.setMoment(new Date());
-		return res;
-	}
-
-	public Comment reconstruct(final Comment comment, final BindingResult binding) {
-		Comment result;
-
-		if (comment.getId() == 0) {
-			result = comment;
-			this.validator.validate(result, binding);
-		} else {
-			result = this.commentService.findOne(comment.getId());
-
-			result.setText(comment.getText());
-			result.setTitle(comment.getTitle());
-
-			this.validator.validate(result, binding);
-		}
-
-		return result;
-	}
-
-	public Comment saveAndFlush(final Comment c) {
-		Assert.isTrue(this.checkUserPrincipal());
-		Assert.notNull(c);
-		return this.commentService.saveAndFlush(c);
-
 	}
 
 }
