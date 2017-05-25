@@ -21,4 +21,10 @@
 	<import resource="datasource.xml" />
 	<import resource="config/packages.xml" />
 	
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<bean id="authenticate"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+	
 </beans>
