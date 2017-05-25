@@ -41,6 +41,11 @@
 		<put-attribute name="body" value="/views/shoppingGroup/edit2.jsp"/>
 	</definition>
 	
+	<definition name="shoppingGroup/edit3" extends="master.page">	
+		<put-attribute name="title" value="Edit Private Shopping Group" />
+		<put-attribute name="body" value="/views/shoppingGroup/edit3.jsp"/>
+	</definition>
+	
 	<definition name="errorOperation" extends="master.page">	
 		<put-attribute name="title" value="Forbidden Operation" />
 		<put-attribute name="body" value="/views/shoppingGroup/forbiddenOperation.jsp"/>
@@ -49,18 +54,6 @@
 	<definition name="joinToShFormulario" extends="master.page">	
 		<put-attribute name="title" value="Conditions for joining a group" />
 		<put-attribute name="body" value="/views/shoppingGroup/joinTo.jsp"/>
-	</definition>
-	
-	
-	<definition name="joinToShPrivateFormulario" extends="master.page">	
-		<put-attribute name="title" value="Invitation for joining a private group" />
-		<put-attribute name="body" value="/views/shoppingGroup/joinToPrivate.jsp"/>
-	</definition>
-	
-	
-	<definition name="inviteUsers" extends="master.page">	
-		<put-attribute name="title" value="Invitations for joining a private group" />
-		<put-attribute name="body" value="/views/shoppingGroup/inviteUsers.jsp"/>
 	</definition>
 	
 	

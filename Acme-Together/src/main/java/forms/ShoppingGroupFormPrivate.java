@@ -34,7 +34,6 @@ public class ShoppingGroupFormPrivate {
 	private Collection<User>	users;
 
 
-	@NotNull
 	@NotEmpty
 	public Collection<User> getUsers() {
 		return this.users;

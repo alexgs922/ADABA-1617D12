@@ -10,40 +10,46 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 
+
 <form:form action="${requestURI}" modelAttribute="shoppingGroup">
 	
 	<fieldset>
 		<legend><spring:message code="sh.Info"/></legend>
+			
 		<br>
-		
 		<acme:textbox code="sh.name" path="name"/>
 		<br>
 		<acme:textarea code="sh.description" path="description"/>
 		<br>
-		
-		<jstl:if test="${shoppingGroup.private_group eq false}">
-		<form:label path="freePlaces">
-		<spring:message code="sh.freePlaces" />
-		</form:label>
-		<form:input type="number" min="0" step="1" path="freePlaces"/>
-		<form:errors cssClass="error" path="freePlaces" />
-		<br>
-		<br>
-		</jstl:if>
 		<acme:textbox code="sh.site" path="site"/>
 		<br>
+		
+		<spring:message code="sh.users"/><jstl:out value=" :"></jstl:out>
+		<form:checkboxes items="${usuarios}" path="users" itemLabel="name" multiple="multiple"/>
+		<form:errors cssClass="error" path="users" />
+		<br>
+		
 	</fieldset>
 
 
 	<fieldset>
 		<br>
 		<legend><spring:message code="sh.category"/></legend>
-		<acme:selectSH items="${categories}" itemLabel="name" code="sh.category" path="category"/>
+		<acme:select items="${categories}" itemLabel="name" code="sh.category" path="category"/>
 		<br>
 	</fieldset>
 	
 	<br>
 	
+
+	<form:checkbox path="termsOfUse"/>
+	<spring:message code="sh.termsOfUse.confirmation"/> 
+	<a href="user/dataProtection.do">
+		<spring:message code="sh.termsOfUse.link" />
+	</a>
+	<form:errors cssClass="error" path="termsOfUse" />
+	<br>
+	<br>
 	<br>
 	<acme:submit name="save" code="sh.accept"/>			
 	<acme:cancel url="shoppingGroup/user/joinedShoppingGroups.do" code="sh.cancel"/>
