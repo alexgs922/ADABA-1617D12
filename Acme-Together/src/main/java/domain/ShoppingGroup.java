@@ -14,7 +14,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -142,7 +141,6 @@ public class ShoppingGroup extends DomainEntity {
 
 	@ManyToMany
 	@Valid
-	@NotNull
 	public Collection<User> getUsers() {
 		return this.users;
 	}
@@ -153,7 +151,6 @@ public class ShoppingGroup extends DomainEntity {
 
 	@OneToMany(mappedBy = "shoppingGroupProducts")
 	@Valid
-	@NotNull
 	public Collection<Product> getProducts() {
 		return this.products;
 	}

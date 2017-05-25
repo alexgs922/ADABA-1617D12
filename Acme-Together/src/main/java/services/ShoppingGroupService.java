@@ -20,7 +20,6 @@ import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
-import forms.ShoppingGroupForm2;
 import forms.ShoppingGroupFormPrivate;
 
 @Service
@@ -201,7 +200,7 @@ public class ShoppingGroupService {
 		return result;
 	}
 
-	public ShoppingGroup reconstruct2(final ShoppingGroupForm2 form, final int shoppingGroupId, final BindingResult bindingResult) {
+	public ShoppingGroup reconstruct2(final ShoppingGroup sh, final int shoppingGroupId, final BindingResult bindingResult) {
 		ShoppingGroup result;
 
 		result = this.shoppingGroupRepository.findOne(shoppingGroupId);
@@ -210,12 +209,13 @@ public class ShoppingGroupService {
 		final User principal = this.userService.findByPrincipal();
 		Assert.isTrue(principal.getId() == result.getCreator().getId());
 
-		result.setCategory(form.getCategory());
-		result.setDescription(form.getDescription());
-		result.setFreePlaces(form.getFreePlaces());
+		result.setCategory(sh.getCategory());
+		result.setDescription(sh.getDescription());
+		if (result.isPrivate_group() == false)
+			result.setFreePlaces(sh.getFreePlaces());
 		result.setLastOrderDate(null);
-		result.setName(form.getName());
-		result.setSite(form.getSite());
+		result.setName(sh.getName());
+		result.setSite(sh.getSite());
 
 		this.validator.validate(result, bindingResult);
 
