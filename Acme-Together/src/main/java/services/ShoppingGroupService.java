@@ -279,6 +279,35 @@ public class ShoppingGroupService {
 
 	}
 
+	public void leaveAgroup(final ShoppingGroup sh) {
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isNull(sh.getLastOrderDate());
+		Assert.isTrue(sh.getCreator().getId() != principal.getId());
+		Assert.isTrue(sh.getUsers().contains(principal));
+
+		final Collection<Product> col = new ArrayList<Product>();
+		col.addAll(sh.getProducts());
+
+		for (final Product p : col)
+			if (p.getUserProduct().getId() == principal.getId()) {
+				sh.getProducts().remove(p);
+				principal.getProducts().remove(p);
+				this.productService.delete(p);
+				this.productService.flush();
+			}
+
+		principal.getShoppingGroup().remove(sh);
+		sh.getUsers().remove(principal);
+
+		sh.setFreePlaces(sh.getFreePlaces() + 1);
+
+		this.shoppingGroupRepository.save(sh);
+		this.shoppingGroupRepository.flush();
+		this.userService.save(principal);
+
+	}
+
 	public Collection<ShoppingGroup> shoppingGroupsWithMorePuntuation() {
 
 		Collection<ShoppingGroup> sg;

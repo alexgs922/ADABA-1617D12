@@ -577,6 +577,43 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	// Leaving a group --------------------------------------------------------------------------------------------------------------------------------------------
+
+	@RequestMapping(value = "/leave", method = RequestMethod.GET)
+	public ModelAndView leaveAGroup(@RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		final User principal = this.userService.findByPrincipal();
+
+		try {
+
+			Assert.isNull(sh.getLastOrderDate());
+			Assert.isTrue(sh.getCreator().getId() != principal.getId());
+			Assert.isTrue(sh.getUsers().contains(principal));
+
+		} catch (final Throwable e) {
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.join.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+		}
+
+		try {
+			this.shoppingGroupService.leaveAgroup(sh);
+			result = new ModelAndView("redirect:joinedShoppingGroups.do");
+
+		} catch (final Throwable th) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.commit.error");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+		}
+
+		return result;
+
+	}
+
 	//Join to a public group  ----------------------------------------------------------------------
 
 	@RequestMapping(value = "/join", method = RequestMethod.GET)

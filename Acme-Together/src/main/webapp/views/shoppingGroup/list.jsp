@@ -154,6 +154,21 @@
 
 	</display:column>
 	
+	<security:authorize access="hasRole('USER')">
+		<display:column>
+			
+			<jstl:if test="${row.creator.id != principal.id and row.lastOrderDate eq null}">
+				
+				<spring:message code="shoppingGroup.confirm.leave" var="confirmLeave" />
+				<button onclick="if(confirm('${confirmLeave}')) location.href='shoppingGroup/user/leave.do?shoppingGroupId=${row.id}'">
+				<spring:message code="sh.leave" />
+				</button>
+			</jstl:if>
+			
+
+		</display:column>
+	</security:authorize>
+	
 </display:table>
 
 </jstl:if>
