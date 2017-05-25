@@ -45,7 +45,7 @@ public class Engagement extends DomainEntity {
 
 
 	@Valid
-	@NotNull
+	
 	@OneToOne(optional = false)
 	public OrderDomain getOrder() {
 		return this.order;

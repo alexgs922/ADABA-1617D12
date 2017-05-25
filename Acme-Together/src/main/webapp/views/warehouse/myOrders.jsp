@@ -26,20 +26,44 @@
 	<!-- Attributes -->
 
 	<spring:message code="order.initDate" var="initDate" />
-	<display:column property="initDate" title="${initDate}" sortable="true" />
+	<display:column property="initDate" title="${initDate}" sortable="false" />
 
 	<spring:message code="order.finishDate" var="finishDate" />
 	<display:column property="finishDate" title="${finishDate}"
-		sortable="true" />
+		sortable="false" />
 
 	<spring:message code="order.status" var="status" />
 	<display:column property="status" title="${status}"
-		sortable="true" />
+		sortable="false" />
 
 	<spring:message code="order.totalPrice" var="totalPrice" />
 	<display:column property="totalPrice" title="${totalPrice}"
-		sortable="true" />
-		
+		sortable="false" />
+	
+	
+	<jstl:choose>
+
+			<jstl:when test="${row.status == 'INPROCESS'}">
+	<display:column>
+			
+			<a href="order/changeStatus.do?orderId=${row.id}"> <spring:message
+					code="order.changeStatus" />
+			</a>
+	</display:column>
+			</jstl:when>
+			
+			<jstl:when test="${row.status == 'RECEIVED'}">
+	
+	<!-- HAY QUE HACER EL ELIMINAR ORDER -->
+		<display:column>	
+			<a href="#"> <spring:message
+					code="order.removeOrder" />
+			</a>
+		</display:column>
+			</jstl:when>
+			
+</jstl:choose>
+			
 </display:table>
 
 
