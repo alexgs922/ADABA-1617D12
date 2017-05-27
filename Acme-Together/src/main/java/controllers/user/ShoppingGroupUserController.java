@@ -154,8 +154,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		usuarios = new ArrayList<User>();
-		usuarios.addAll(this.userService.findAllNotBannedActors());
-		usuarios.remove(principal);
+		usuarios.addAll(principal.getFriends());
+
+		for (final User u : usuarios)
+			if (u.isBanned())
+				usuarios.remove(u);
 
 		shoppingGroupForm = new ShoppingGroupFormPrivate();
 		cats = this.categoryService.findAll2();
@@ -517,7 +520,6 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
 	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
 		ModelAndView res;
 
@@ -593,7 +595,7 @@ public class ShoppingGroupUserController extends AbstractController {
 			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
 			Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
 			this.shoppingGroupService.makeOrder(shoppingGroup);
-			result = new ModelAndView("redirect: display.do");
+			result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
 
 		} catch (final Throwable th) {
 			result = new ModelAndView("forbiddenOperation");

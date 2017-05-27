@@ -323,7 +323,7 @@ public class ShoppingGroupService {
 
 		groupProducts = new ArrayList<Product>(shoppingGroup.getProducts());
 
-		if (!groupProducts.isEmpty() && groupProducts.get(0).getOrderProduct() == null)
+		if ((!groupProducts.isEmpty() && groupProducts.get(0).getOrderProduct() == null) || (shoppingGroup.getLastOrderDate() == null))
 			res = true;
 
 		return res;
@@ -335,13 +335,19 @@ public class ShoppingGroupService {
 
 		OrderDomain order;
 		User principal;
+		Collection<Product> ps;
 
 		principal = this.userService.findByPrincipal();
 		order = this.orderService.create();
+		ps = new ArrayList<Product>();
 
 		order.setInitDate(new Date());
 		order.setStatus(Status.INPROCESS);
-		order.setProducts(shoppingGroup.getProducts());
+		order.setProducts(ps);
+		shoppingGroup.setLastOrderDate(new Date());
+
+		this.shoppingGroupRepository.save(shoppingGroup);
+
 		Double totalPrice = 0.0;
 
 		for (final Product p : shoppingGroup.getProducts())
@@ -354,15 +360,17 @@ public class ShoppingGroupService {
 		this.userService.save(principal);
 		this.userService.flush();
 
-		this.orderService.saveAndFlush(order);
+		final OrderDomain d2 = this.orderService.saveAndFlush(order);
+		this.orderService.flush();
 
 		for (final Product p : shoppingGroup.getProducts()) {
-			p.setOrderProduct(order);
+			p.setOrderProduct(d2);
 			this.productService.save(p);
+			d2.getProducts().add(p);
+			this.orderService.saveAndFlush(d2);
 		}
 
 	}
-
 	public Collection<ShoppingGroup> shoppingGroupsWithMorePuntuation() {
 
 		Collection<ShoppingGroup> sg;
