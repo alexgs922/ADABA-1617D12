@@ -17,7 +17,7 @@
 <tiles-definitions>
 
 	<definition name="shoppingGroup/list" extends="master.page">	
-		<put-attribute name="title" value="Groups which you are join" />
+		<put-attribute name="title" value="Shopping groups that you belong" />
 		<put-attribute name="body" value="/views/shoppingGroup/list.jsp"/>
 	</definition>
 	
