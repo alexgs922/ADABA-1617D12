@@ -37,6 +37,7 @@
 		<value>/views/punctuation/tiles.xml</value>
 		<value>/views/comment/tiles.xml</value>
 		<value>/views/coupon/tiles.xml</value>
+		<value>/views/order/tiles.xml</value>
 
 	</util:list>
 

@@ -125,7 +125,17 @@ public class User extends Actor {
 	private Collection<Product>			products;
 	private Collection<Comment>			comments;
 	private Collection<Punctuation>		punctuations;
+	private Collection<OrderDomain>		orders;
 
+
+	@OneToMany(mappedBy = "creator")
+	public Collection<OrderDomain> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(final Collection<OrderDomain> orders) {
+		this.orders = orders;
+	}
 
 	@OneToMany(mappedBy = "user")
 	public Collection<Punctuation> getPunctuations() {

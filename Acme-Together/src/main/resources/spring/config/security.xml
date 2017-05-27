@@ -84,6 +84,9 @@
 		<security:intercept-url pattern="/shoppingGroup/user/create.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/**" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/comment.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/order/user/list.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/order/user/markAsAReceived.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/order/user/makeOrder.do" access="hasRole('USER')" />
 		 
 		
 	

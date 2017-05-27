@@ -84,7 +84,17 @@ public class OrderDomain extends DomainEntity {
 	private Collection<Product>	products;
 	private Coupon				coupon;
 	private Engagement			engagement;
+	private User				creator;
 
+
+	@ManyToOne(optional = false)
+	public User getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(final User creator) {
+		this.creator = creator;
+	}
 
 	@Valid
 	@OneToOne(optional = true)

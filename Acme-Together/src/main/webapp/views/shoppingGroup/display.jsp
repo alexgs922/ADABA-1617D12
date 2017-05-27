@@ -54,6 +54,18 @@
 
 </display:table>
 
+
+<security:authorize access="hasRole('USER')">
+	<jstl:if test="${shoppingGroup.creator.id == principal.id && allowedMakeOrder == true}">
+		<button
+			onclick="location.href='shoppingGroup/user/makeOrder.do?shoppingGroupId=${sh.id}'">
+			<spring:message code="shoppingGroup.makeOrder" />
+		</button>
+	</jstl:if>
+
+
+</security:authorize>
+
 <br>
 
 <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
@@ -188,7 +200,7 @@
 </display:table>
 
 <security:authorize access="hasRole('USER')">
-	<jstl:if test="${principal.shoppingGroup.contains(sh)}">
+	<jstl:if test="${principal.shoppingGroup.contains(sh) && allowedMakeOrder == true}">
 		<button
 			onclick="location.href='shoppingGroup/user/addProduct.do?shoppingGroupId=${sh.id}'">
 			<spring:message code="shoppingGroup.addProduct" />

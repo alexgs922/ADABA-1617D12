@@ -36,6 +36,7 @@
 		<value>/views/punctuation/messages</value>
 		<value>/views/comment/messages</value>
 		<value>/views/coupon/messages</value>
+		<value>/views/order/messages</value>
 	
 	</util:list>
 

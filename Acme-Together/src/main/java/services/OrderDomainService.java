@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +12,8 @@ import org.springframework.util.Assert;
 
 import repositories.OrderDomainRepository;
 import domain.OrderDomain;
+import domain.Product;
+import domain.Status;
 
 @Service
 @Transactional
@@ -21,8 +24,11 @@ public class OrderDomainService {
 	@Autowired
 	private OrderDomainRepository	orderRepository;
 
-
 	// Supporting services ----------------------------------------------------
+
+	@Autowired
+	private ProductService			productService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -57,6 +63,11 @@ public class OrderDomainService {
 		return this.orderRepository.save(o);
 
 	}
+	public OrderDomain saveAndFlush(final OrderDomain o) {
+		Assert.notNull(o);
+		return this.orderRepository.saveAndFlush(o);
+
+	}
 
 	public void delete(final OrderDomain o) {
 		Assert.notNull(o);
@@ -76,5 +87,18 @@ public class OrderDomainService {
 		p = this.orderRepository.numberOfOrderLastMonth();
 
 		return p;
+	}
+
+	public void markAsAReceived(final OrderDomain order) {
+		Assert.notNull(order);
+
+		order.setStatus(Status.RECEIVED);
+		order.setFinishDate(new Date());
+
+		for (final Product p : order.getProducts()) {
+			p.setShoppingGroupProducts(null);
+			this.productService.saveAndFlush(p);
+		}
+
 	}
 }

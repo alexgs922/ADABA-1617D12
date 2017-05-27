@@ -671,6 +671,11 @@
 				<ref bean="comment1" />
 			</list>
 		</property>
+		<property name="orders">
+			<list>
+				<ref bean="order1" />
+			</list>
+		</property>
 
 	</bean>
 
@@ -729,6 +734,11 @@
 
 				<ref bean="comment2" />
 
+			</list>
+		</property>
+		<property name="orders">
+			<list>
+					
 			</list>
 		</property>
 
@@ -797,6 +807,11 @@
 			<list>
 				<ref bean="comment7" />
 				<ref bean="comment3" />
+			</list>
+		</property>
+		<property name="orders">
+			<list>
+				<ref bean="order2" />
 			</list>
 		</property>
 
@@ -868,6 +883,11 @@
 			<list>
 				<ref bean="comment5" />
 				<ref bean="comment4" />
+			</list>
+		</property>
+		<property name="orders">
+			<list>
+				<!--  <ref bean="order3" /> -->
 			</list>
 		</property>
 
@@ -961,18 +981,18 @@
 		<property name="order" ref="order2" />
 	</bean>
 
-	<bean id="engagement3" class="domain.Engagement">
+<!--  <bean id="engagement3" class="domain.Engagement">
 		<property name="listOrdersByUser">
 			<list>
-				<value>"usuario3 --> Quatrefoil -- 97.33</value>
-				<value>"usuario5 --> Dc to Ac inverter -- 279.99</value>
-				<value>"FEE --> 2  -- 1 € cada uno</value>
-				<value>"TOTAL --> 2 items -- 379.32</value>
+				<value>"usuario3  Quatrefoil  97.33</value> 
+				<value>"usuario5  Dc to Ac inverter  279.99</value>
+				<value>"FEE  2   1 € cada uno</value>
+				<value>"TOTAL  2 items  379.32</value>
 			</list>
 		</property>
 		<property name="order" ref="order3" />
-	</bean>
-
+	</bean> 
+-->
 
 
 	<!-- ORDERS -->
@@ -983,6 +1003,7 @@
 		<property name="status" value="RECEIVED" />
 		<property name="totalPrice" value="1318.00" />
 		<property name="coupon" ref="coupon1" />
+		<property name="creator" ref="user1" />
 		<property name="products">
 			<list>
 				<ref bean="product1" />
@@ -1001,6 +1022,7 @@
 		<property name="totalPrice" value="238.00" />
 		<!-- <property name="finishDate" value="" /> -->
 		<!-- <property name="coupon" ref="" /> -->
+		<property name="creator" ref="user3" />
 		<property name="products">
 			<list>
 				<ref bean="product6" />
@@ -1010,12 +1032,13 @@
 
 	</bean>
 
-	<bean id="order3" class="domain.OrderDomain">
+<!--  	<bean id="order3" class="domain.OrderDomain">
 		<property name="initDate" value="2017/05/21 10:00" />
 		<property name="status" value="INPROCESS" />
 		<property name="totalPrice" value="379.32" />
-		<!-- <property name="finishDate" value="" /> -->
-		<!-- <property name="coupon" ref="" /> -->
+		<property name="finishDate" value="" /> 
+		<property name="coupon" ref="" /> 
+		<property name="creator" ref="user4" />
 		<property name="products">
 			<list>
 				<ref bean="product8" />
@@ -1023,7 +1046,7 @@
 			</list>
 		</property>
 
-	</bean>
+	</bean> -->
 
 
 
@@ -1199,7 +1222,7 @@
 		<property name="price" value="97.33" />
 		<property name="shoppingGroupProducts" ref="shoppingGroup3" />
 		<property name="userProduct" ref="user4" />
-		<property name="orderProduct" ref="order3" />
+		<!-- <property name="orderProduct" ref="order3" /> -->
 
 	</bean>
 
@@ -1210,7 +1233,7 @@
 		<property name="price" value="279.99" />
 		<property name="shoppingGroupProducts" ref="shoppingGroup3" />
 		<property name="userProduct" ref="user5" />
-		<property name="orderProduct" ref="order3" />
+		<!--  <property name="orderProduct" ref="order3" /> -->
 
 	</bean>
 
@@ -1278,7 +1301,7 @@
 		<property name="creator" ref="user3" />
 		<property name="users">
 			<list>
-			
+				<ref bean="user3"/>
 				<ref bean="user4" />
 				<ref bean="user5" />
 	
@@ -1352,7 +1375,7 @@
 		<property name="orders">
 			<list>
 				<ref bean="order1" />
-				<ref bean="order3" />
+				<!-- <ref bean="order3" /> -->
 			</list>
 		</property>
 		<property name="distributor" ref="distributor1"/>

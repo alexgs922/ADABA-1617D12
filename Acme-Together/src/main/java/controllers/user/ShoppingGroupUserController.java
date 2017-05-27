@@ -137,6 +137,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("principal", this.userService.findByPrincipal());
 		result.addObject("alreadyPunctuate", this.shoppingGroupService.alreadyPunctuate(sGToShow, this.userService.findByPrincipal()));
 		result.addObject("principalPunctuation", this.punctuationService.getPunctuationByShoppingGroupAndUser(sGToShow, this.userService.findByPrincipal()));
+		result.addObject("allowedMakeOrder", this.shoppingGroupService.allowedMakeOrder(sGToShow));
 		return result;
 
 	}
@@ -577,6 +578,31 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	//Make group order -------------------------------------------------------------------------------------------------------------------------------------
+
+	@RequestMapping(value = "/makeOrder", method = RequestMethod.GET)
+	public ModelAndView makeOrder(@RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+		User principal;
+		ShoppingGroup shoppingGroup;
+
+		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+		principal = this.userService.findByPrincipal();
+
+		try {
+			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
+			Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
+			this.shoppingGroupService.makeOrder(shoppingGroup);
+			result = new ModelAndView("redirect: display.do");
+
+		} catch (final Throwable th) {
+			result = new ModelAndView("forbiddenOperation");
+
+		}
+
+		return result;
+
+	}
 	// Leaving a group --------------------------------------------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)
@@ -697,6 +723,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		try {
 			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
 			res = this.createCreateModelAndView(product);
 			res.addObject("shoppingGroup", shoppingGroup);
 		} catch (final Throwable th) {

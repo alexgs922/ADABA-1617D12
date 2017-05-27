@@ -104,9 +104,8 @@ public class Product extends DomainEntity {
 		this.userProduct = userProduct;
 	}
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@Valid
-	@NotNull
 	public ShoppingGroup getShoppingGroupProducts() {
 		return this.shoppingGroupProducts;
 	}

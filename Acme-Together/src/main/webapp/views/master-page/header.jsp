@@ -61,6 +61,9 @@
 			<li><a class="fNiv"
 				href="shoppingGroup/user/joinedShoppingGroups.do"><spring:message
 						code="master.page.UserJoinedShoppingGroups" /></a></li>
+			<li><a class="fNiv"
+				href="order/user/list.do"><spring:message
+						code="master.page.UserOrders" /></a></li>			
 			<li><a class="fNiv" href="coupon/user/list.do"><spring:message
 						code="master.page.listCoupons" /></a></li>
 		</security:authorize>

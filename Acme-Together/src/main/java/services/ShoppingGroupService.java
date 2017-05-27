@@ -3,6 +3,8 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -15,9 +17,11 @@ import org.springframework.validation.Validator;
 import repositories.ShoppingGroupRepository;
 import domain.Category;
 import domain.Comment;
+import domain.OrderDomain;
 import domain.Product;
 import domain.Punctuation;
 import domain.ShoppingGroup;
+import domain.Status;
 import domain.User;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupFormPrivate;
@@ -44,6 +48,9 @@ public class ShoppingGroupService {
 
 	@Autowired
 	private CommentService			commentService;
+
+	@Autowired
+	private OrderDomainService		orderService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -305,6 +312,54 @@ public class ShoppingGroupService {
 		this.shoppingGroupRepository.save(sh);
 		this.shoppingGroupRepository.flush();
 		this.userService.save(principal);
+
+	}
+
+	public boolean allowedMakeOrder(final ShoppingGroup shoppingGroup) {
+		Assert.notNull(shoppingGroup);
+
+		List<Product> groupProducts;
+		boolean res = false;
+
+		groupProducts = new ArrayList<Product>(shoppingGroup.getProducts());
+
+		if (!groupProducts.isEmpty() && groupProducts.get(0).getOrderProduct() == null)
+			res = true;
+
+		return res;
+
+	}
+
+	public void makeOrder(final ShoppingGroup shoppingGroup) {
+		Assert.notNull(shoppingGroup);
+
+		OrderDomain order;
+		User principal;
+
+		principal = this.userService.findByPrincipal();
+		order = this.orderService.create();
+
+		order.setInitDate(new Date());
+		order.setStatus(Status.INPROCESS);
+		order.setProducts(shoppingGroup.getProducts());
+		Double totalPrice = 0.0;
+
+		for (final Product p : shoppingGroup.getProducts())
+			totalPrice += p.getPrice();
+
+		order.setTotalPrice(totalPrice);
+		order.setCreator(principal);
+		principal.getOrders().add(order);
+
+		this.userService.save(principal);
+		this.userService.flush();
+
+		this.orderService.saveAndFlush(order);
+
+		for (final Product p : shoppingGroup.getProducts()) {
+			p.setOrderProduct(order);
+			this.productService.save(p);
+		}
 
 	}
 
