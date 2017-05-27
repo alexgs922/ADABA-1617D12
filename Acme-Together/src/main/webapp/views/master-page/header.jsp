@@ -97,7 +97,10 @@
 
 		<security:authorize access="isAuthenticated()">
 
-
+			<li><a class="fNiv" href="category/list.do"><spring:message
+						code="master.page.listCategories" /></a></li>
+			<li><a class="fNiv" href="distributor/list.do"><spring:message
+						code="master.page.listDistributors" /></a></li>
 
 			<li><a class="fNiv"><spring:message code="master.page.chirp" /></a>
 				<ul>
@@ -108,6 +111,7 @@
 								code="master.page.chirp.sent" /></a></li>
 					<li><a href="privateMessage/listReceivedMessages.do"><spring:message
 								code="master.page.chirp.received" /></a></li>
+
 				</ul></li>
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
