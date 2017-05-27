@@ -73,8 +73,6 @@ public class Warehouse extends DomainEntity {
 	}
 
 	@OneToMany
-	@Valid
-	@NotNull
 	public Collection<OrderDomain> getOrders() {
 		return this.orders;
 	}

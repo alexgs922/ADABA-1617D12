@@ -56,7 +56,7 @@
 	
 	<!-- HAY QUE HACER EL ELIMINAR ORDER -->
 		<display:column>	
-			<a href="#"> <spring:message
+			<a href="order/remove.do?orderId=${row.id}"> <spring:message
 					code="order.removeOrder" />
 			</a>
 		</display:column>
