@@ -644,62 +644,6 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
-	/*
-	 * @RequestMapping(value = "/join", method = RequestMethod.POST, params = "save")
-	 * public ModelAndView joinToGroup(final JoinToForm joinToForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
-	 * ModelAndView result;
-	 * ShoppingGroup sh;
-	 * 
-	 * sh = this.shoppingGroupService.findOne(shoppingGroupId);
-	 * 
-	 * if (bindingResult.hasErrors()) {
-	 * if (bindingResult.getGlobalError() != null)
-	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
-	 * else
-	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId);
-	 * } else
-	 * try {
-	 * 
-	 * Assert.isTrue(joinToForm.isTermsOfUse() == true);
-	 * this.shoppingGroupService.jointToAShoppingGroup(sh);
-	 * result = new ModelAndView("redirect:joinedShoppingGroups.do");
-	 * 
-	 * } catch (final IllegalArgumentException iae) {
-	 * 
-	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.jointTo.must.accept.conditions");
-	 * 
-	 * } catch (final Throwable th) {
-	 * 
-	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.commit.error");
-	 * 
-	 * }
-	 * return result;
-	 * }
-	 */
-
-	//	@RequestMapping(value = "/makeOrder", method = RequestMethod.GET)
-	//	public ModelAndView makeOrder(@RequestParam final int shoppingGroupId) {
-	//		ModelAndView result;
-	//		User principal;
-	//		ShoppingGroup shoppingGroup;
-	//
-	//		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-	//		principal = this.userService.findByPrincipal();
-	//
-	//		try {
-	//			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
-	//			Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
-	//			this.shoppingGroupService.makeOrder(shoppingGroup);
-	//			result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
-	//
-	//		} catch (final Throwable th) {
-	//			result = new ModelAndView("forbiddenOperation");
-	//
-	//		}
-	//
-	//		return result;
-	//
-	//	}
 	// Leaving a group --------------------------------------------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)
