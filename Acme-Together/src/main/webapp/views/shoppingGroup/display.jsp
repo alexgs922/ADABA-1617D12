@@ -61,6 +61,7 @@
 			onclick="location.href='shoppingGroup/user/makeOrder.do?shoppingGroupId=${sh.id}'">
 			<spring:message code="shoppingGroup.makeOrder" />
 		</button>
+			
 	</jstl:if>
 
 

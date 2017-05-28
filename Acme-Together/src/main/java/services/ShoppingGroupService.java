@@ -18,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.ShoppingGroupRepository;
 import domain.Category;
 import domain.Comment;
+import domain.Coupon;
 import domain.Engagement;
 import domain.OrderDomain;
 import domain.Product;
@@ -335,7 +336,7 @@ public class ShoppingGroupService {
 
 	}
 
-	public void makeOrder(final ShoppingGroup shoppingGroup) {
+	public void makeOrder(final ShoppingGroup shoppingGroup, final Coupon coupon) {
 		Assert.notNull(shoppingGroup);
 
 		OrderDomain order;
@@ -345,6 +346,9 @@ public class ShoppingGroupService {
 		principal = this.userService.findByPrincipal();
 		order = this.orderService.create();
 		ps = new ArrayList<Product>();
+
+		if (coupon != null)
+			order.setCoupon(coupon);
 
 		order.setInitDate(new Date());
 		order.setStatus(Status.INPROCESS);

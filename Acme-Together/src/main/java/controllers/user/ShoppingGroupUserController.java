@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CategoryService;
 import services.CommentService;
+import services.CouponService;
 import services.ProductService;
 import services.PunctuationService;
 import services.ShoppingGroupService;
@@ -30,6 +31,7 @@ import domain.Product;
 import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.CouponsForOrferForm;
 import forms.JoinToForm;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupFormPrivate;
@@ -64,6 +66,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CommentService			commentService;
+
+	@Autowired
+	private CouponService			couponService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -585,26 +590,116 @@ public class ShoppingGroupUserController extends AbstractController {
 	@RequestMapping(value = "/makeOrder", method = RequestMethod.GET)
 	public ModelAndView makeOrder(@RequestParam final int shoppingGroupId) {
 		ModelAndView result;
-		User principal;
-		ShoppingGroup shoppingGroup;
 
-		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
-		principal = this.userService.findByPrincipal();
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
+		final User principal = this.userService.findByPrincipal();
 
 		try {
-			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
-			Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
-			this.shoppingGroupService.makeOrder(shoppingGroup);
-			result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
-
+			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(sh));
+			Assert.isTrue(sh.getCreator().getId() == principal.getId());
 		} catch (final Throwable th) {
 			result = new ModelAndView("forbiddenOperation");
-
+			return result;
 		}
+
+		final CouponsForOrferForm form = new CouponsForOrferForm();
+
+		result = new ModelAndView("couponToFormulario");
+		result.addObject("couponsforOrderform", form);
+		result.addObject("cupones", this.couponService.findAll());
+		result.addObject("shId", shoppingGroupId);
+		result.addObject("requestURI", "shoppingGroup/user/makeOrder.do?shoppingGroupId=" + shoppingGroupId);
 
 		return result;
 
 	}
+
+	@RequestMapping(value = "/makeOrder", method = RequestMethod.POST, params = "save")
+	public ModelAndView makeOrder(final CouponsForOrferForm couponsForOrferForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
+		ModelAndView result;
+		ShoppingGroup sh;
+
+		sh = this.shoppingGroupService.findOne(shoppingGroupId);
+
+		if (bindingResult.hasErrors()) {
+			if (bindingResult.getGlobalError() != null)
+				result = this.createEditModelAndView(couponsForOrferForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+			else
+				result = this.createEditModelAndView(couponsForOrferForm, shoppingGroupId);
+		} else
+			try {
+
+				if (couponsForOrferForm.getCoupon() != null)
+					this.shoppingGroupService.makeOrder(sh, couponsForOrferForm.getCoupon());
+				else
+					this.shoppingGroupService.makeOrder(sh, null);
+
+				result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
+
+			} catch (final Throwable th) {
+				result = new ModelAndView("forbiddenOperation");
+			}
+
+		return result;
+
+	}
+
+	/*
+	 * @RequestMapping(value = "/join", method = RequestMethod.POST, params = "save")
+	 * public ModelAndView joinToGroup(final JoinToForm joinToForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
+	 * ModelAndView result;
+	 * ShoppingGroup sh;
+	 * 
+	 * sh = this.shoppingGroupService.findOne(shoppingGroupId);
+	 * 
+	 * if (bindingResult.hasErrors()) {
+	 * if (bindingResult.getGlobalError() != null)
+	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, bindingResult.getGlobalError().getCode());
+	 * else
+	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId);
+	 * } else
+	 * try {
+	 * 
+	 * Assert.isTrue(joinToForm.isTermsOfUse() == true);
+	 * this.shoppingGroupService.jointToAShoppingGroup(sh);
+	 * result = new ModelAndView("redirect:joinedShoppingGroups.do");
+	 * 
+	 * } catch (final IllegalArgumentException iae) {
+	 * 
+	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.jointTo.must.accept.conditions");
+	 * 
+	 * } catch (final Throwable th) {
+	 * 
+	 * result = this.createEditModelAndView(joinToForm, shoppingGroupId, "sh.commit.error");
+	 * 
+	 * }
+	 * return result;
+	 * }
+	 */
+
+	//	@RequestMapping(value = "/makeOrder", method = RequestMethod.GET)
+	//	public ModelAndView makeOrder(@RequestParam final int shoppingGroupId) {
+	//		ModelAndView result;
+	//		User principal;
+	//		ShoppingGroup shoppingGroup;
+	//
+	//		shoppingGroup = this.shoppingGroupService.findOne(shoppingGroupId);
+	//		principal = this.userService.findByPrincipal();
+	//
+	//		try {
+	//			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(shoppingGroup));
+	//			Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
+	//			this.shoppingGroupService.makeOrder(shoppingGroup);
+	//			result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
+	//
+	//		} catch (final Throwable th) {
+	//			result = new ModelAndView("forbiddenOperation");
+	//
+	//		}
+	//
+	//		return result;
+	//
+	//	}
 	// Leaving a group --------------------------------------------------------------------------------------------------------------------------------------------
 
 	@RequestMapping(value = "/leave", method = RequestMethod.GET)
@@ -958,6 +1053,27 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("joinToForm", form);
 		result.addObject("shToJoinName", sh.getName());
 		result.addObject("requestURI", "shoppingGroup/user/join.do?shoppingGroupId=" + shoppingGroupId);
+		result.addObject("message", message);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final CouponsForOrferForm form, final int shoppingGroupId) {
+		ModelAndView res;
+
+		res = this.createEditModelAndView(form, shoppingGroupId, null);
+
+		return res;
+	}
+
+	protected ModelAndView createEditModelAndView(final CouponsForOrferForm form, final int shoppingGroupId, final String message) {
+		ModelAndView result;
+
+		result = new ModelAndView("couponToFormulario");
+		result.addObject("couponsforOrderform", form);
+		result.addObject("cupones", this.couponService.findAll());
+		result.addObject("shId", shoppingGroupId);
+		result.addObject("requestURI", "shoppingGroup/user/makeOrder.do?shoppingGroupId=" + shoppingGroupId);
 		result.addObject("message", message);
 
 		return result;
