@@ -37,6 +37,7 @@
 		<value>/views/comment/messages</value>
 		<value>/views/coupon/messages</value>
 		<value>/views/order/messages</value>
+		<value>/views/configuration/messages</value>	
 	
 	</util:list>
 

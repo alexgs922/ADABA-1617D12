@@ -82,7 +82,9 @@
 		<bean class="converters.PunctuationToStringConverter" />
 		<bean class="converters.StringToPunctuationConverter" />
 
-
+		<bean class="converters.ConfigurationToStringConverter" />
+		<bean class="converters.StringToConfigurationConverter" />
+		
 	</util:list>
 
 </beans>

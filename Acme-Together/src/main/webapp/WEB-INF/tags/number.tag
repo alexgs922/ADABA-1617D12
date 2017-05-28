@@ -25,7 +25,7 @@
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="code" required="true" %>
 <%@ attribute name="min" required="true" %>
-<%@ attribute name="max" required="true" %>
+<%@ attribute name="max" required="false" %>
 <%@ attribute name="step" required="true" %>
 
 <%@ attribute name="readonly" required="false" %>
