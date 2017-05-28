@@ -56,7 +56,7 @@
 
 
 <security:authorize access="hasRole('USER')">
-	<jstl:if test="${shoppingGroup.creator.id == principal.id && allowedMakeOrder == true}">
+	<jstl:if test="${shoppingGroup.creator.id == principal.id && allowedMakeOrder == true and not empty shoppingGroup.products}">
 		<button
 			onclick="location.href='shoppingGroup/user/makeOrder.do?shoppingGroupId=${sh.id}'">
 			<spring:message code="shoppingGroup.makeOrder" />

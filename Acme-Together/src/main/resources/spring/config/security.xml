@@ -108,6 +108,7 @@
 		<security:intercept-url pattern="/commercial/editProfile.do" access="hasRole('COMMERCIAL')" /> 
 		<security:intercept-url pattern="/coupon/commercial/**" access="hasRole('COMMERCIAL')" />
  		<security:intercept-url pattern="/coupon/user/list.do" access="hasRole('USER')" /> 
+ 		<security:intercept-url pattern="/engagement/see.do" access="hasRole('USER')" /> 
 	
 
 		

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.ShoppingGroupRepository;
 import domain.Category;
 import domain.Comment;
+import domain.Engagement;
 import domain.OrderDomain;
 import domain.Product;
 import domain.Punctuation;
@@ -51,6 +53,9 @@ public class ShoppingGroupService {
 
 	@Autowired
 	private OrderDomainService		orderService;
+
+	@Autowired
+	private EngagementService		engagementService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -348,12 +353,20 @@ public class ShoppingGroupService {
 
 		this.shoppingGroupRepository.save(shoppingGroup);
 
-		Double totalPrice = 0.0;
+		double totalPrice = 0.0;
 
 		for (final Product p : shoppingGroup.getProducts())
-			totalPrice += p.getPrice();
+			totalPrice = totalPrice + p.getPrice();
 
-		order.setTotalPrice(totalPrice);
+		if (order.getCoupon() != null)
+			totalPrice = totalPrice * order.getCoupon().getDiscount();
+
+		final NumberFormat nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(2);
+		final String totalPriceFormat1 = nf.format(totalPrice);
+		final Double totalPriceFormat = Double.valueOf(totalPriceFormat1);
+
+		order.setTotalPrice(totalPriceFormat);
 		order.setCreator(principal);
 		principal.getOrders().add(order);
 
@@ -369,6 +382,12 @@ public class ShoppingGroupService {
 			d2.getProducts().add(p);
 			this.orderService.saveAndFlush(d2);
 		}
+
+		final Engagement e = this.engagementService.create(d2);
+		final Engagement e2 = this.engagementService.save(e);
+		this.engagementService.flush();
+		d2.setEngagement(e2);
+		this.orderService.saveAndFlush(d2);
 
 	}
 	public Collection<ShoppingGroup> shoppingGroupsWithMorePuntuation() {

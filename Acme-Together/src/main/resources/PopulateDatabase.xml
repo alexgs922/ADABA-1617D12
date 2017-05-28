@@ -957,13 +957,13 @@
 	<bean id="engagement1" class="domain.Engagement">
 		<property name="listOrdersByUser">
 			<list>
-				<value>"usuario1 --> Portatil MSI -- 699.00"</value>
-				<value>"usuario2 --> Bateria externa Samsung -- 54.00....</value>
-				<value>"usuario3 --> Disco duro sata3 -- 135.00 .....</value>
-				<value>"usuario4 --> Móvil Sony Experia -- 259.00</value>
-				<value>"usuario5 --> Go Pro Hero Negra -- 169.00</value>
-				<value>"FEE --> 2  -- 0.4 € cada uno</value>
-				<value>"TOTAL --> 5 items -- 1318.00</value>
+				<value>usuario1 --> Portatil MSI -- 699.00</value>
+				<value>usuario2 --> Bateria externa Samsung -- 54.00</value>
+				<value>usuario3 --> Disco duro sata3 -- 135.00</value>
+				<value>usuario4 --> Móvil Sony Experia -- 259.00</value>
+				<value>usuario5 --> Go Pro Hero Negra -- 169.00</value>
+				<value>FEE --> 2 EUROS  -- 0.4 EUROS cada uno</value>
+				<value>TOTAL --> 5 items -- 1318.00 EUROS </value>
 			</list>
 		</property>
 		<property name="order" ref="order1" />
@@ -972,10 +972,10 @@
 	<bean id="engagement2" class="domain.Engagement">
 		<property name="listOrdersByUser">
 			<list>
-				<value>"usuario3 --> KHALILA -- 78.00</value>
-				<value>"usuario4 --> PARIS -- 158.00</value>
-				<value>"FEE --> 2  -- 1 € cada uno</value>
-				<value>"TOTAL --> 2 items -- 238.00</value>
+				<value>usuario3 --> KHALILA -- 78.00</value>
+				<value>usuario4 --> PARIS -- 158.00</value>
+				<value>FEE --> 2 EUROS  -- 1 EUROS cada uno</value>
+				<value>TOTAL --> 2 items -- 238.00 EUROS </value>
 			</list>
 		</property>
 		<property name="order" ref="order2" />
@@ -1004,6 +1004,7 @@
 		<property name="totalPrice" value="1318.00" />
 		<property name="coupon" ref="coupon1" />
 		<property name="creator" ref="user1" />
+		<property name="engagement" ref="engagement1" />
 		<property name="products">
 			<list>
 				<ref bean="product1" />
@@ -1023,6 +1024,7 @@
 		<!-- <property name="finishDate" value="" /> -->
 		<!-- <property name="coupon" ref="" /> -->
 		<property name="creator" ref="user3" />
+		<property name="engagement" ref="engagement1" />
 		<property name="products">
 			<list>
 				<ref bean="product6" />

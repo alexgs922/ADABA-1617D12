@@ -56,6 +56,11 @@
 		<put-attribute name="body" value="/views/shoppingGroup/joinTo.jsp"/>
 	</definition>
 	
+	<definition name="engagements/details" extends="master.page">	
+		<put-attribute name="title" value="Engagement" />
+		<put-attribute name="body" value="/views/shoppingGroup/engagement.jsp"/>
+	</definition>
+	
 	
 	
 </tiles-definitions>

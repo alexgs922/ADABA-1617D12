@@ -49,6 +49,14 @@
 		</display:column>
 	</security:authorize>
 	
+	<security:authorize access="hasRole('USER')">
+		<display:column>		
+			<a href="engagement/see.do?orderId=${row.id}"> <spring:message
+				code="order.engagement" />
+			</a>
+		</display:column>
+	</security:authorize>
+	
 		
 		
 

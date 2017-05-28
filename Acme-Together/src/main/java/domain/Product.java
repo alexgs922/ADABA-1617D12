@@ -6,6 +6,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -67,6 +68,7 @@ public class Product extends DomainEntity {
 	}
 
 	@Min(0)
+	@Digits(integer = 32, fraction = 2)
 	public double getPrice() {
 		return this.price;
 	}
