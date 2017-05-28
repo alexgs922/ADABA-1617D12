@@ -30,7 +30,10 @@
 					<li class="arrow"></li>
 					<li><a href="administrator/dashboard.do"><spring:message
 								code="master.page.admin.dashboard" /></a></li>
-				</ul></li>
+					<li><a href="configuration/administrator/list.do"><spring:message
+								code="master.page.admin.configuration" /></a></li>
+				</ul>
+			</li>
 
 			<li><a class="fNiv" href="distributor/register.do"><spring:message
 						code="master.page.registerDistributor" /></a></li>
