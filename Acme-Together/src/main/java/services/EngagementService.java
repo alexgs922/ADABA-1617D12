@@ -83,6 +83,13 @@ public class EngagementService {
 
 		col.add(totalAmount);
 
+		if (o.getCoupon() != null) {
+			final String coupons = "Se ha aplicado el cupón " + o.getCoupon().getCouponNumber() + " con un descuento del: " + o.getCoupon().getDiscount() * 100 + " porciento";
+			final String coupons2 = "The coupon has been applied " + o.getCoupon().getCouponNumber() + " with a discount of : " + o.getCoupon().getDiscount() * 100 + " percent";
+			final String couponTotal = coupons + " // " + coupons2;
+			col.add(couponTotal);
+		}
+
 		result.setListOrdersByUser(col);
 		result.setOrder(o);
 
