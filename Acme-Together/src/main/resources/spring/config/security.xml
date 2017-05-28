@@ -68,7 +68,7 @@
 
 	
 		<security:intercept-url pattern="/user/register.do"	access="isAnonymous()" />
-		<security:intercept-url pattern="/user/dataProtection.do" access="isAnonymous()" />
+		<security:intercept-url pattern="/user/dataProtection.do" access="permitAll" />
 	
 		<security:intercept-url pattern="/user/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/user/createCreditCard.do" access="hasRole('USER')" /> 
