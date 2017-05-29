@@ -331,7 +331,10 @@ public class ShoppingGroupService {
 		principal.getShoppingGroup().remove(sh);
 		sh.getUsers().remove(principal);
 
-		sh.setFreePlaces(sh.getFreePlaces() + 1);
+		if (sh.isPrivate_group() == false)
+			sh.setFreePlaces(sh.getFreePlaces() + 1);
+		else
+			sh.setFreePlaces(0);
 
 		this.shoppingGroupRepository.save(sh);
 		this.shoppingGroupRepository.flush();

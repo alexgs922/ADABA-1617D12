@@ -870,7 +870,7 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	}
 
-	//CASO DE USO: EDITAR UN GRUPO DE COMPRAS--------------------------------------------------------------------------------------
+	//CASO DE USO: EDITAR UN GRUPO DE COMPRAS --------------------------------------------------------------------------------------
 	//Para este caso de uso comprobaremos que:
 	//El grupo se edita correctamente
 	//Sólo puede ser editado por el usuario que lo ha creado
@@ -949,7 +949,7 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	}
 
-	//CASO DE USO : ELIMINAR UN GRUPO DE COMPRAS
+	//CASO DE USO : ELIMINAR UN GRUPO DE COMPRAS --------------------------------------------------------------------------------------
 	//Para este caso de uso comprobaremos que:
 	//El grupo se elimina correctamente y se envian los mensajes a los afectados
 	//Sólo puede ser eliminado por el usuario que lo ha creado
@@ -1042,6 +1042,239 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 				final int tamanio2 = listaDeCantidadDeMensajesRecibidos.get(u);
 				Assert.isTrue(tamanio == (tamanio2 + 1));
 			}
+
+	}
+
+	//CASO DE USO: ABANDONAR UN GRUPO DE COMPRA --------------------------------------------------------------------------------------
+	//Para este caso de uso se comprobará que:
+	//El grupo no tenga ningún pedido en curso
+	//El usuari que pretende abandonar el grupo no sea el creador del mismo
+	//El usuario que pretende abandonar el grupo pertenezca a él
+	//El grupo se queda con un integrante menos, y es justanmente el usuario autenticado que realiza la operación
+	//El número de plazas libres aumenta en una unidad si el grupo es publico
+
+	//Test positivo
+	@Test
+	public void testLeave1() {
+
+		this.authenticate("user3");
+
+		final User principal = this.userService.findByPrincipal();
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+		final int placesfreeBefore = sh.getFreePlaces();
+
+		this.shoppingGroupService.leaveAgroup(sh);
+		this.shoppingGroupService.flush();
+
+		//Comprobamos que hay un usuario menos entre los integrantes
+		Assert.isTrue(sh.getUsers().size() == 4);
+
+		//Comprobamos que el usuario ya no es integrante
+		for (final User u : sh.getUsers())
+			Assert.isTrue(u.getId() != principal.getId());
+
+		if (sh.isPrivate_group() == false)
+			Assert.isTrue(sh.getFreePlaces() == placesfreeBefore + 1);
+		else
+			Assert.isTrue(sh.getFreePlaces() == 0);
+
+	}
+
+	//Test negativo: el usuario 4 no puede abandonar el grupo porque tiene un pedido en curso
+	@Test(expected = IllegalArgumentException.class)
+	public void testLeave2() {
+
+		this.authenticate("user4");
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(616);
+
+		this.shoppingGroupService.leaveAgroup(sh);
+		this.shoppingGroupService.flush();
+
+	}
+
+	//Test negativo: el usuario 1 no puede abandonar el grupo porque lo ha creado él mismo
+	@Test(expected = IllegalArgumentException.class)
+	public void testLeave3() {
+
+		this.authenticate("user1");
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+
+		this.shoppingGroupService.leaveAgroup(sh);
+		this.shoppingGroupService.flush();
+
+	}
+
+	//Test negativo: el usuario 1 no puede abandonar el grupo porque no pertenece a él
+	@Test(expected = IllegalArgumentException.class)
+	public void testLeave4() {
+
+		this.authenticate("user1");
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(616);
+
+		this.shoppingGroupService.leaveAgroup(sh);
+		this.shoppingGroupService.flush();
+
+	}
+
+	//CASO UNIRSE A UN GRUPO DE COMPRA PÚBLICO  --------------------------------------------------------------------------------------
+	//Para este caso de uso se comprobará que:
+	//El usuario que pretende unirse al grupo no sea el creador del mismo
+	//El usuario que pretende unirse al grupo no pertenezca a él
+	//El grupo se queda con un integrante más, y es justanmente el usuario autenticado que realiza la operación
+	//El grupo es público, ya que a los privados los une el propio administrador del grupo en la creación del mismo
+
+	@Test
+	public void testJoin1() {
+
+		//Creamos un nuevo grupo público para unirnos
+		this.authenticate("user1");
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		this.unauthenticate();
+
+		//El usuario3 se une al nuevo grupo
+		this.authenticate("user3");
+
+		final User principal = this.userService.findByPrincipal();
+		final int placesfreeBefore = sh.getFreePlaces();
+
+		this.shoppingGroupService.jointToAShoppingGroup(sh);
+		this.shoppingGroupService.flush();
+
+		//Comprobamos que hay un usuario meás entre los integrantes
+		Assert.isTrue(sh.getUsers().size() == 2);
+
+		//Comprobamos que el usuario  es integrante
+		Assert.isTrue(sh.getUsers().contains(principal));
+
+		//Comprobamos que hay una plaza libre menos
+		Assert.isTrue(sh.getFreePlaces() == placesfreeBefore - 1);
+
+	}
+
+	//Test negativo: el usuario pretende unirse al grupo que ha creado él mismo
+	@Test(expected = IllegalArgumentException.class)
+	public void testJoin2() {
+
+		//Creamos un nuevo grupo público para unirnos
+		this.authenticate("user1");
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final User principal = this.userService.findByPrincipal();
+		final int placesfreeBefore = sh.getFreePlaces();
+
+		this.shoppingGroupService.jointToAShoppingGroup(sh);
+		this.shoppingGroupService.flush();
+
+		//Comprobamos que hay un usuario meás entre los integrantes
+		Assert.isTrue(sh.getUsers().size() == 2);
+
+		//Comprobamos que el usuario  es integrante
+		Assert.isTrue(sh.getUsers().contains(principal));
+
+		//Comprobamos que hay una plaza libre menos
+		Assert.isTrue(sh.getFreePlaces() == placesfreeBefore - 1);
+
+	}
+
+	//Test negativo el usuario pretende unirse a un grupo al que ya pertenece
+	@Test(expected = IllegalArgumentException.class)
+	public void testJoin3() {
+
+		//Creamos un nuevo grupo público para unirnos
+		this.authenticate("user1");
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		this.unauthenticate();
+
+		//El usuario3 se une al nuevo grupo
+		this.authenticate("user3");
+
+		final User principal = this.userService.findByPrincipal();
+		final int placesfreeBefore = sh.getFreePlaces();
+
+		this.shoppingGroupService.jointToAShoppingGroup(sh);
+		this.shoppingGroupService.flush();
+
+		//Comprobamos que hay un usuario meás entre los integrantes
+		Assert.isTrue(sh.getUsers().size() == 2);
+
+		//Comprobamos que el usuario  es integrante
+		Assert.isTrue(sh.getUsers().contains(principal));
+
+		//Comprobamos que hay una plaza libre menos
+		Assert.isTrue(sh.getFreePlaces() == placesfreeBefore - 1);
+
+		this.unauthenticate();
+
+		//El usuario pretende unirse otravez a un grupo al q ya pertenece
+
+		this.authenticate("user3");
+
+		this.shoppingGroupService.jointToAShoppingGroup(sh);
+		this.shoppingGroupService.flush();
+
+	}
+
+	//Test negativo: el usuario 1 intenta unirse a un grupo que es privado
+	@Test(expected = IllegalArgumentException.class)
+	public void testJoin4() {
+
+		//Creamos un nuevo grupo público para unirnos
+		this.authenticate("user1");
+
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(616);
+
+		this.shoppingGroupService.jointToAShoppingGroup(sh);
+		this.shoppingGroupService.flush();
 
 	}
 
