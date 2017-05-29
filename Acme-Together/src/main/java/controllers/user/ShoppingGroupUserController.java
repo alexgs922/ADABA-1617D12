@@ -807,6 +807,17 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		productRes = this.productService.reconstruct(product, binding);
 
+		try {
+
+			Assert.isTrue(product.getUrl().contains(shoppingGroup.getSite()));
+
+		} catch (final Throwable th) {
+
+			res = this.createCreateModelAndView(product, "product.url.not.valid");
+			res.addObject("shoppingGroup", shoppingGroup);
+			return res;
+		}
+
 		if (binding.hasErrors()) {
 			res = this.createCreateModelAndView(product);
 			res.addObject("shoppingGroup", shoppingGroup);

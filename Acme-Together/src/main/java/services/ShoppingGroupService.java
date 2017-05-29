@@ -58,6 +58,9 @@ public class ShoppingGroupService {
 	@Autowired
 	private EngagementService		engagementService;
 
+	@Autowired
+	private ConfigurationService	configurationService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -357,18 +360,30 @@ public class ShoppingGroupService {
 
 		this.shoppingGroupRepository.save(shoppingGroup);
 
-		double totalPrice = 0.0;
+		double totalPrice = 0.00;
 
 		for (final Product p : shoppingGroup.getProducts())
 			totalPrice = totalPrice + p.getPrice();
+
+		totalPrice = totalPrice + this.configurationService.findConfiguration().getFee();
 
 		if (order.getCoupon() != null)
 			totalPrice = totalPrice * order.getCoupon().getDiscount();
 
 		final NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(2);
-		final String totalPriceFormat1 = nf.format(totalPrice);
-		final Double totalPriceFormat = Double.valueOf(totalPriceFormat1);
+		final String totalPriceFormat1 = nf.format(totalPrice * 1.00);
+
+		Double totalPriceFormat;
+
+		try {
+			totalPriceFormat = Double.valueOf(totalPriceFormat1);
+
+		} catch (final Throwable th) {
+
+			totalPriceFormat = totalPrice * 1.00;
+
+		}
 
 		order.setTotalPrice(totalPriceFormat);
 		order.setCreator(principal);

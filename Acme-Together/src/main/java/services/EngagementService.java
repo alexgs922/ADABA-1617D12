@@ -3,7 +3,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -63,10 +62,7 @@ public class EngagementService {
 				users.add(p.getUserProduct());
 		}
 
-		final List<Configuration> confs = new ArrayList<Configuration>();
-		confs.addAll(this.configurationService.findAll());
-
-		final Configuration conf = ((ArrayList<Configuration>) confs).get(0);
+		final Configuration conf = this.configurationService.findConfiguration();
 
 		final double fee = conf.getFee();
 
