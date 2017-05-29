@@ -73,6 +73,9 @@ public class PunctuationService {
 		this.punctuationRepository.delete(c);
 	}
 
+	public void flush() {
+		this.punctuationRepository.flush();
+	}
 	// Other business methods --------------------------------------------------------------
 
 	public Punctuation getPunctuationByShoppingGroupAndUser(final ShoppingGroup shoppingGroup, final User user) {

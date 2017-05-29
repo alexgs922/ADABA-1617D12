@@ -67,6 +67,9 @@ public class ShoppingGroupService {
 	@Autowired
 	private WarehouseService		warehouseService;
 
+	@Autowired
+	private PunctuationService		punctuationService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -127,6 +130,12 @@ public class ShoppingGroupService {
 			this.commentService.delete(c);
 			this.commentService.flush();
 		}
+
+		for (final Punctuation p : s.getPunctuations()) {
+			this.punctuationService.delete(p);
+			this.punctuationService.flush();
+		}
+
 		this.shoppingGroupRepository.delete(s);
 	}
 	//Other business methods --------------------------------------

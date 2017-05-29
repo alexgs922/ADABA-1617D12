@@ -4,7 +4,9 @@ package funcionalTesting;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
@@ -865,6 +867,181 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		Assert.isTrue(allInPublicListBefore == 2);
 		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//CASO DE USO: EDITAR UN GRUPO DE COMPRAS--------------------------------------------------------------------------------------
+	//Para este caso de uso comprobaremos que:
+	//El grupo se edita correctamente
+	//Sólo puede ser editado por el usuario que lo ha creado
+	//Sólo lo puede editar cuando no tiene pedidos pendientes
+
+	//Test positivo
+	@Test
+	public void testEdit1() {
+
+		this.authenticate("user1");
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+
+		sh.setName("Ahora se va a llamar así");
+
+		this.shoppingGroupService.reconstruct2(sh, sh.getId(), null);
+		this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final ShoppingGroup shafter = this.shoppingGroupService.findOne(615);
+		Assert.isTrue(shafter.getName() == "Ahora se va a llamar así");
+
+	}
+
+	//Test positivo : cambiar el grupo de categoria
+	@Test
+	public void testEdit2() {
+
+		this.authenticate("user1");
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+
+		sh.setCategory(this.categoryService.findOnePublic(sh.getCategory().getId() + 1));
+
+		this.shoppingGroupService.reconstruct2(sh, sh.getId(), null);
+		this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final ShoppingGroup shafter = this.shoppingGroupService.findOne(615);
+		Assert.isTrue(shafter.getCategory().getId() == 580);
+		Assert.isTrue(shafter.getCategory().getName().equals("Hecho a mano"));
+
+	}
+
+	//Test negativo: el usuario 2 no es el creador de ese grupo de compras y por tanto no puede editarlo
+	@Test(expected = IllegalArgumentException.class)
+	public void testEdit3() {
+
+		this.authenticate("user2");
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+
+		sh.setName("Ahora se va a llamar así");
+
+		this.shoppingGroupService.reconstruct2(sh, sh.getId(), null);
+		this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final ShoppingGroup shafter = this.shoppingGroupService.findOne(615);
+		Assert.isTrue(shafter.getName() == "Ahora se va a llamar así");
+
+	}
+
+	//Test negativo: el usuario 3 no puede editar su grupo porque tiene un pedido en curso
+	@Test(expected = IllegalArgumentException.class)
+	public void testEdit4() {
+
+		this.authenticate("user3");
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(616);
+
+		sh.setName("Ahora se va a llamar así");
+
+		this.shoppingGroupService.reconstruct2(sh, sh.getId(), null);
+		this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final ShoppingGroup shafter = this.shoppingGroupService.findOne(615);
+		Assert.isTrue(shafter.getName() == "Ahora se va a llamar así");
+
+	}
+
+	//CASO DE USO : ELIMINAR UN GRUPO DE COMPRAS
+	//Para este caso de uso comprobaremos que:
+	//El grupo se elimina correctamente y se envian los mensajes a los afectados
+	//Sólo puede ser eliminado por el usuario que lo ha creado
+	//Sólo lo puede edliminar cuando no tiene pedidos pendientes
+
+	//Test positivo
+	@Test
+	public void testDelete1() {
+
+		this.authenticate("user1");
+		final User principal = this.userService.findByPrincipal();
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+		final Collection<User> users = new ArrayList<User>();
+		users.addAll(sh.getUsers());
+		final Map<User, Integer> listaDeCantidadDeMensajesRecibidos = new HashMap<User, Integer>();
+
+		for (final User u : users)
+			listaDeCantidadDeMensajesRecibidos.put(u, u.getMessageReceives().size());
+
+		this.shoppingGroupService.delete(sh);
+		this.shoppingGroupService.flush();
+
+		//comprobamos que en el sistema ya solo quedan 2 grupos
+		Assert.isTrue(this.shoppingGroupService.findAll().size() == 2);
+
+		//comprobamos que la lista de mensajes recibidos de cada usuario afectado ha incrementado en un mensaje
+		for (final User u : users)
+			if (u.getId() != principal.getId()) {
+				final int tamanio = u.getMessageReceives().size();
+				final int tamanio2 = listaDeCantidadDeMensajesRecibidos.get(u);
+				Assert.isTrue(tamanio == (tamanio2 + 1));
+			}
+
+	}
+
+	//Test negativo: el usuario 2 no puede eliminar un grupo que ha creado el usuario1
+	@Test(expected = IllegalArgumentException.class)
+	public void testDelete2() {
+
+		this.authenticate("user2");
+		final User principal = this.userService.findByPrincipal();
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(615);
+		final Collection<User> users = new ArrayList<User>();
+		users.addAll(sh.getUsers());
+		final Map<User, Integer> listaDeCantidadDeMensajesRecibidos = new HashMap<User, Integer>();
+
+		for (final User u : users)
+			listaDeCantidadDeMensajesRecibidos.put(u, u.getMessageReceives().size());
+
+		this.shoppingGroupService.delete(sh);
+		this.shoppingGroupService.flush();
+
+		//comprobamos que en el sistema ya solo quedan 2 grupos
+		Assert.isTrue(this.shoppingGroupService.findAll().size() == 2);
+
+		//comprobamos que la lista de mensajes recibidos de cada usuario afectado ha incrementado en un mensaje
+		for (final User u : users)
+			if (u.getId() != principal.getId()) {
+				final int tamanio = u.getMessageReceives().size();
+				final int tamanio2 = listaDeCantidadDeMensajesRecibidos.get(u);
+				Assert.isTrue(tamanio == (tamanio2 + 1));
+			}
+
+	}
+
+	//Test negativo: el usuario 3 no puede eliminar su grupo de compras porque tiene un pedido en curso
+	@Test(expected = IllegalArgumentException.class)
+	public void testDelete3() {
+
+		this.authenticate("user3");
+		final User principal = this.userService.findByPrincipal();
+		final ShoppingGroup sh = this.shoppingGroupService.findOne(616);
+		final Collection<User> users = new ArrayList<User>();
+		users.addAll(sh.getUsers());
+		final Map<User, Integer> listaDeCantidadDeMensajesRecibidos = new HashMap<User, Integer>();
+
+		for (final User u : users)
+			listaDeCantidadDeMensajesRecibidos.put(u, u.getMessageReceives().size());
+
+		this.shoppingGroupService.delete(sh);
+		this.shoppingGroupService.flush();
+
+		//comprobamos que en el sistema ya solo quedan 2 grupos
+		Assert.isTrue(this.shoppingGroupService.findAll().size() == 2);
+
+		//comprobamos que la lista de mensajes recibidos de cada usuario afectado ha incrementado en un mensaje
+		for (final User u : users)
+			if (u.getId() != principal.getId()) {
+				final int tamanio = u.getMessageReceives().size();
+				final int tamanio2 = listaDeCantidadDeMensajesRecibidos.get(u);
+				Assert.isTrue(tamanio == (tamanio2 + 1));
+			}
 
 	}
 
