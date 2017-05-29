@@ -27,6 +27,9 @@
 		<spring:message code="sh.users"/><jstl:out value=" :"></jstl:out>
 		<form:checkboxes items="${usuarios}" path="users" itemLabel="name" multiple="multiple"/>
 		<form:errors cssClass="error" path="users" />
+		<jstl:if test="${empty usuarios}">
+			<spring:message code="sh.users.empty" var="vacioUsuarios"/><b><jstl:out value="${vacioUsuarios}"></jstl:out></b>
+		</jstl:if>
 		<br>
 		
 	</fieldset>

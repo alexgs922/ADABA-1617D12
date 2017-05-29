@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CategoryService;
 import services.CommentService;
 import services.CouponService;
+import services.CreditCardService;
 import services.ProductService;
 import services.PunctuationService;
 import services.ShoppingGroupService;
@@ -69,6 +70,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CouponService			couponService;
+
+	@Autowired
+	private CreditCardService		cardService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -595,6 +599,20 @@ public class ShoppingGroupUserController extends AbstractController {
 		final User principal = this.userService.findByPrincipal();
 
 		try {
+
+			Assert.isTrue(this.cardService.validateCreditCardNumber(principal.getCreditCard().getNumber()));
+			Assert.isTrue(this.cardService.validateDate(principal.getCreditCard().getExpirationMonth(), principal.getCreditCard().getExpirationYear()));
+
+		} catch (final Throwable th) {
+
+			result = new ModelAndView("errorOperation");
+			result.addObject("errorOperation", "sh.not.cc.validation");
+			result.addObject("returnUrl", "shoppingGroup/user/joinedShoppingGroups.do");
+			return result;
+
+		}
+
+		try {
 			Assert.isTrue(this.shoppingGroupService.allowedMakeOrder(sh));
 			Assert.isTrue(sh.getCreator().getId() == principal.getId());
 		} catch (final Throwable th) {
@@ -613,7 +631,6 @@ public class ShoppingGroupUserController extends AbstractController {
 		return result;
 
 	}
-
 	@RequestMapping(value = "/makeOrder", method = RequestMethod.POST, params = "save")
 	public ModelAndView makeOrder(final CouponsForOrferForm couponsForOrferForm, final BindingResult bindingResult, @RequestParam final int shoppingGroupId) {
 		ModelAndView result;
@@ -1058,8 +1075,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		usuarios = new ArrayList<User>();
-		usuarios.addAll(this.userService.findAllNotBannedActors());
-		usuarios.remove(principal);
+		usuarios.addAll(principal.getFriends());
+
+		for (final User u : usuarios)
+			if (u.isBanned())
+				usuarios.remove(u);
 
 		Collection<Category> cats;
 		cats = this.categoryService.findAll2();
@@ -1073,5 +1093,4 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		return result;
 	}
-
 }

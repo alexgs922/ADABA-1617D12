@@ -168,7 +168,7 @@
 	<display:column property="price" title="${productPrice}"
 		sortable="false" />
 
-	<security:authorize access="hasRole('USER')">
+	<%-- <security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id}">
 				<button
@@ -177,7 +177,7 @@
 				</button>
 			</jstl:if>
 		</display:column>
-	</security:authorize>
+	</security:authorize> --%>
 
 	
 	<spring:message code = "product.confirm.delete" var = "productConfirmDelete" />
