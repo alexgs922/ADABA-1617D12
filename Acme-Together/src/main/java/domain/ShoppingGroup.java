@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -178,6 +179,7 @@ public class ShoppingGroup extends DomainEntity {
 
 	@ManyToOne(optional = true)
 	@Valid
+	@NotNull
 	public Category getCategory() {
 		return this.category;
 	}

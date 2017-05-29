@@ -78,6 +78,13 @@ public class CategoryService {
 		return res;
 	}
 
+	public Category findOnePublic(final int categoryId) {
+		Category res;
+		res = this.categoryRepository.findOne(categoryId);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Category save(final Category c) {
 		Assert.isTrue(this.checkAdminPrincipal());
 		Assert.notNull(c);

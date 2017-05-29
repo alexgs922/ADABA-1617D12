@@ -1,8 +1,10 @@
 
 package funcionalTesting;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
@@ -15,13 +17,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import services.ActorService;
+import services.CategoryService;
 import services.CommentService;
 import services.ShoppingGroupService;
 import services.UserService;
 import utilities.AbstractTest;
+import domain.Category;
 import domain.Comment;
 import domain.ShoppingGroup;
 import domain.User;
+import forms.ShoppingGroupForm;
+import forms.ShoppingGroupFormPrivate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -43,6 +49,9 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	@Autowired
 	private CommentService			commentService;
+
+	@Autowired
+	private CategoryService			categoryService;
 
 
 	//Test dedicado a probar el caso de uso: Postear comentarios en tus grupos de compra
@@ -172,6 +181,690 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.template1((String) testingData[i][0], (int) testingData[i][1], (int) testingData[i][2], (int) testingData[i][3], (Class<?>) testingData[i][4]);
+
+	}
+
+	//CASO DE USO: LISTA DE SHOPPING GROUPS PÚBLICO PARA USUARIOS (INCLUYE TODOS LOS GRUPOS PÚBLICOS Y LOS PRIVADOS A LOS QUE EL USUARIO LOGEADO PERTENECE)
+	//Para comprobar el correcto funcionamiento de este caso de uso probaremos que:
+	//1. Para cada usuario se recoge la cantidad adecuada de grupos.
+	//2. Estos grupos son los correctos
+	//3. Debe estar logeado como usuario para poder acceder a él
+
+	protected void templateList1(final String username, final int numberOfGroups, final List<String> groups, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			final Collection<ShoppingGroup> col = this.shoppingGroupService.listPublicForUsersOfSH();
+
+			//Comprobamos que se recojan para cada usuario la cantidad adecuada de grupos
+			Assert.isTrue(col.size() == numberOfGroups);
+
+			//Comprobamos que los grupos que se han recogido son los correctos
+			for (final ShoppingGroup sh : col)
+				Assert.isTrue(groups.contains(sh.getName()));
+
+			this.unauthenticate();
+			this.shoppingGroupService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void driverlist1() {
+
+		final List<String> paraUser1y2 = new ArrayList<String>();
+		paraUser1y2.add("Sh1");
+		paraUser1y2.add("Sh3");
+
+		final List<String> paraUser3y4y5 = new ArrayList<String>();
+		paraUser3y4y5.add("Sh1");
+		paraUser3y4y5.add("Sh2");
+		paraUser3y4y5.add("Sh3");
+
+		final Object testingData[][] = {
+			{
+				//Test positivo
+				"user1", 2, paraUser1y2, null
+			}, {
+				//Test positivo
+				"user2", 2, paraUser1y2, null
+			}, {
+				//Test positivo
+				"user3", 3, paraUser3y4y5, null
+			}, {
+				//Test positivo
+				"user4", 3, paraUser3y4y5, null
+			}, {
+				//Test positivo
+				"user5", 3, paraUser3y4y5, null
+			}, {
+				//Test pnegativo: sólo los usuarios pueden acceder al listado
+				null, 0, new ArrayList<String>(), IllegalArgumentException.class
+			},
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateList1((String) testingData[i][0], (int) testingData[i][1], (List<String>) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	//CASO DE USO: LISTA PRIVADA DE GRUPOS PARA UN USUARIO: CONTIENE TODOS LOS GRUPOS QUE HA CREADO ÉL MISMO Y TODOS AQUELLOS A LOS QUE PERTENECE
+	//Para comprobar el correcto funcionamiento de este caso de uso probaremos que:
+	//1. Para cada usuario se recoge la cantidad adecuada de grupos.
+	//2. Estos grupos son los correctos
+	//3. Debe estar logeado como usuario para poder acceder a él
+
+	protected void templateList2(final String username, final int numberOfGroupsMine, final int numberOfGroupsBelong, final List<String> groupsMine, final List<String> groupsBelong, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			final User principal = this.userService.findByPrincipal();
+			final Collection<ShoppingGroup> shBelong = this.shoppingGroupService.ShoppingGroupsToWichBelongsAndNotCreatedBy(principal);
+			final Collection<ShoppingGroup> shMine = principal.getMyShoppingGroups();
+
+			//Comprobamos que el número de grupos creados es el correcto
+			Assert.isTrue(shMine.size() == numberOfGroupsMine);
+			//Comprobamos que el número de grupos a los que pertece sin haberlos creado es correcto
+			Assert.isTrue(shBelong.size() == numberOfGroupsBelong);
+
+			for (final ShoppingGroup sh : shMine)
+				//Comprobamos que los que recogen son los correctos
+				Assert.isTrue(groupsMine.contains(sh.getName()));
+
+			for (final ShoppingGroup sh : shBelong)
+				//Comprobamos que los que recogen son los correctos
+				Assert.isTrue(groupsBelong.contains(sh.getName()));
+
+			this.unauthenticate();
+			this.shoppingGroupService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void driverlist2() {
+
+		final List<String> paraUser1 = new ArrayList<String>();
+		paraUser1.add("Sh1");
+
+		final List<String> paraUser2 = new ArrayList<String>();
+		paraUser2.add("Sh1");
+
+		final List<String> paraUser3uno = new ArrayList<String>();
+		paraUser3uno.add("Sh2");
+
+		final List<String> paraUser3dos = new ArrayList<String>();
+		paraUser3dos.add("Sh1");
+
+		final List<String> paraUser4uno = new ArrayList<String>();
+		paraUser4uno.add("Sh3");
+
+		final List<String> paraUser4dos = new ArrayList<String>();
+		paraUser4dos.add("Sh1");
+		paraUser4dos.add("Sh2");
+
+		final List<String> paraUser5 = new ArrayList<String>();
+		paraUser5.add("Sh1");
+		paraUser5.add("Sh2");
+		paraUser5.add("Sh3");
+
+		final Object testingData[][] = {
+			{
+				//Test positivo
+				"user1", 1, 0, paraUser1, null, null
+			}, {
+				//Test positivo
+				"user2", 0, 1, null, paraUser2, null
+			}, {
+				//Test positivo
+				"user3", 1, 1, paraUser3uno, paraUser3dos, null
+			}, {
+				//Test positivo
+				"user4", 1, 2, paraUser4uno, paraUser4dos, null
+			}, {
+				//Test positivo
+				"user5", 0, 3, null, paraUser5, null
+			}, {
+				//Test pnegativo: sólo los usuarios pueden acceder al listado
+				null, 0, 0, null, null, IllegalArgumentException.class
+			},
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateList2((String) testingData[i][0], (int) testingData[i][1], (int) testingData[i][2], (List<String>) testingData[i][3], (List<String>) testingData[i][4], (Class<?>) testingData[i][5]);
+
+	}
+
+	//CASO DE USO: CREAR UN NUEVO GRUPO PÚBLICO ----------------------------------------------------------------------------------------
+	//Para este caso de uso comprobaremos que:
+	//El grupo se crea correctamente
+	//El grupo se añade a la lista de grupos creados del usuario autenticado
+	//El grupo aparece en el listado público
+	//Sólo puede hacer esta operación un usuario
+
+	//Test positivo
+	@Test
+	public void testCreateshoppingGroup() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo : hay que estar autenticado como usuario para poder crear un nuevo grupo
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroup2() {
+
+		this.authenticate(null);
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No puede crearse un grupo que no pertenece a ninguna categoria
+	@Test(expected = NullPointerException.class)
+	public void testCreateshoppingGroup3() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No se crean grupos si no se aceptan los términos de uso
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroup4() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupForm form = new ShoppingGroupForm();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setFreePlaces(5);
+		form.setSite("Amazon");
+		form.setTermsOfUse(false);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstruct(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//CASO DE USO: CREAR UN NUEVO GRUPO PRIVADO ----------------------------------------------------------------------------------------
+	//Para este caso de uso comprobaremos que:
+	//El grupo se crea correctamente
+	//El grupo se añade a la lista de grupos creados del usuario autenticado
+	//El grupo aparece en el listado público
+	//Sólo puede hacer esta operación un usuario
+
+	//Test positivo
+	@Test
+	public void testCreateshoppingGroupPrivate() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+		form.setUsers(principal.getFriends());
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo : hay que estar autenticado como usuario para poder crear un nuevo grupo
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroupPrivate2() {
+
+		this.authenticate(null);
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+		form.setUsers(principal.getFriends());
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No puede crearse un grupo que no pertenece a ninguna categoria
+	@Test(expected = NullPointerException.class)
+	public void testCreateshoppingGroupPrivate3() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+		form.setUsers(principal.getFriends());
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No se crean grupos si no se aceptan los términos de uso
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroupPrivate4() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(false);
+		form.setUsers(principal.getFriends());
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No se crean grupos si no se eligen usuarios para pertenecer a él
+	@Test(expected = NullPointerException.class)
+	public void testCreateshoppingGroupPrivate5() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No se crean grupos si los usuarios no son amigos del administrador del grupo
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroupPrivate6() {
+
+		this.authenticate("user2");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+		final List<User> users = new ArrayList<User>();
+		users.add(this.userService.findOne(594));
+		form.setUsers(users);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
+
+	}
+
+	//Test negativo: No se crean grupos si el usuario intenta crear un grupo consigo mismo
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateshoppingGroupPrivate7() {
+
+		this.authenticate("user1");
+
+		final User principal = this.userService.findByPrincipal();
+
+		final int createdBefore = principal.getMyShoppingGroups().size();
+		final int allBefore = this.shoppingGroupService.findAll().size();
+		final int allInPublicListBefore = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		final ShoppingGroupFormPrivate form = new ShoppingGroupFormPrivate();
+		form.setName("Grupo para tests");
+		final Category c = this.categoryService.findOnePublic(567);
+		form.setCategory(c);
+		form.setDescription("Descripción para tests");
+		form.setSite("Amazon");
+		form.setTermsOfUse(true);
+		final List<User> users = new ArrayList<User>();
+		users.add(this.userService.findOne(591));
+		form.setUsers(users);
+
+		//Esta comprobación se hace en controlador
+		Assert.isTrue(form.isTermsOfUse() == true);
+
+		for (final User u : form.getUsers()) {
+			Assert.isTrue(principal.getFriends().contains(u));
+			Assert.isTrue(u.getId() != principal.getId());
+		}
+
+		ShoppingGroup sh = this.shoppingGroupService.reconstructPrivate(form, null);
+		sh = this.shoppingGroupService.save(sh);
+		this.shoppingGroupService.flush();
+
+		final int createdAfter = principal.getMyShoppingGroups().size();
+		final int allAfter = this.shoppingGroupService.findAll().size();
+		final int allInPublicListAfter = this.shoppingGroupService.listPublicForUsersOfSH().size();
+
+		Assert.isTrue(createdBefore == 1);
+		Assert.isTrue(createdAfter == createdBefore + 1);
+
+		Assert.isTrue(allBefore == 3);
+		Assert.isTrue(allAfter == allBefore + 1);
+
+		Assert.isTrue(allInPublicListBefore == 2);
+		Assert.isTrue(allInPublicListAfter == allInPublicListBefore + 1);
 
 	}
 
