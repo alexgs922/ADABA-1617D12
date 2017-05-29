@@ -204,7 +204,7 @@ public class PrivateMessageController extends AbstractController {
 		Collection<Actor> actors;
 		final Actor c = this.actorService.findByPrincipal();
 
-		actors = this.actorService.findAllNotBannedActors();
+		actors = this.actorService.findAll();
 		actors.remove(c);
 
 		result = new ModelAndView("privateMessage/create");
