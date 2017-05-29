@@ -99,6 +99,13 @@
 	<spring:message code="category.description" var="categoryDescription" />
 	<display:column property="description" title="${categoryDescription}"
 		sortable="false" />
+		
+	<display:column>
+		<a href="category/groupsFrom.do?categoryId=${cat.id}"> <spring:message
+				code="category.groups" />
+		</a>
+
+	</display:column>
 
 </display:table>
 

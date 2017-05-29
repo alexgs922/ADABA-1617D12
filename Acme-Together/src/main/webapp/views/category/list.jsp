@@ -52,7 +52,16 @@
 					code="category.delete" />
 			</button>
 		</display:column>
-	</security:authorize>		
+	</security:authorize>	
+	
+	<security:authorize access="isAuthenticated()">
+	<display:column>
+		<a href="category/groupsFrom.do?categoryId=${row.id}"> <spring:message
+				code="category.groups2" />
+		</a>
+
+	</display:column>	
+	</security:authorize>	
 		
 
 

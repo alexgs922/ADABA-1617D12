@@ -147,4 +147,13 @@ public class CategoryService {
 		return result;
 
 	}
+
+	public Collection<ShoppingGroup> shFromCategory(final int categoryId) {
+
+		Collection<ShoppingGroup> shs;
+
+		shs = this.categoryRepository.shFromCategory(categoryId);
+
+		return shs;
+	}
 }
