@@ -21,6 +21,7 @@ import services.CategoryService;
 import services.CommentService;
 import services.CouponService;
 import services.CreditCardService;
+import services.DistributorService;
 import services.ProductService;
 import services.PunctuationService;
 import services.ShoppingGroupService;
@@ -28,6 +29,7 @@ import services.UserService;
 import controllers.AbstractController;
 import domain.Category;
 import domain.Comment;
+import domain.Distributor;
 import domain.Product;
 import domain.Punctuation;
 import domain.ShoppingGroup;
@@ -73,6 +75,9 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	@Autowired
 	private CreditCardService		cardService;
+
+	@Autowired
+	private DistributorService		distributorService;
 
 
 	// List my joined shoppingGroups ----------------------------------------------
@@ -597,6 +602,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		final ShoppingGroup sh = this.shoppingGroupService.findOne(shoppingGroupId);
 		final User principal = this.userService.findByPrincipal();
+		final Collection<Distributor> allDis = this.distributorService.findAll();
 
 		try {
 
@@ -626,6 +632,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		result.addObject("couponsforOrderform", form);
 		result.addObject("cupones", this.couponService.findAll());
 		result.addObject("shId", shoppingGroupId);
+		result.addObject("distributors", allDis);
 		result.addObject("requestURI", "shoppingGroup/user/makeOrder.do?shoppingGroupId=" + shoppingGroupId);
 
 		return result;
@@ -647,9 +654,9 @@ public class ShoppingGroupUserController extends AbstractController {
 			try {
 
 				if (couponsForOrferForm.getCoupon() != null)
-					this.shoppingGroupService.makeOrder(sh, couponsForOrferForm.getCoupon());
+					this.shoppingGroupService.makeOrder(sh, couponsForOrferForm.getCoupon(), couponsForOrferForm.getDistributor());
 				else
-					this.shoppingGroupService.makeOrder(sh, null);
+					this.shoppingGroupService.makeOrder(sh, null, couponsForOrferForm.getDistributor());
 
 				result = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroupId);
 
@@ -1040,11 +1047,13 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final CouponsForOrferForm form, final int shoppingGroupId, final String message) {
 		ModelAndView result;
+		final Collection<Distributor> allDis = this.distributorService.findAll();
 
 		result = new ModelAndView("couponToFormulario");
 		result.addObject("couponsforOrderform", form);
 		result.addObject("cupones", this.couponService.findAll());
 		result.addObject("shId", shoppingGroupId);
+		result.addObject("distributors", allDis);
 		result.addObject("requestURI", "shoppingGroup/user/makeOrder.do?shoppingGroupId=" + shoppingGroupId);
 		result.addObject("message", message);
 

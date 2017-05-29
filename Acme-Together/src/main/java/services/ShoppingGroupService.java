@@ -1,11 +1,12 @@
 
 package services;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +20,7 @@ import repositories.ShoppingGroupRepository;
 import domain.Category;
 import domain.Comment;
 import domain.Coupon;
+import domain.Distributor;
 import domain.Engagement;
 import domain.OrderDomain;
 import domain.Product;
@@ -26,6 +28,7 @@ import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.Status;
 import domain.User;
+import domain.Warehouse;
 import forms.ShoppingGroupForm;
 import forms.ShoppingGroupFormPrivate;
 
@@ -60,6 +63,9 @@ public class ShoppingGroupService {
 
 	@Autowired
 	private ConfigurationService	configurationService;
+
+	@Autowired
+	private WarehouseService		warehouseService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -339,7 +345,7 @@ public class ShoppingGroupService {
 
 	}
 
-	public void makeOrder(final ShoppingGroup shoppingGroup, final Coupon coupon) {
+	public void makeOrder(final ShoppingGroup shoppingGroup, final Coupon coupon, final Distributor distributor) {
 		Assert.notNull(shoppingGroup);
 
 		OrderDomain order;
@@ -368,24 +374,29 @@ public class ShoppingGroupService {
 		totalPrice = totalPrice + this.configurationService.findConfiguration().getFee();
 
 		if (order.getCoupon() != null)
-			totalPrice = totalPrice * order.getCoupon().getDiscount();
+			totalPrice = totalPrice - (totalPrice * order.getCoupon().getDiscount());
 
-		final NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(2);
-		final String totalPriceFormat1 = nf.format(totalPrice * 1.00);
+		//		final NumberFormat nf = NumberFormat.getInstance();
+		//		nf.setMaximumFractionDigits(2);
+		//		final String totalPriceFormat1 = nf.format(totalPrice * 1.00);
+		//
+		//		Double totalPriceFormat;
+		//
+		//		try {
+		//			totalPriceFormat = Double.valueOf(totalPriceFormat1);
+		//
+		//		} catch (final Throwable th) {
+		//
+		//			totalPriceFormat = totalPrice * 1.00;
+		//
+		//
+		//		}
 
-		Double totalPriceFormat;
+		final DecimalFormat df = new DecimalFormat("#.00");
+		final String formateado = df.format(totalPrice);
+		final Double totalPricefinal = new Double(formateado);
 
-		try {
-			totalPriceFormat = Double.valueOf(totalPriceFormat1);
-
-		} catch (final Throwable th) {
-
-			totalPriceFormat = totalPrice * 1.00;
-
-		}
-
-		order.setTotalPrice(totalPriceFormat);
+		order.setTotalPrice(totalPricefinal);
 		order.setCreator(principal);
 		principal.getOrders().add(order);
 
@@ -407,6 +418,24 @@ public class ShoppingGroupService {
 		this.engagementService.flush();
 		d2.setEngagement(e2);
 		this.orderService.saveAndFlush(d2);
+
+		final Collection<Warehouse> ws = distributor.getWarehouses();
+		final Random r = new Random();
+		final int low = 0;
+		final int high = ws.size() - 1;
+		int result;
+		if (high == 0)
+			result = 0;
+		else
+			result = r.nextInt(high - low) + low;
+
+		final List<Warehouse> ws2 = new ArrayList<Warehouse>();
+		ws2.addAll(ws);
+
+		final Warehouse w = ws2.get(result);
+		w.getOrders().add(d2);
+
+		this.warehouseService.save(w);
 
 	}
 	public Collection<ShoppingGroup> shoppingGroupsWithMorePuntuation() {

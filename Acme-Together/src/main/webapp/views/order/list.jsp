@@ -35,7 +35,7 @@
 		sortable="false" />
 		
 	<spring:message code="order.status" var="orderStatus" />
-	<display:column property="status" title="${orderFinishDate}"
+	<display:column property="status" title="${orderStatus}"
 		sortable="false" />	
 		
 		

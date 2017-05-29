@@ -74,7 +74,7 @@ public class OrderDomain extends DomainEntity {
 	}
 
 	@Min(0)
-	@Digits(integer = 32, fraction = 2)
+	@Digits(integer = 64, fraction = 2)
 	public double getTotalPrice() {
 		return this.totalPrice;
 	}

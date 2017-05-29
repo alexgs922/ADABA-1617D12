@@ -46,8 +46,8 @@ public class Coupon extends DomainEntity {
 		this.couponNumber = couponNumber;
 	}
 
-	@Min((long) 0.0)
-	@Max((long) 1.0)
+	@Min(0)
+	@Max(1)
 	public double getDiscount() {
 		return this.discount;
 	}

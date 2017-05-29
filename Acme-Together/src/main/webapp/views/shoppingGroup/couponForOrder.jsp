@@ -32,6 +32,10 @@
 	<form:errors cssClass="error" path="coupon" />
 	<br>
 	<br>
+	
+	<acme:selectSH items="${distributors}" itemLabel="name" code="order.distributors" path="distributor"/>
+	
+	<br>
 	<br>
 	
 	</fieldset>

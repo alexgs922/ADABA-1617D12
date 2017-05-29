@@ -1,8 +1,10 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +15,7 @@ import org.springframework.util.Assert;
 import repositories.OrderDomainRepository;
 import domain.OrderDomain;
 import domain.Product;
+import domain.ShoppingGroup;
 import domain.Status;
 
 @Service
@@ -28,6 +31,9 @@ public class OrderDomainService {
 
 	@Autowired
 	private ProductService			productService;
+
+	@Autowired
+	private ShoppingGroupService	shoppingGroupService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -95,10 +101,21 @@ public class OrderDomainService {
 		order.setStatus(Status.RECEIVED);
 		order.setFinishDate(new Date());
 
+		final List<Product> ps = new ArrayList<Product>();
+
+		ps.addAll(order.getProducts());
+
+		final Product pr = ps.get(0);
+
+		final ShoppingGroup sh = pr.getShoppingGroupProducts();
+
 		for (final Product p : order.getProducts()) {
 			p.setShoppingGroupProducts(null);
 			this.productService.saveAndFlush(p);
 		}
+
+		sh.setLastOrderDate(null);
+		this.shoppingGroupService.save(sh);
 
 	}
 }
