@@ -23,7 +23,7 @@
 <spring:message code="sh.MySh" var="mySh"/>
 <h2><jstl:out value="${mySh}"/></h2>
 <br>
-<display:table pagesize="5" class="displaytag" name="myShoppingGroups"
+<display:table pagesize="5" sort="list" class="displaytag" name="myShoppingGroups"
 	requestURI="${requestURI}" id="sh">
 
 	<jstl:if test="${sh.private_group eq true}">
@@ -111,7 +111,7 @@
 <spring:message code="sh.ShIBelong" var="shIBelong"/>
 <h2><jstl:out value="${shIBelong}"/></h2>
 <br>
-<display:table pagesize="5" class="displaytag" name="shoppingGroupsBelongs"
+<display:table pagesize="5" sort="list" class="displaytag" name="shoppingGroupsBelongs"
 	requestURI="${requestURI}" id="row">
 
 	<jstl:if test="${row.private_group eq true}">

@@ -1246,7 +1246,7 @@
 		<property name="name" value="Sh1" />
 		<property name="description" value="Sh1 descreiption" />
 		<!-- <property name="lastOrderDate" value="2017/04/25" /> es null porque no tiene ningun order en curso-->
-		<property name="freePlaces" value="2" />
+		<property name="freePlaces" value="0" />
 		<property name="site" value="PcComponentes" />
 		<property name="puntuation" value="3" />
 		<property name="category" ref="category13" />
