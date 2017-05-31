@@ -9,11 +9,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import services.AdministratorService;
 import services.CategoryService;
+import services.UserService;
 import utilities.AbstractTest;
 import domain.Category;
+import domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -29,6 +32,9 @@ public class AdminServiceTest extends AbstractTest {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private UserService				userService;
 
 
 	// Test 1: Test Relacionado con la creación de categorias 
@@ -170,6 +176,128 @@ public class AdminServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.templateDeleteCategory((String) testingData[i][0], (Category) testingData[i][1], (Class<?>) testingData[i][2]);
+
+	}
+
+	// Test 4: El administrador puede bannear a un Usuario
+
+	// Baneamos a un user, y posteriomente comprobamos que el user ha sido
+	// banneado correctamente, es decir cuando
+	// su atributo booleano ban es true
+	protected void templateBanUser(final String username, final User user, final boolean result, final Class<?> expected) {
+
+		Class<?> caught;
+		caught = null;
+
+		try {
+
+			this.authenticate(username);
+
+			final User res = user;
+			this.userService.banUser(res);
+
+			Assert.isTrue(res.isBanned() == result);
+
+			this.unauthenticate();
+			this.userService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	// Chorbi = 63,64,65,66,67,68
+	@Test
+	public void driverBanUser() {
+
+		final User user1 = this.userService.findOneToSent(591); // Obtenemos de la base de datos el user con id = 591 inicialmente no banneado
+		final User user2 = this.userService.findOneToSent(594); //Obtenemos de la base de datos el user con id = 594 inicialmente banneado
+
+		final Object testingData[][] = {
+			// TEST POSITIVO: Bannear un user que aun no esta baneado, y
+			// comprobar que el resultado es correcto.
+			{
+				"admin", user1, true, null
+			},
+			// TEST NEGATIVO: Bannear un un user que ya ha sido banneado y
+			// comprobar que salta correctamente la excepcion.
+			{
+				"admin", user2, true, IllegalArgumentException.class
+			}
+
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateBanUser((String) testingData[i][0], (User) testingData[i][1], (boolean) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	// Test 5: El administrador puede bannear a un Usuario
+
+	// Permitimos a un user, y posteriomente comprobamos que el user ha sido
+	// permitido correctamente, es decir cuando
+	// su atributo booleano ban es false
+	protected void templateUnbanUser(final String username, final User user, final boolean result, final Class<?> expected) {
+
+		Class<?> caught;
+		caught = null;
+
+		try {
+
+			this.authenticate(username);
+
+			final User res = user;
+			this.userService.unBanUser(res);
+
+			Assert.isTrue(res.isBanned() == result);
+
+			this.unauthenticate();
+			this.userService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverUnbanUser() {
+
+		final User user1 = this.userService.findOneToSent(594); // Obtenemos de la base de datos el user con id = 594 inicialmente baneado
+		final User user2 = this.userService.findOneToSent(591); // Obtenemos de la base de datos el user con id = 591 inicialmente sin banear
+
+		final Object testingData[][] = {
+			// TEST POSITIVO: Permitir un user que esta baneado, y
+			// comprobar que el resultado es correcto.
+			{
+				"admin", user1, false, null
+			},
+			// TEST NEGATIVO: Permitir un user que ya se le permite entrar
+			// en el sistema y comprobar que salta correctamente la
+			// excepcion.
+			{
+				"admin", user2, false, IllegalArgumentException.class
+			}
+
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateUnbanUser((String) testingData[i][0], (User) testingData[i][1], (boolean) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	//Test:6 Con este test comprobamos que al intentar logearnos con un user que se
+	// encuentra banneado no es posible realizar dicha operacin y el test
+	// devuelve IllegalArgumentException
+	@Test(expected = IllegalArgumentException.class)
+	public void testLoginBannedUser() {
+
+		this.authenticate("user4");
 
 	}
 }

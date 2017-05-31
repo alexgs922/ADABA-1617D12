@@ -830,6 +830,7 @@
 		<property name="birthDate" value="1989/06/24" />
 		<property name="identification" value="29154963Q" />
 		<property name="puntuation" value="2" />
+		<property name="banned" value="true" />
 		<property name="creditCard" ref="creditCardUser4" />
 		<property name="shoppingGroup">
 			<list>
