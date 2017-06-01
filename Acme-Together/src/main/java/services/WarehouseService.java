@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.WarehouseRepository;
+import domain.Distributor;
 import domain.OrderDomain;
 import domain.Warehouse;
 
@@ -95,7 +96,9 @@ public class WarehouseService {
 
 	
 	public void delete(final Warehouse warehouse) {
+		Distributor d = this.distributorService.findByPrincipal();
 		Assert.notNull(warehouse);
+		Assert.isTrue(warehouse.getDistributor().getId()==d.getId());
 		this.warehouseRepository.delete(warehouse);
 
 	}

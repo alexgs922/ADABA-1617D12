@@ -2,12 +2,14 @@
 package funcionalTesting;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
@@ -17,6 +19,7 @@ import services.PrivateMessageService;
 import services.UserService;
 import utilities.AbstractTest;
 import domain.User;
+import forms.RegistrationForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -180,6 +183,92 @@ public class UserServiceTest extends AbstractTest {
 		for (int i = 0; i < testingData.length; i++)
 			this.template2((String) testingData[i][0], (int) testingData[i][1], (int) testingData[i][2], (Class<?>) testingData[i][3]);
 
+		}
+	
+
+	//Test dedicado a probar el caso de uso de registro de usuario 
+	protected void template3(final String username,final String adress,final Date birthDate,final String description,final String email,
+			final String identefication,final String name,final String password,final String passwordCheck,final String phone,final String picture,
+			final String surName,final String username1, final boolean termsOfUse, Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+
+			this.authenticate(username);
+
+			RegistrationForm customerForm = new RegistrationForm();
+			customerForm.setAdress(adress);
+			customerForm.setBirthDate(birthDate);
+			customerForm.setDescription(description);
+			customerForm.setEmail(email);
+			customerForm.setIdentefication(identefication);
+			customerForm.setName(name);
+			customerForm.setPassword(password);
+			customerForm.setPasswordCheck(passwordCheck);
+			customerForm.setPhone(phone);
+			customerForm.setPicture(picture);
+			customerForm.setSurName(surName);
+			customerForm.setTermsOfUse(termsOfUse);
+			customerForm.setUsername(username1);
+			
+			User user = this.userService.reconstruct(customerForm);
+			
+			
+			Assert.notNull(user);
+			this.userService.save(user);
+			
+			this.unauthenticate();
+			this.userService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
 	}
+	
+	@Test
+	public void driver3() {
+
+		final Object testingData[][] = {
+			{   //Usuario no registrado se registra en el sistema
+				null, "adress", new Date(),"description","email@gmail.com","53585603L","name","123456","123456",
+				"+34955613568","http://www.google.com","surname","usuarioPrueba",true, null
+			}, {
+				//Usuario no registrado se intenta registrar en el sistema con email invalido
+				null, "adress", new Date(),"description","email","53585603L","name","123456","123456",
+				"+34955613568","http://www.google.com","surname","usuarioPrueba",true, DataIntegrityViolationException.class
+			}, {
+				//Usuario no registrado se registra con un dni invalido
+				null, "adress", new Date(),"description","email@gmail.com","535803","name","123456","123456",
+				"+34955613568","http://www.google.com","surname","usuarioPrueba",true, DataIntegrityViolationException.class
+			}, {
+				//Usuario no registrado se registra con contraseñas diferentes
+				null, "adress", new Date(),"description","email@gmail.com","535803","name","456789","123456",
+				"+34955613568","http://www.google.com","surname","usuarioPrueba",true, DataIntegrityViolationException.class
+			}, {
+				//Usuario no registrado se registra en el sistema con campos null
+				null, "adress", new Date(),null,null,"535803","name","123456","123456",
+				"+34955613568",null,"surname","usuarioPrueba",true, DataIntegrityViolationException.class	
+			},{
+				//Usuario no registrado se registra en el sistema sin aceptar las condiciones de uso
+				null, "adress", new Date(),"description","email@gmail.com","53585603L","name","123456","123456",
+				"+34955613568","http://www.google.com","surname","usuarioPrueba",false, DataIntegrityViolationException.class
+			
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.template3((String) testingData[i][0], (String) testingData[i][1], (Date) testingData[i][2],
+					(String) testingData[i][3],(String) testingData[i][4],(String) testingData[i][5],(String) testingData[i][6],
+					(String) testingData[i][7],(String) testingData[i][8],(String) testingData[i][9],(String) testingData[i][10],
+					(String) testingData[i][11],(String) testingData[i][12],(boolean) testingData[i][13],(Class<?>) testingData[i][14]);
+
+		}
+	
+
 
 }
