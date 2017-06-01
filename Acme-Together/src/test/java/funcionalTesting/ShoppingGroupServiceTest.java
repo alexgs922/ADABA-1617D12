@@ -23,12 +23,14 @@ import services.ActorService;
 import services.CategoryService;
 import services.CommentService;
 import services.ProductService;
+import services.PunctuationService;
 import services.ShoppingGroupService;
 import services.UserService;
 import utilities.AbstractTest;
 import domain.Category;
 import domain.Comment;
 import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
@@ -60,6 +62,9 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	@Autowired
 	private ProductService			productService;
+
+	@Autowired
+	private PunctuationService		punctuationService;
 
 
 	//Test dedicado a probar el caso de uso: Postear comentarios en tus grupos de compra
@@ -1388,6 +1393,122 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.testDeleteProduct((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (Product) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	//Test: un user puntua a un shoppingGroup al que esta apuntado y que todavía no ha puntuado
+	//Comprobamos también que la puntuación se ha cambiado correctamente
+
+	protected void testScoreShoppingGroup(final String username, final Integer value, final ShoppingGroup shoppingGroup, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+
+			final Punctuation rate = this.punctuationService.create();
+
+			rate.setShoppingGroup(shoppingGroup);
+			rate.setUser(principal);
+			rate.setValue(value);
+			principal.getPunctuations().add(rate);
+			shoppingGroup.getPunctuations().add(rate);
+
+			shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + rate.getValue());
+
+			this.userService.save(principal);
+			this.shoppingGroupService.save(shoppingGroup);
+			this.punctuationService.saveAndFlush(rate);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverScoreShoppingGroup() {
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(616);
+		final ShoppingGroup group2 = this.shoppingGroupService.findOne(617);
+
+		final Object testingData[][] = {
+			{   //El user introduce correctamente una puntuación
+				"user3", 5, group1, null
+			}, {
+				//El user3 intenta introducir una puntuación con un valor que se sale de rango.
+				"user3", -6, group1, ConstraintViolationException.class
+			}, {
+				//El user3 intenta introducir una puntuación a un grupo en el que no está apuntado
+				"user3", 5, group2, IllegalArgumentException.class
+			},
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testScoreShoppingGroup((String) testingData[i][0], (Integer) testingData[i][1], (ShoppingGroup) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	protected void testEditScoreShoppingGroup(final String username, final Punctuation rate, final Integer value, final ShoppingGroup shoppingGroup, final Integer expectedValue, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+
+			final Integer oldValue = rate.getValue();
+
+			rate.setValue(value);
+
+			shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() - oldValue + rate.getValue());
+
+			Assert.isTrue(shoppingGroup.getPuntuation() == expectedValue);
+
+			this.userService.save(principal);
+			this.shoppingGroupService.save(shoppingGroup);
+			this.punctuationService.saveAndFlush(rate);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverEditScoreShoppingGroup() {
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615); //shoppingGroup en el que ya ha puntuado el user1
+		final Punctuation rate1 = this.punctuationService.findOne(622); // puntuacion del user1 al group1
+
+		final Object testingData[][] = {
+			{   //El user introduce correctamente una puntuación
+				"user1", rate1, -1, group1, 1, null
+			}, {
+				//El user3 intenta introducir una puntuación con un valor que se sale de rango.
+				"user1", rate1, -6, group1, -4, ConstraintViolationException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testEditScoreShoppingGroup((String) testingData[i][0], (Punctuation) testingData[i][1], (Integer) testingData[i][2], (ShoppingGroup) testingData[i][3], (Integer) testingData[i][4], (Class<?>) testingData[i][5]);
 
 	}
 
