@@ -14,6 +14,7 @@ import javax.validation.ConstraintViolationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
@@ -21,11 +22,13 @@ import org.springframework.util.Assert;
 import services.ActorService;
 import services.CategoryService;
 import services.CommentService;
+import services.ProductService;
 import services.ShoppingGroupService;
 import services.UserService;
 import utilities.AbstractTest;
 import domain.Category;
 import domain.Comment;
+import domain.Product;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
@@ -54,6 +57,9 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	@Autowired
 	private CategoryService			categoryService;
+
+	@Autowired
+	private ProductService			productService;
 
 
 	//Test dedicado a probar el caso de uso: Postear comentarios en tus grupos de compra
@@ -1275,6 +1281,113 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		this.shoppingGroupService.jointToAShoppingGroup(sh);
 		this.shoppingGroupService.flush();
+
+	}
+
+	//Test: el usuario intenta añadir un producto a un grupo de compra en el que está apuntado.
+
+	protected void testAddProduct(final String username, final ShoppingGroup shoppingGroup, final String name, final Double price, final String reference, final String url, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+
+			final Product product = this.productService.create();
+
+			product.setName(name);
+			product.setPrice(price);
+			product.setReferenceNumber(reference);
+			product.setShoppingGroupProducts(shoppingGroup);
+			product.setUrl(url);
+			product.setUserProduct(principal);
+
+			this.productService.saveAndFlush(product);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverAddProduct() {
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615); // El user1 está apuntado a este grupo
+		final ShoppingGroup group2 = this.shoppingGroupService.findOne(616); // El user1 no esta apuntado a este grupo
+
+		final Object testingData[][] = {
+			{   //El user1 intenta añadir correctamente un producto a un shoppingGroup en el que esta apuntado
+				"user1", group1, "New Product", 30.0, "456321G", "http://amazon.com", null
+			}, {   //El user1 intenta añadir correctamente un producto a un shoppingGroup en el que no esta apuntado
+				"user1", group2, "New Product", 30.0, "456321G", "http://amazon.com", IllegalArgumentException.class
+			}, {   //El user1 intenta añadir un producto a un shoppingGroup en el que esta apuntado
+					//introduciendo todos los campos del producto en blanco menos el precio.
+				"user1", group1, "", 30.0, "", "", ConstraintViolationException.class
+			}, {   //El user1 intenta añadir un producto a un shoppingGroup en el que esta apuntado
+					//introduciento de manera erronea una URL
+				"user1", group1, "New Product", 30.0, "456321G", "ttp//amazon.com", ConstraintViolationException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testAddProduct((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (String) testingData[i][2], (Double) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
+
+	}
+
+	//Test: el usuario intenta borrar un producto de un shoppingGroup
+
+	protected void testDeleteProduct(final String username, final ShoppingGroup shoppingGroup, final Product product, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+			Assert.isTrue(shoppingGroup.getProducts().contains(product));
+
+			this.productService.delete(product);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverDeleteProduct() {
+
+		final Product product1 = this.productService.findOne(606);
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615);
+
+		final Object testingData[][] = {
+			{   //El user1 puede borrar un producto que es suyo y que esta en un grupo al que el pertenece
+				"user1", group1, product1, null
+			}, {
+				//user 1 intenta borrar el product 1 del grupo 1, pero no puede porque dicho producto no ha sido creado por el
+				"user2", group1, product1, InvalidDataAccessApiUsageException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testDeleteProduct((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (Product) testingData[i][2], (Class<?>) testingData[i][3]);
 
 	}
 

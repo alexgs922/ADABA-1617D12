@@ -534,6 +534,7 @@ public class ShoppingGroupUserController extends AbstractController {
 
 	}
 
+	@RequestMapping(value = "/editProduct", method = RequestMethod.POST, params = "save")
 	public ModelAndView editProduct(@ModelAttribute("product") final Product product, final BindingResult binding, @RequestParam final int shoppingGroupId) {
 		ModelAndView res;
 
