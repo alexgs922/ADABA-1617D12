@@ -94,6 +94,8 @@ public class CouponService {
 
 	public void delete(final Coupon c) {
 		Assert.notNull(c);
+		final Commercial principal = this.commercialService.findByPrincipal();
+		Assert.isTrue(principal.getCoupons().contains(c));
 		this.couponRepository.delete(c);
 	}
 

@@ -102,7 +102,8 @@ public class CouponServiceTest extends AbstractTest {
 			c.setCouponNumber(couponNumber);
 			c.setDiscount(discount);
 
-			this.couponService.saveAndFlush(c);
+			this.couponService.saveEdit(c);
+			this.couponService.flush();
 
 			this.unauthenticate();
 
@@ -126,7 +127,7 @@ public class CouponServiceTest extends AbstractTest {
 				"commercial1", coupon, "discount5", 0.1, null
 			}, {
 				//user 1 intenta editar una coupon, el sistema no se lo permite.
-				"user1", coupon, "coupon2", 0.9, IllegalArgumentException.class
+				"user1", coupon, "coupon2", 0.9, NullPointerException.class
 			}, {
 				//commercial intenta editar una cupon con los campos vacíos
 				"commercial1", coupon, "", 0.2, ConstraintViolationException.class
@@ -150,7 +151,7 @@ public class CouponServiceTest extends AbstractTest {
 			this.authenticate(username);
 
 			this.couponService.delete(coupon);
-
+			this.couponService.flush();
 			this.unauthenticate();
 
 		} catch (final Throwable oops) {
@@ -160,7 +161,6 @@ public class CouponServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 
 	}
-
 	@Test
 	public void driverDeleteCoupon() {
 
@@ -173,7 +173,7 @@ public class CouponServiceTest extends AbstractTest {
 				"commercial1", coupon, null
 			}, {
 				//user 1 intenta borrar un cupon, el sistema no se lo permite.
-				"user1", coupon, IllegalArgumentException.class
+				"commercial3", coupon, IllegalArgumentException.class
 			}
 		};
 

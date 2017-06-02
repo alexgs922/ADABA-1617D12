@@ -35,9 +35,9 @@ public class PrivateMessageServiceTest extends AbstractTest {
 	private ActorService			actorService;
 
 
-	//user = 1222,...,1226
-	//distributor = 1195,...,1194
-	//admin = 1187
+	//user = 591,...,594
+	//distributor = 564,...,566
+	//admin = 556
 
 	//Crear message sin errores de validacion y otros casos comunes
 	protected void template1(final String username, final int enviarId, final int recibirId, final Class<?> expected) {
@@ -245,7 +245,7 @@ public class PrivateMessageServiceTest extends AbstractTest {
 
 	}
 
-	// user 2 tiene message2 1232 y user 4 su copia 1233
+	// user 2 tiene message2 598 y user 4 su copia 1233
 	//message 3 = 1234
 	@Test
 	public void driver3() {
