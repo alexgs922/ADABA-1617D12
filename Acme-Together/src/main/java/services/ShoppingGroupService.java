@@ -70,6 +70,9 @@ public class ShoppingGroupService {
 	@Autowired
 	private PunctuationService		punctuationService;
 
+	@Autowired
+	private CreditCardService		cardService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -367,6 +370,11 @@ public class ShoppingGroupService {
 		principal = this.userService.findByPrincipal();
 		order = this.orderService.create();
 		ps = new ArrayList<Product>();
+
+		Assert.isTrue(this.cardService.validateCreditCardNumber(principal.getCreditCard().getNumber()));
+		Assert.isTrue(this.cardService.validateDate(principal.getCreditCard().getExpirationMonth(), principal.getCreditCard().getExpirationYear()));
+		Assert.isTrue(this.allowedMakeOrder(shoppingGroup));
+		Assert.isTrue(shoppingGroup.getCreator().getId() == principal.getId());
 
 		if (coupon != null)
 			order.setCoupon(coupon);

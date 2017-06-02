@@ -22,6 +22,9 @@ import org.springframework.util.Assert;
 import services.ActorService;
 import services.CategoryService;
 import services.CommentService;
+import services.CouponService;
+import services.DistributorService;
+import services.OrderDomainService;
 import services.ProductService;
 import services.PunctuationService;
 import services.ShoppingGroupService;
@@ -29,6 +32,9 @@ import services.UserService;
 import utilities.AbstractTest;
 import domain.Category;
 import domain.Comment;
+import domain.Coupon;
+import domain.Distributor;
+import domain.OrderDomain;
 import domain.Product;
 import domain.Punctuation;
 import domain.ShoppingGroup;
@@ -65,6 +71,15 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	@Autowired
 	private PunctuationService		punctuationService;
+
+	@Autowired
+	private DistributorService		distributorService;
+
+	@Autowired
+	private CouponService			couponService;
+
+	@Autowired
+	private OrderDomainService		orderService;
 
 
 	//Test dedicado a probar el caso de uso: Postear comentarios en tus grupos de compra
@@ -1509,6 +1524,114 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.testEditScoreShoppingGroup((String) testingData[i][0], (Punctuation) testingData[i][1], (Integer) testingData[i][2], (ShoppingGroup) testingData[i][3], (Integer) testingData[i][4], (Class<?>) testingData[i][5]);
+
+	}
+
+	//TEST: Realizar un order ---------------------------------------------------
+
+	protected void testMakeOrderShoppingGroup(final String username, final ShoppingGroup shoppingGroup, final Distributor distributor, final Coupon coupon, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			this.shoppingGroupService.makeOrder(shoppingGroup, coupon, distributor);
+
+			this.shoppingGroupService.flush();
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverMakeOrderShoppingGroup() {
+
+		this.authenticate("user1");
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615); //shoppingGroup creado por el user1
+		final ShoppingGroup group2 = this.shoppingGroupService.findOne(616); //shoppingGroup creado por el user3
+		final Distributor distributor1 = this.distributorService.findOne(564);
+		final Distributor distributor2 = this.distributorService.findOne(565);
+		final Distributor distributor3 = this.distributorService.findOne(566);
+		final Coupon coupon1 = this.couponService.findOne(560);
+		final Coupon coupon2 = this.couponService.findOne(561);
+		final Coupon coupon3 = this.couponService.findOne(562);
+
+		this.unauthenticate();
+
+		final Object testingData[][] = {
+			{   //El user1 creador del group1 hace realiza la order correctamente
+				"user1", group1, distributor1, coupon1, null
+			}, {
+				//El user1 no es creador del group1 e intenta realizar una order
+				"user1", group2, distributor2, coupon2, IllegalArgumentException.class
+			}, {
+				//El user 3 es el creador del group2 e intenta realizar un order cuando no esta permitido
+				//ya que hay un order en curso.
+				"user3", group2, distributor2, coupon2, IllegalArgumentException.class
+			}, {
+				//El user 5 intenta hacer una order. No puede realizarla porque su tarjeta de credito no es valida.
+				"user5", group2, distributor2, coupon2, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testMakeOrderShoppingGroup((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (Distributor) testingData[i][2], (Coupon) testingData[i][3], (Class<?>) testingData[i][4]);
+
+	}
+
+	//TEST: Marcar una order como recibida ----------------------------------------------------------------------
+
+	protected void testMarkAsARecievedOrder(final String username, final OrderDomain order, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			this.orderService.markAsAReceived(order);
+
+			this.orderService.flush();
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverMarkAsARecieved() {
+
+		final OrderDomain order1 = this.orderService.findOne(597); //order perteneciente al user3
+		final OrderDomain order2 = this.orderService.findOne(596); //order perteneciente al user1
+
+		final Object testingData[][] = {
+			{   //El user3 marca una order como recibida correctamente.
+				"user3", order1, null
+			}, {
+				//El user1 intenta marcar una order que pertenece al user3 como recibida
+				"user1", order1, NullPointerException.class
+			}, {
+				//El user1 intenta marcar una order como recibida, cuando ya ha sido marcada como tal
+				"user1", order2, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testMarkAsARecievedOrder((String) testingData[i][0], (OrderDomain) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 
