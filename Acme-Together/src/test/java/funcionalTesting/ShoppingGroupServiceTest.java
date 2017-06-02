@@ -273,8 +273,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 				//Test positivo
 				"user3", 3, paraUser3y4y5, null
 			}, {
-				//Test positivo
-				"user4", 3, paraUser3y4y5, null
+				//Test negativo, el usuario está baneado y no puede logearse ni acceder a nada dentro de la aplicación
+				"user4", 3, paraUser3y4y5, IllegalArgumentException.class
 			}, {
 				//Test positivo
 				"user5", 3, paraUser3y4y5, null
@@ -371,8 +371,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 				//Test positivo
 				"user3", 1, 1, paraUser3uno, paraUser3dos, null
 			}, {
-				//Test positivo
-				"user4", 1, 2, paraUser4uno, paraUser4dos, null
+				//Test negativo, el usuario está baneado y nunca llega a logearse ni puede acceder a nada dentro de la aplicación
+				"user4", 1, 2, paraUser4uno, paraUser4dos, IllegalArgumentException.class
 			}, {
 				//Test positivo
 				"user5", 0, 3, null, paraUser5, null
