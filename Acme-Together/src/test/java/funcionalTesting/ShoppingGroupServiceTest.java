@@ -1562,10 +1562,9 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 		final ShoppingGroup group2 = this.shoppingGroupService.findOne(616); //shoppingGroup creado por el user3
 		final Distributor distributor1 = this.distributorService.findOne(564);
 		final Distributor distributor2 = this.distributorService.findOne(565);
-		final Distributor distributor3 = this.distributorService.findOne(566);
+
 		final Coupon coupon1 = this.couponService.findOne(560);
 		final Coupon coupon2 = this.couponService.findOne(561);
-		final Coupon coupon3 = this.couponService.findOne(562);
 
 		this.unauthenticate();
 
