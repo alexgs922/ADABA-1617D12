@@ -160,35 +160,35 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 
 	}
-	//user = 1222,...,1226
-	//shopping groups = 1238,..,1240
+	//user = 591,..,594
+	//shopping groups = 615,..,617
 	//user 1 tiene solo el shopping group 1
-	//admin = 1187
+	//admin = 556
 	@Test
 	public void driver1() {
 
 		final Object testingData[][] = {
 			{
 				//user 1 postea un comentario sin errores en uno de sus grupos de compra
-				"user1", 1222, 1238, 0, null
+				"user1", 591, 615, 0, null
 			}, {
 				//user 1 postea un comentario sin titulo en uno de sus grupos de compra
-				"user1", 1222, 1238, 1, ConstraintViolationException.class
+				"user1", 591, 615, 1, ConstraintViolationException.class
 			}, {
 				//user 1 postea un comentario sin texto en uno de sus grupos de compra
-				"user1", 1222, 1238, 2, ConstraintViolationException.class
+				"user1", 591, 615, 2, ConstraintViolationException.class
 			}, {
 				//user 1 postea un comentario sin creador en uno de sus grupos de compra
-				"user1", 1222, 1238, 3, ConstraintViolationException.class
+				"user1", 591, 615, 3, ConstraintViolationException.class
 			}, {
 				//user 1 intenta posterar un comentario en un grupo de comprar que no es suyo
-				"user1", 1222, 1239, 0, IllegalArgumentException.class
+				"user1", 591, 616, 0, IllegalArgumentException.class
 			}, {
 				//Usuario no autenticado intenta postear un mensaje
-				null, 1222, 1239, 0, IllegalArgumentException.class
+				null, 591, 615, 0, IllegalArgumentException.class
 			}, {
 				//Un actor del sistema que no es usuario intenta postear un comentario
-				"admin", 1222, 1239, 0, IllegalArgumentException.class
+				"admin", 556, 615, 0, IllegalArgumentException.class
 			}
 		};
 
@@ -216,6 +216,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 			//Comprobamos que se recojan para cada usuario la cantidad adecuada de grupos
 			Assert.isTrue(col.size() == numberOfGroups);
+			System.out.println(col.size());
+			System.out.println(numberOfGroups);
 
 			//Comprobamos que los grupos que se han recogido son los correctos
 			for (final ShoppingGroup sh : col)

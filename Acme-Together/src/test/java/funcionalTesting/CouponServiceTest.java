@@ -141,7 +141,7 @@ public class CouponServiceTest extends AbstractTest {
 
 	//Test 3: Test relacionado con la eliminación de un cupon
 
-	protected void templateDeleteCoupon(final String username, final Coupon coupon, final Class<?> expected) {
+	protected void templateDeleteCoupon(final String username, final int couponId, final Class<?> expected) {
 
 		Class<?> caught;
 
@@ -149,7 +149,7 @@ public class CouponServiceTest extends AbstractTest {
 		try {
 
 			this.authenticate(username);
-
+			final Coupon coupon = this.couponService.findOne(couponId);
 			this.couponService.delete(coupon);
 			this.couponService.flush();
 			this.unauthenticate();
@@ -164,21 +164,23 @@ public class CouponServiceTest extends AbstractTest {
 	@Test
 	public void driverDeleteCoupon() {
 
-		this.authenticate("commercial1");
-		final Coupon coupon = this.couponService.findOne(561);
-		this.unauthenticate();
-
 		final Object testingData[][] = {
 			{   //commercial borra un cupon correctamente
-				"commercial1", coupon, null
+				"commercial1", 562, null
 			}, {
-				//user 1 intenta borrar un cupon, el sistema no se lo permite.
-				"commercial3", coupon, IllegalArgumentException.class
+				//Commercial 3  intenta borrar un cupon que no es suyo, el sistema no se lo permite.
+				"commercial3", 562, IllegalArgumentException.class
+			}, {
+				//Commercial 1  intenta borrar un cupon que no existe en la base de datos
+				"commercial1", 10000, IllegalArgumentException.class
+			}, {
+				//Un usuario intenta eliminar un cupon
+				"user1", 562, IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateDeleteCoupon((String) testingData[i][0], (Coupon) testingData[i][1], (Class<?>) testingData[i][2]);
+			this.templateDeleteCoupon((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 }
