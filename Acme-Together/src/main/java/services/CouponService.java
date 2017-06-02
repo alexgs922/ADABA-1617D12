@@ -87,6 +87,11 @@ public class CouponService {
 		return coupon;
 	}
 
+	public Coupon saveAndFlush(final Coupon c) {
+		Assert.notNull(c);
+		return this.couponRepository.saveAndFlush(c);
+	}
+
 	public void delete(final Coupon c) {
 		Assert.notNull(c);
 		this.couponRepository.delete(c);

@@ -62,6 +62,12 @@ public class ConfigurationService {
 		Assert.isTrue(this.checkAdminPrincipal());
 		Assert.notNull(c);
 		return this.configurationRepository.save(c);
+	}
+
+	public Configuration saveAndFlush(final Configuration c) {
+		Assert.isTrue(this.checkAdminPrincipal());
+		Assert.notNull(c);
+		return this.configurationRepository.saveAndFlush(c);
 
 	}
 
