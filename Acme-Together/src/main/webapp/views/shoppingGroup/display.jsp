@@ -195,7 +195,7 @@
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
 				<button
-					onclick="confirm('${productConfirmDelete }')
+					onclick="if (confirm('${productConfirmDelete }'))
 					location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
 					<spring:message code="product.delete" />
 				</button>
