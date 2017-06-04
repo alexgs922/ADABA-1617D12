@@ -13,20 +13,16 @@
 
 <form:form action="shoppingGroup/user/comment.do?shoppingGroupId=${shoppingGroup.id}" modelAttribute="comment">
 
-	
-
+	<br>	
+	<div class="row">
 	<acme:textbox code="comment.title" path="title" />
 	<br>
 
 	<acme:textarea code="comment.text" path="text" />
 	<br>
-
-
+	</div>
 	<acme:submit name="save" code="comment.save" />
-
-	<input class="waves-effect waves-light btn" type="button" name="cancel"
-		value="<spring:message code="comment.cancel" />"
-		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
+	<a href="shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}" class="waves-effect waves-light btn"><spring:message code="comment.cancel" /></a>
 	<br />
 	
 

@@ -28,15 +28,12 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/> 
 
+	<br>
+	<div class="row">
 	
-	<form:label path="value">
-
-		<spring:message code="punctuation.value"/>:
-
-	</form:label>
-
-	<form:select path="value">
-	
+	<label for="value"><spring:message code="punctuation.value" /></label>
+	<select name="value" id="value">
+		<option value="0">Select</option>
 		<option value ="-5">-5</option>
 		
 		<option value ="-4">-4</option>
@@ -58,29 +55,23 @@
 		<option value ="4">4</option>
 
 		<option value ="5">5</option>
+	</select>
 
-	
-
-	</form:select>
-	
 	<form:errors cssClass="error" path="value"/>
 
 	<br />
-	<br />
-	<br />
+	</div>
 	
-	
-
-	<input type="submit" name="save"
-		value="<spring:message code="punctuation.save" />" />&nbsp; 
-	
-	<input class="waves-effect waves-light btn" type="button" name="cancel"
-		value="<spring:message code="punctuation.cancel" />"
-		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
+	<acme:submit name="save" code="punctuation.save"/>&nbsp; 
+	<a href="shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}" class="waves-effect waves-light btn"><spring:message code="punctuation.cancel" /></a>
 	<br />
 
 </form:form>
-
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>
 
 
 

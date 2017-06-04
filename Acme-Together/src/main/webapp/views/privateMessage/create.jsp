@@ -13,8 +13,9 @@
 
 <form:form action="privateMessage/create.do" modelAttribute="privateMessage">
 
+	<br>
+	<div class="row">
 	
-
 	<acme:textbox code="chirp.subject" path="subject" />
 	<br>
 
@@ -27,10 +28,17 @@
 	<acme:select items="${actors}" itemLabel="userAccount.username"
 		code="chirp.recipient" path="recipient" />
 	<br>
-
+	
+	</div>
 
 	<acme:submit name="save" code="chirp.save" />
+	
+	<a href="welcome/index.do" class="waves-effect waves-light btn"><spring:message code="chirp.cancel" /></a>
 
-	<acme:cancel url="welcome/index.do" code="chirp.cancel" />
 
 </form:form>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>

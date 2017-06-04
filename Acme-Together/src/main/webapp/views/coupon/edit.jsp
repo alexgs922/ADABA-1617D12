@@ -15,23 +15,20 @@
 
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-
-	<fieldset>
-		<legend>
+	<br>
+	<div class="row">
+		<h4>
 			<spring:message code="coupon.info" />
-		</legend>
+		</h4>
 		
 		<acme:textbox code="coupon.couponNumber" path="couponNumber" />
 		<br>
 		<acme:number code="coupon.discount" path="discount" step="0.01" min="0.0" max="1.0"/>
 		<br>
 		
-	</fieldset>
-	<br><br>
-
+	</div>
 
 	<acme:submit name="save" code="coupon.save" />
-
-	<acme:cancel url="coupon/commercial/list.do" code="coupon.cancel" />
+	<a href="coupon/commercial/list.do" class="waves-effect waves-light btn"><spring:message code="coupon.cancel" /></a>
 
 </form:form>

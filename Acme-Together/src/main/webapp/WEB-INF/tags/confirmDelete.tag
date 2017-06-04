@@ -29,7 +29,7 @@
 
 <%-- Definition --%>
 
-<a type="button" href="${url}" onclick="return confirm('<spring:message code="${codeConfirm}" />')">
+<a class="waves-effect waves-light btn" href="${url}" onclick="return confirm('<spring:message code="${codeConfirm}" />')">
 	<spring:message code="${code}" />
 </a>
 

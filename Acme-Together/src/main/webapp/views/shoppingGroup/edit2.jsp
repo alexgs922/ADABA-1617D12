@@ -12,8 +12,8 @@
 
 <form:form action="${requestURI}" modelAttribute="shoppingGroup">
 	
-	<fieldset>
-		<legend><spring:message code="sh.Info"/></legend>
+	<div class="row">
+		<h4><spring:message code="sh.Info"/></h4>
 		<br>
 		
 		<acme:textbox code="sh.name" path="name"/>
@@ -32,24 +32,25 @@
 		</jstl:if>
 		<acme:textbox code="sh.site" path="site"/>
 		<br>
-	</fieldset>
+	</div>
 
 
-	<fieldset>
-		<br>
-		<legend><spring:message code="sh.category"/></legend>
+	<div class="row">
 		<acme:selectSH items="${categories}" itemLabel="name" code="sh.category" path="category"/>
 		<br>
-	</fieldset>
+	</div>
 	
 	<br>
 	
 	<br>
 	<acme:submit name="save" code="sh.accept"/>			
-	<acme:cancel url="shoppingGroup/user/joinedShoppingGroups.do" code="sh.cancel"/>
+	<a href="shoppingGroup/user/joinedShoppingGroups.do" class="waves-effect waves-light btn"><spring:message code="sh.cancel" /></a>
 	<br>
-	<br>
-
-	
+	<br>	
 
 </form:form>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>

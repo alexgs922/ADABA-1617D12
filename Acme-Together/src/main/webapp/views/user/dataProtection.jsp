@@ -13,18 +13,18 @@
 <body>
 	<div id="block">
 		<div align="left">
-			<h2>
+			<h4>
 				<spring:message code="dataProtection.title" />
-			</h2>
+			</h4>
 		</div>
 		<div align="justify">
 			<spring:message code="dataProtection.whatIs" />
 		</div>
 		<br />
 		<div align="left">
-			<h2>
+			<h4>
 				<spring:message code="dataProtection.useAndProcessingTitle" />
-			</h2>
+			</h4>
 		</div>
 		<div align="justify">
 
@@ -52,9 +52,9 @@
 
 		<div align="left">
 
-			<h2>
+			<h4>
 				<spring:message code="dataProtection.securityMeasuresTitle" />
-			</h2>
+			</h4>
 
 		</div>
 
@@ -76,9 +76,9 @@
 
 		<div align="left">
 
-			<h2>
+			<h4>
 				<spring:message code="dataProtection.exercisesLawTitle" />
-			</h2>
+			</h4>
 
 		</div>
 
@@ -98,9 +98,9 @@
 
 		<div align="left">
 
-			<h2>
+			<h4>
 				<spring:message code="dataProtection.howChangeDataTitle" />
-			</h2>
+			</h4>
 
 		</div>
 
@@ -113,7 +113,24 @@
 		</div>
 
 		<br />
+		
+		                        <div align="left">
 
+			<h4>
+				<spring:message code="dataProtection.aboutOrders" />
+			</h4>
+
+		</div>
+
+
+
+		<div align="justify">
+
+			<spring:message code="dataProtection.aboutOrdersMessage" />
+
+		</div>
+
+		<br />
 
 
 	</div>

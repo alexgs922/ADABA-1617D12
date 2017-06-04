@@ -11,6 +11,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <spring:message code="user.personalInfo" var="userPersonalInfo" />
+
 <h4>
 	<jstl:out value="${userPersonalInfo}" />
 </h4>

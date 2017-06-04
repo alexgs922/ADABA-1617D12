@@ -15,15 +15,15 @@
 <form:form action="commercial/editProfile.do" modelAttribute="commercial">
 <form:hidden path="id"/>
 <form:hidden path="version"/>
-
-<fieldset>
-		<legend><spring:message code="commercial.contactInfo"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="commercial.contactInfo"/></h4>
 		<acme:textbox code="commercial.name" path="name"/>
 		<acme:textbox code="commercial.surname" path="surName"/>
 		<acme:textbox code="commercial.email" path="email"/>
 		<acme:textbox code="commercial.phone" path="phone"/>
 
-	</fieldset>
+	</div>
 	<acme:submit name="save" code="commercial.accept"/>			
 	
 </form:form>

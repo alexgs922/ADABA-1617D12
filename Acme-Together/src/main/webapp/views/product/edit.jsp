@@ -27,7 +27,9 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/> 
-
+	
+	<br>
+	<div class="row">
 	<acme:textbox code="product.name" path="name" />
 	<br>
 	<acme:textbox code="product.url" path="url" />
@@ -36,16 +38,10 @@
 	<br>
 	<acme:textbox code="product.price" path="price" />
 	<br>
-		
+	</div>
 
-	
-
-	<input type="submit" name="save"
-		value="<spring:message code="product.save" />" />&nbsp; 
-	
-	<input class="waves-effect waves-light btn" type="button" name="cancel"
-		value="<spring:message code="product.cancel" />"
-		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
+	<acme:submit name="save" code="product.save" />&nbsp; 
+	<a href="shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}" class="waves-effect waves-light btn"><spring:message code="product.cancel" /></a>
 	<br />
 
 </form:form>

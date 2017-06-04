@@ -47,7 +47,7 @@
 	<li><a href="distributor/register.do"><spring:message code="master.page.registerDistributor" /></a></li>
 	<li><a href="commercial/register.do"><spring:message code="master.page.registerCommercial" /></a></li>
 	<li><a href="user/administrator/list.do"><spring:message code="master.page.allUsers" /></a></li>
-	<li><a href="category/administrator/list.do"><spring:message code="master.page.listCategories" /></a></li>
+	<%-- <li><a href="category/administrator/list.do"><spring:message code="master.page.listCategories" /></a></li> --%>
 	</security:authorize>
 	<security:authorize access="hasRole('USER')">
 	<li><a class="dropdown-button" href="#!" data-activates="follow1"><spring:message code="master.page.followPeople" /><i class="material-icons right">arrow_drop_down</i></a></li>

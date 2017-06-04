@@ -11,9 +11,9 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <spring:message code="distributor.personalInfo" var="distributorPersonalInfo" />
-<h2>
+<h4>
 	<jstl:out value="${distributorPersonalInfo}" />
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="distributor"
 	requestURI="${requestURI}" id="row">
 
@@ -35,10 +35,11 @@
 
 
 <security:authorize access="hasRole('DISTRIBUTOR')">
+<br>
 		<jstl:choose>
 
 			<jstl:when test="${principal.id == row.id }">
-				<a href="distributor/editProfile.do?distributorId=${principal.id}"> <spring:message
+				<a class="waves-effect waves-light btn" href="distributor/editProfile.do?distributorId=${principal.id}"> <spring:message
 						code="distributor.editprofile" />
 				</a>
 

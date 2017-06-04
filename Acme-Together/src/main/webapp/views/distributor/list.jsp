@@ -32,5 +32,13 @@
 	<spring:message code="distributor.webPage" var="distributorWebPage" />
 	<display:column property="webPage" title="${distributorWebPage}"
 		sortable="false" />
-		
+	
+	<security:authorize access="isAuthenticated()">
+	<display:column>
+		<a href="distributor/profile.do?distributorId=${row.id}">
+					<spring:message code="distributor.viewProfile" />
+				</a>
+	</display:column>
+	</security:authorize>
+	
 </display:table>

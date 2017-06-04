@@ -498,4 +498,17 @@ public class ShoppingGroupService {
 
 	}
 
+	public String contieneWeb(final String site) {
+
+		final char[] cadena = site.toCharArray();
+		for (int i = 0; i < cadena.length; i++)
+			if (Character.isUpperCase(cadena[i])) {
+				final char cambio = Character.toLowerCase(cadena[i]);
+				cadena[i] = cambio;
+			}
+
+		final String s = String.copyValueOf(cadena);
+
+		return s;
+	}
 }

@@ -14,7 +14,6 @@
 
 
 <div>
-	
 	<spring:message code="${forbiddenOperation}" var="errormessageFromEvent" />
 	<p><font size="5" color ="red"><jstl:out value="${errormessageFromEvent}"></jstl:out></font></p>
 	

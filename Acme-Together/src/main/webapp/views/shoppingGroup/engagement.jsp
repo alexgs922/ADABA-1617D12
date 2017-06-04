@@ -12,12 +12,15 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<br>
 <spring:message code="eng.Info" var="engInfo" />
-<h2>
+
+<h4>
 	<jstl:out value="${engInfo}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="15" class="highlight" name="lista" requestURI="${requestURI}" id="fila">
 
+	
 	<%-- <jstl:forEach var = "i" begin = "0" end = "${fn:length(lista)}"> --%>
 		 <%-- <display:column>  --%>
 			<jstl:out value = "${fila}"/>

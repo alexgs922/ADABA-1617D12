@@ -15,15 +15,15 @@
 <form:form action="distributor/editProfile.do" modelAttribute="distributor">
 <form:hidden path="id"/>
 <form:hidden path="version"/>
-
-<fieldset>
-		<legend><spring:message code="distributor.contactInfo"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="distributor.contactInfo"/></h4>
 		<acme:textbox code="distributor.name" path="name"/>
 		<acme:textbox code="distributor.surname" path="surName"/>
 		<acme:textbox code="distributor.email" path="email"/>
 		<acme:textbox code="distributor.phone" path="phone"/>
-
-	</fieldset>
+		
+	</div>
 	<acme:submit name="save" code="distributor.accept"/>			
 	
 </form:form>

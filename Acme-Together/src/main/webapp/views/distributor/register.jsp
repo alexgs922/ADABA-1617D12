@@ -12,42 +12,48 @@
 
 
 <form:form action="distributor/register.do" modelAttribute="distributor">
-	<fieldset>
-		<legend><spring:message code="distributor.userAccountInfo"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="distributor.userAccountInfo"/></h4>
 		<acme:textbox code="distributor.username" path="username"/>
 		<acme:password code="distributor.password" path="password"/>
 		<acme:password code="distributor.passwordConf" path="passwordCheck"/>
-	</fieldset>
+	</div>
 
 
-	<fieldset>
-		<legend><spring:message code="distributor.contactInfo"/></legend>
+	<div class="row">
+		<h4><spring:message code="distributor.contactInfo"/></h4>
 		<acme:textbox code="distributor.name" path="name"/>
 		<acme:textbox code="distributor.surname" path="surName"/>
 		<acme:textbox code="distributor.myEmail" path="email"/>
 		<acme:textbox code="distributor.myPhone" path="phone"/>
-	</fieldset>
+	</div>
 	
 	
-	<fieldset>
-		<legend><spring:message code="distributor.personalInfo"/></legend>
+	<div class="row">
+		<h4><spring:message code="distributor.personalInfo"/></h4>
 		<acme:textbox code="distributor.companyName" path="companyName"/>
 		<acme:textbox code="distributor.companyAddress" path="companyAddress"/>
 		<acme:textbox code="distributor.vatNumber" path="vatNumber"/>
 		<acme:textbox code="distributor.webPage" path="webPage"/>
 			
-	</fieldset>
+	</div>
 	
 
-	<form:checkbox path="termsOfUse"/>
+	<input id="termsOfUse" name="termsOfUse" class="filled-in" type="checkbox" value="true">
+	<label for="termsOfUse">
 	<spring:message code="distributor.termsOfUse.confirmation"/> 
 	<a href="distributor/dataProtection.do">
 		<spring:message code="distributor.termsOfUse.link" />
 	</a>
+	</label>
 	<form:errors cssClass="error" path="termsOfUse" />
 	<br>
+	<br>
 	<acme:submit name="save" code="distributor.accept"/>			
-	<acme:cancel url="welcome/index.do" code="distributor.cancel"/>
+	<a href="welcome/index.do" class="waves-effect waves-light btn"><spring:message code="distributor.cancel" /></a>
+	<br>
+	<br>
 
 	
 

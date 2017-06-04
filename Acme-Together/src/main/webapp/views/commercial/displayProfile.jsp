@@ -11,9 +11,10 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <spring:message code="commercial.personalInfo" var="commercialPersonalInfo" />
-<h2>
+
+<h4>
 	<jstl:out value="${commercialPersonalInfo}" />
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="commercial"
 	requestURI="${requestURI}" id="row">
 
@@ -34,10 +35,11 @@
 </display:table>
 
 <security:authorize access="hasRole('COMMERCIAL')">
+<br>
 	<jstl:choose>
 
 			<jstl:when test="${principal.id == row.id }">
-				<a href="commercial/editProfile.do?commercialId=${row.id}"> <spring:message
+				<a class="waves-effect waves-light btn" href="commercial/editProfile.do?commercialId=${row.id}"> <spring:message
 						code="commercial.editprofile" />
 				</a>
 

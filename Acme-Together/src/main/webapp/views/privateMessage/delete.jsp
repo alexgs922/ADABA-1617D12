@@ -15,7 +15,7 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-
+	
 
 	<acme:textbox code="chirp.subject" path="subject" />
 	<br>

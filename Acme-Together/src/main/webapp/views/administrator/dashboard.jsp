@@ -38,6 +38,9 @@
 
 </display:table>
 
+<hr>
+<br>
+
 <h4>
 	<spring:message code="administrator.numberOfOrderLastMonth" />
 </h4>
@@ -55,6 +58,8 @@
 
 </display:table>
 
+<hr>
+<br>
 
 <h4>
 	<spring:message code="administrator.usersWhoCreateMoreShoppingGroup" />
@@ -73,9 +78,10 @@
 			maxFractionDigits="3" minFractionDigits="3" />
 	</display:column>
 
-
-
 </display:table>
+
+<hr>
+<br>
 
 <h4>
 	<spring:message code="administrator.usersWhoCreateMinusShoppingGroup" />
@@ -98,6 +104,9 @@
 
 
 </display:table>
+
+<hr>
+<br>
 
 <h4>
 	<spring:message code="administrator.shoppingGroupsWithMorePuntuation" />
@@ -123,6 +132,8 @@
 
 </display:table>
 
+<hr>
+<br>
 
 <h4>
 	<spring:message code="administrator.shoppingGroupsWithLessPuntuation" />
@@ -148,6 +159,9 @@
 
 </display:table>
 
+<hr>
+<br>
+
 <h4>
 	<spring:message code="administrator.percentShoppingGroupsWithFreePlaces" />
 </h4>
@@ -165,6 +179,9 @@
 
 </display:table>
 
+<hr>
+<br>
+
 <h4>
 	<spring:message code="administrator.percentShoppingGroupsWithoutFreePlaces" />
 </h4>
@@ -181,6 +198,7 @@
 
 
 </display:table>
+<hr>
 <br>
 
 

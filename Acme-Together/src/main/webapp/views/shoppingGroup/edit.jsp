@@ -12,11 +12,10 @@
 
 
 <form:form action="${requestURI}" modelAttribute="shoppingGroup">
-	
-	<fieldset>
-		<legend><spring:message code="sh.Info"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="sh.Info"/></h4>
 			
-		<br>
 		<acme:textbox code="sh.name" path="name"/>
 		<br>
 		<acme:textarea code="sh.description" path="description"/>
@@ -30,33 +29,35 @@
 		<br>
 		<acme:textbox code="sh.site" path="site"/>
 		<br>
-	</fieldset>
+	</div>
 
 
-	<fieldset>
-		<br>
-		<legend><spring:message code="sh.category"/></legend>
+	<div class="row">
 		<acme:select items="${categories}" itemLabel="name" code="sh.category" path="category"/>
 		<br>
-	</fieldset>
+	</div>
 	
 	<br>
 	
 
-	<form:checkbox path="termsOfUse"/>
+	<input id="termsOfUse" name="termsOfUse" class="filled-in" type="checkbox" value="true">
+	<label for="termsOfUse">
 	<spring:message code="sh.termsOfUse.confirmation"/> 
 	<a href="user/dataProtection.do">
 		<spring:message code="sh.termsOfUse.link" />
 	</a>
+	</label>
 	<form:errors cssClass="error" path="termsOfUse" />
 	<br>
 	<br>
-	<br>
 	<acme:submit name="save" code="sh.accept"/>			
-	<acme:cancel url="shoppingGroup/user/joinedShoppingGroups.do" code="sh.cancel"/>
+	<a href="shoppingGroup/user/joinedShoppingGroups.do" class="waves-effect waves-light btn"><spring:message code="sh.cancel" /></a>
 	<br>
 	<br>
-
-	
 
 </form:form>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>

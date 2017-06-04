@@ -63,7 +63,7 @@
 
 
 	<display:column>
-		<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
+		<a class="waves-effect waves-light btn" href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
 			<spring:message code="sh.display" />
 		</a>
 
@@ -148,7 +148,7 @@
 	<display:column property="site" title="${shSite}" sortable="false" />
 
 	<display:column>
-		<a href="shoppingGroup/user/display.do?shoppingGroupId=${row.id}">
+		<a class="waves-effect waves-light btn" href="shoppingGroup/user/display.do?shoppingGroupId=${row.id}">
 			<spring:message code="sh.display" />
 		</a>
 

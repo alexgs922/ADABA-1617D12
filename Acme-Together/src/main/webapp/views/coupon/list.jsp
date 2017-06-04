@@ -32,6 +32,7 @@
 	</security:authorize>
 	
 </display:table>
+<br>
 
 <security:authorize access="hasRole('COMMERCIAL')">
 	<div>

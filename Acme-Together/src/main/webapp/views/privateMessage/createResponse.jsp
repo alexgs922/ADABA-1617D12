@@ -14,7 +14,8 @@
 <form:form action="privateMessage/response/create.do" modelAttribute="privateMessage">
 
     <form:hidden path="recipient"/>
-
+	<br>
+	<div class="row">
 	<acme:textbox code="chirp.subject" path="subject" />
 	<br>
 
@@ -23,11 +24,11 @@
 
 	<acme:textarea code="chirp.attachments" path="attachments" />
 	<br>
-
+	</div>
 
 
 	<acme:submit name="save" code="chirp.save" />
 
-	<acme:cancel url="privateMessage/listReceivedMessages.do" code="chirp.cancel"/>
+	<a href="privateMessage/listReceivedMessages.do" class="waves-effect waves-light btn"><spring:message code="chirp.cancel" /></a>
 
 </form:form>

@@ -92,7 +92,7 @@
 
 		<display:column>
 
-			<a href="privateMessage/response/create.do?actorId=${row.sender.id}"> <spring:message
+			<a class="waves-effect waves-light btn" href="privateMessage/response/create.do?actorId=${row.sender.id}"><i class="material-icons right">send</i><spring:message
 					code="chirp.create" />
 			</a>
 

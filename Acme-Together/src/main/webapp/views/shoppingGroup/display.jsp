@@ -11,10 +11,11 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<br>
 <spring:message code="sh.Info" var="shInfo" />
-<h2>
+<h4>
 	<jstl:out value="${shInfo}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="shoppingGroup"
 	requestURI="${requestURI}" id="sh">
 
@@ -67,7 +68,6 @@
 
 </security:authorize>
 
-<br>
 
 <spring:message code="shoppingGroup.confirm.join" var="confirmJoin" />
 <security:authorize access="hasRole('USER')">
@@ -81,14 +81,15 @@
 		</button>
 	</jstl:if>
 
+<hr>
+<br>
 </security:authorize>
 
-<br>
 
 <spring:message code="sh.category" var="shCategory" />
-<h2>
+<h4>
 	<jstl:out value="${shCategory}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="category"
 	requestURI="${requestURI}" id="cat">
 
@@ -109,11 +110,13 @@
 
 </display:table>
 
+<hr>
+<br>
 
 <spring:message code="sh.users" var="shUsers" />
-<h2>
+<h4>
 	<jstl:out value="${shUsers}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="users"
 	requestURI="${requestURI}" id="u">
 
@@ -147,11 +150,13 @@
 
 </display:table>
 
+<hr>
+<br>
 
 <spring:message code="sh.products" var="shProducts" />
-<h2>
+<h4>
 	<jstl:out value="${shProducts}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="5" class="highlight" name="products"
 	requestURI="${requestURI}" id="p">
 
@@ -218,11 +223,13 @@
 
 </security:authorize>
 
+<hr>
+<br>
 
 <spring:message code="sh.cooments" var="shComments" />
-<h2>
+<h4>
 	<jstl:out value="${shComments}"></jstl:out>
-</h2>
+</h4>
 <display:table pagesize="10" class="highlight" name="comments"
 	requestURI="${requestURI}" id="com">
 
@@ -247,6 +254,8 @@
 
 
 </display:table>
+<hr>
+
 <jstl:if test="${principal.shoppingGroup.contains(sh)}">
 <a href="shoppingGroup/user/comment.do?shoppingGroupId=${sh.id}"> <spring:message
 						code="user.comment" /></a>
@@ -255,7 +264,7 @@
 
 
 <spring:message code="sh.puntuation" var="shPuntuation" />
-<h2><jstl:out value="${shPuntuation}"></jstl:out></h2>
+<h4><jstl:out value="${shPuntuation}"></jstl:out></h4>
 
 <font size=5>
 	<jstl:out value ="${sh.puntuation}"/>
@@ -265,6 +274,7 @@
 <br/>
 
 <security:authorize access="hasRole('USER')">
+<jstl:if test="${principal.shoppingGroup.contains(sh)}">
 	<jstl:choose>
 		<jstl:when test="${alreadyPunctuate == false}">
 			<button class="waves-effect waves-light btn"
@@ -284,8 +294,10 @@
 			<a><b><spring:message code = "shoppingGroup.alreadyPunctuated2"/></b></a>
 		</jstl:when>
 	</jstl:choose>
-
+</jstl:if>
 </security:authorize>
+<br>
+<br>
 
 
 

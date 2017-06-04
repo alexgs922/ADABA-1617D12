@@ -27,25 +27,17 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/> 
-
-	
+	<br>
+	<div class="row">
 	<acme:textbox code="category.name" path="name" />
 		<br>
-	
-		
-		
+
 	<acme:textarea code="category.description" path="description" />
 		<br>
-		
+	</div>
 
-	
-
-	<input type="submit" name="save"
-		value="<spring:message code="category.save" />" />&nbsp; 
-	
-	<input class="waves-effect waves-light btn" type="button" name="cancel"
-		value="<spring:message code="category.cancel" />"
-		onclick="javascript: window.location.replace('category/administrator/list.do');" />
+	<acme:submit name="save" code="category.save" />&nbsp; 
+	<a href="category/administrator/list.do" class="waves-effect waves-light btn"><spring:message code="category.cancel" /></a>
 	<br />
 
 </form:form>

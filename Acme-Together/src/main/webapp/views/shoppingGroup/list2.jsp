@@ -52,7 +52,7 @@
 
 
 	<display:column>
-		<a href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
+		<a class="waves-effect waves-light btn" href="shoppingGroup/user/display.do?shoppingGroupId=${sh.id}">
 			<spring:message code="sh.display" />
 		</a>
 

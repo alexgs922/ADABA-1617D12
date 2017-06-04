@@ -168,9 +168,11 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		principal = this.userService.findByPrincipal();
 		usuarios = new ArrayList<User>();
-		usuarios.addAll(principal.getFriends());
+		usuarios.addAll(this.userService.findAllMyFriends(principal.getId()));
 
-		for (final User u : usuarios)
+		final Collection<User> usuarios2 = new ArrayList<User>(usuarios);
+
+		for (final User u : usuarios2)
 			if (u.isBanned())
 				usuarios.remove(u);
 
@@ -813,7 +815,8 @@ public class ShoppingGroupUserController extends AbstractController {
 
 		try {
 
-			Assert.isTrue(product.getUrl().contains(shoppingGroup.getSite()));
+			final String s = this.shoppingGroupService.contieneWeb(shoppingGroup.getSite());
+			Assert.isTrue(product.getUrl().contains(s));
 
 		} catch (final Throwable th) {
 

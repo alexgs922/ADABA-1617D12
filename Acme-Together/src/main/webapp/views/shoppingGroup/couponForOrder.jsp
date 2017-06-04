@@ -22,11 +22,9 @@
 
 <form:form action="${requestURI}" modelAttribute="couponsforOrderform">
 	
-	<fieldset>
+	<div class="row">
 	
 	<spring:message code="order.select.coupon" var = "shSelectCoupon"/><b><jstl:out value="${shSelectCoupon}"></jstl:out></b>
-	<br>
-	<br>
 
 	<form:radiobuttons path="coupon" items="${cupones}"  itemLabel="couponNumber"/>
 	<form:errors cssClass="error" path="coupon" />
@@ -34,17 +32,16 @@
 	<br>
 	
 	<acme:selectSH items="${distributors}" itemLabel="name" code="order.distributors" path="distributor"/>
+	<br>
+	</div>
 	
-	<br>
-	<br>
-	
-	</fieldset>
-	<br>
-	<br>
-	
-	<acme:submit name="save" code="sh.accept"/>			
-	<acme:cancel url="shoppingGroup/user/display.do?shoppingGroupId=${shId}" code="sh.cancel"/>
-	<br>
+	<acme:submit name="save" code="sh.accept"/>	
+	<a href="shoppingGroup/user/display.do?shoppingGroupId=${shId}" class="waves-effect waves-light btn"><spring:message code="sh.cancel" /></a>		
 	<br>
 	
 </form:form>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>

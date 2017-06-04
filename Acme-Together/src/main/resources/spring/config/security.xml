@@ -82,7 +82,7 @@
 		<security:intercept-url pattern="/shoppingGroup/user/list.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/addProduct.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/editProduct.do" access="hasRole('USER')" />
-		<security:intercept-url pattern="/shoppingGroup/user/display.do" access="hasRole('USER')" />
+		<security:intercept-url pattern="/shoppingGroup/user/display.do" access="hasAnyRole('USER', 'ADMIN')" />
 		<security:intercept-url pattern="/shoppingGroup/user/deleteProduct.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/create.do" access="hasRole('USER')" />
 		<security:intercept-url pattern="/shoppingGroup/user/**" access="hasRole('USER')" />
@@ -102,9 +102,9 @@
 		<security:intercept-url pattern="/warehouse/create.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/warehouse/delete.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/warehouse/myOrders.do" access="hasRole('DISTRIBUTOR')" />
+		<security:intercept-url pattern="/warehouse/displayOrder.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/order/changeStatus.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/order/remove.do" access="hasRole('DISTRIBUTOR')" />
-		<security:intercept-url pattern="/warehouse/displayOrder.do" access="hasRole('DISTRIBUTOR')" />
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
