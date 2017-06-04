@@ -43,7 +43,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="category.save" />" />&nbsp; 
 	
-	<input type="button" name="cancel"
+	<input class="waves-effect waves-light btn" type="button" name="cancel"
 		value="<spring:message code="category.cancel" />"
 		onclick="javascript: window.location.replace('category/administrator/list.do');" />
 	<br />

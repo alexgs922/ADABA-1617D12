@@ -23,7 +23,7 @@
 <spring:message code="sh.MySh" var="mySh"/>
 <h2><jstl:out value="${mySh}"/></h2>
 <br>
-<display:table pagesize="5" sort="list" class="displaytag" name="myShoppingGroups"
+<display:table pagesize="5" sort="list" class="highlight" name="myShoppingGroups"
 	requestURI="${requestURI}" id="sh">
 
 	<jstl:if test="${sh.private_group eq true}">
@@ -111,7 +111,7 @@
 <spring:message code="sh.ShIBelong" var="shIBelong"/>
 <h2><jstl:out value="${shIBelong}"/></h2>
 <br>
-<display:table pagesize="5" sort="list" class="displaytag" name="shoppingGroupsBelongs"
+<display:table pagesize="5" sort="list" class="highlight" name="shoppingGroupsBelongs"
 	requestURI="${requestURI}" id="row">
 
 	<jstl:if test="${row.private_group eq true}">
@@ -160,7 +160,7 @@
 			<jstl:if test="${row.creator.id != principal.id and row.lastOrderDate eq null}">
 				
 				<spring:message code="shoppingGroup.confirm.leave" var="confirmLeave" />
-				<button onclick="if(confirm('${confirmLeave}')) location.href='shoppingGroup/user/leave.do?shoppingGroupId=${row.id}'">
+				<button class="waves-effect waves-light btn" onclick="if(confirm('${confirmLeave}')) location.href='shoppingGroup/user/leave.do?shoppingGroupId=${row.id}'">
 				<spring:message code="sh.leave" />
 				</button>
 			</jstl:if>
@@ -176,7 +176,7 @@
 
 <security:authorize access="hasRole('USER')">
 
-	<button
+	<button class="waves-effect waves-light btn"
 		onclick="location.href='shoppingGroup/user/create.do?'">
 		<spring:message code="shoppingGroup.create" />
 	</button>
@@ -185,7 +185,7 @@
 
 <security:authorize access="hasRole('USER')">
 
-	<button
+	<button class="waves-effect waves-light btn"
 		onclick="location.href='shoppingGroup/user/createPrivate.do?'">
 		<spring:message code="shoppingGroup.createPrivate" />
 	</button>

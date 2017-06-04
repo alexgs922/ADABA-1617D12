@@ -14,7 +14,7 @@
 <h2>
 	<jstl:out value="${distributorPersonalInfo}" />
 </h2>
-<display:table pagesize="5" class="displaytag" name="distributor"
+<display:table pagesize="5" class="highlight" name="distributor"
 	requestURI="${requestURI}" id="row">
 
 	<spring:message code="distributor.name" var="name" />

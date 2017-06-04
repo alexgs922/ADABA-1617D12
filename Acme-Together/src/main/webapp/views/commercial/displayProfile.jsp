@@ -14,7 +14,7 @@
 <h2>
 	<jstl:out value="${commercialPersonalInfo}" />
 </h2>
-<display:table pagesize="5" class="displaytag" name="commercial"
+<display:table pagesize="5" class="highlight" name="commercial"
 	requestURI="${requestURI}" id="row">
 
 	<spring:message code="commercial.name" var="name" />

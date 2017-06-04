@@ -22,7 +22,7 @@
 <!-- Listing grid -->
 
 
-<display:table pagesize="5" class="displaytag" name="products"
+<display:table pagesize="5" class="highlight" name="products"
 	requestURI="${requestURI}" id="u">
 
 

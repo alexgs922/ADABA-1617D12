@@ -15,19 +15,19 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-
-	<fieldset>
-		<legend>
+	<br>
+	<div class="row">
+		<h4>
 			<spring:message code="configuration.info" />
-		</legend>
+		</h4>
 		
 		<acme:number code="configuration.fee" path="fee" step="1" min="0.0" />
 		<br>
 	
-	</fieldset>
+	</div>
 	<br>
 	<acme:submit name="save" code="configuration.save" />
 
-	<acme:cancel url="configuration/administrator/list.do" code="configuration.cancel" />
+	<a href="configuration/administrator/list.do" class="waves-effect waves-light btn"><spring:message code="configuration.cancel" /></a>
 
 </form:form>

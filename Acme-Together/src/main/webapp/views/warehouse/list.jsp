@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="warehouses"
+<display:table pagesize="5" class="highlight" name="warehouses"
 	requestURI="${requestURI}" id="row">
 
 	<!-- Attributes -->

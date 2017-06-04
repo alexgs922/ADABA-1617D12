@@ -39,7 +39,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="product.save" />" />&nbsp; 
 	
-	<input type="button" name="cancel"
+	<input class="waves-effect waves-light btn" type="button" name="cancel"
 		value="<spring:message code="product.cancel" />"
 		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
 	<br />

@@ -15,27 +15,34 @@
 <form:form action="user/editCreditCard.do" modelAttribute="creditCard">
 <form:hidden path="id"/>
 <form:hidden path="version"/>
-
-<fieldset>
-		<legend><spring:message code="creditCard.Information"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="creditCard.Information"/></h4>
 		<acme:textbox code="creditCard.holderName" path="holderName"/>
-		<spring:message code="creditCard.brandName" />
-		<form:select path="brandName" >
-		<option value="VISA">VISA</option>
-  		<option value="MASTERCARD">MASTERCARD</option>
-  		<option value="DISCOVER">DISCOVER</option>
-  		<option value="DINNERS">DINNERS</option>
-  		<option value="AMEX">AMEX</option>
-  		</form:select>
-		
-		<br/>
+		<label for="brandName"><spring:message code="creditCard.brandName" /></label>
+		<select name="brandName" id="brandName">
+			<option value="0">Select</option>
+			<option value="VISA">VISA</option>
+			<option value="MASTERCARD">MASTERCARD</option>
+			<option value="DISCOVER">DISCOVER</option>
+			<option value="DINNERS">DINNERS</option>
+			<option value="AMEX">AMEX</option>
+		</select>
 		<acme:textbox code="creditCard.number" path="number"/>
 		<acme:textbox code="creditCard.expirationMonth" path="expirationMonth"/>
 		<acme:textbox code="creditCard.expirationYear" path="expirationYear"/>
 		<acme:textbox code="creditCard.cvvCode" path="cvvCode"/>
 	
 	
-	</fieldset>
+	</div>
 	<acme:submit name="save" code="creditCard.accept"/>			
+	<br>
+	<br>
 	
 </form:form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+</script>

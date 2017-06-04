@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="categories"
+<display:table pagesize="5" class="highlight" name="categories"
 	requestURI="${requestURI}" id="row">
 	
 	<!-- Attributes -->
@@ -37,7 +37,7 @@
 		
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
-			<button onclick = "location.href='category/administrator/edit.do?categoryId=${row.id}'"> <spring:message
+			<button class="waves-effect waves-light btn" onclick = "location.href='category/administrator/edit.do?categoryId=${row.id}'"> <spring:message
 					code="category.edit" />
 			</button>
 		</display:column>
@@ -46,7 +46,7 @@
 	<spring:message code="category.confirm.delete" var ="confirmDelete"/>
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
-			<button onclick = "if(confirm('${confirmDelete }'))
+			<button class="waves-effect waves-light btn" onclick = "if(confirm('${confirmDelete }'))
 			location.href='category/administrator/delete.do?categoryId=${row.id}'
 			"  > <spring:message
 					code="category.delete" />
@@ -72,7 +72,7 @@
 
 <security:authorize access ="hasRole('ADMIN')" >	
 	<div>
-		<button onclick = "location.href='category/administrator/create.do'"> 
+		<button class="waves-effect waves-light btn" onclick = "location.href='category/administrator/create.do'"> 
 		<spring:message code="category.create" />
 		</button>
 	</div>

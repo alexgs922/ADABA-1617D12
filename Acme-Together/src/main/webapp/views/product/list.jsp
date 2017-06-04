@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="products"
+<display:table pagesize="5" class="highlight" name="products"
 	requestURI="${requestURI}" id="row">
 
 	<spring:message code="product.name" var="productName" />
@@ -43,7 +43,7 @@
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test=${row.userProduct.id == principal.id }>
-				<button
+				<button class="waves-effect waves-light btn"
 					onclick="location.href='shoppingGroup/user/edit.do?productId=${row.id}'">
 					<spring:message code="product.edit" />
 				</button>
@@ -54,7 +54,7 @@
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test=${row.userProduct.id == principal.id }>
-				<button
+				<button class="waves-effect waves-light btn"
 					onclick="location.href='shoppingGroup/user/delete.do?productId=${row.id}'">
 					<spring:message code="product.delete" />
 				</button>

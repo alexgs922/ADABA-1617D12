@@ -16,7 +16,7 @@
 <h2>
 	<jstl:out value="${engInfo}"></jstl:out>
 </h2>
-<display:table pagesize="15" class="displaytag" name="lista" requestURI="${requestURI}" id="fila">
+<display:table pagesize="15" class="highlight" name="lista" requestURI="${requestURI}" id="fila">
 
 	<%-- <jstl:forEach var = "i" begin = "0" end = "${fn:length(lista)}"> --%>
 		 <%-- <display:column>  --%>

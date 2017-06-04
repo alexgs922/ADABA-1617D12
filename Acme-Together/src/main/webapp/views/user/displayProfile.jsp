@@ -11,10 +11,10 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <spring:message code="user.personalInfo" var="userPersonalInfo" />
-<h2>
+<h4>
 	<jstl:out value="${userPersonalInfo}" />
-</h2>
-<display:table pagesize="5" class="displaytag" name="user"
+</h4>
+<display:table pagesize="5" class="highlight" name="user"
 	requestURI="${requestURI}" id="row">
 
 	<spring:message code="user.picture" var="userPicture" />
@@ -71,10 +71,10 @@
 				<br />
 				<br>
 				<spring:message code="user.CreditCard" var="managerCC" />
-				<h2>
+				<h4>
 					<jstl:out value="${managerCC}" />
-				</h2>
-				<display:table pagesize="5" class="displaytag" name="creditCard"
+				</h4>
+				<display:table pagesize="5" class="highlight" name="creditCard"
 					id="creditCard">
 
 					<spring:message code="creditCard.holderName" var="holderName" />
@@ -125,10 +125,10 @@
 
 
 <spring:message code="user.ShoppingGroups" var="userShoppingInfo" />
-<h2>
+<h4>
 	<jstl:out value="${userShoppingInfo}" />
-</h2>
-<display:table pagesize="5" class="displaytag" name="shoppingGroups" id="shoppingGroup">
+</h4>
+<display:table pagesize="5" class="highlight" name="shoppingGroups" id="shoppingGroup">
 
     <spring:message code="shoppingGroup.name" var="shoppingGroupName" />
 	<display:column property="name" title="${shoppingGroupName}" sortable="true" />
@@ -150,4 +150,8 @@
 
 </display:table>
 
+<script type="text/javascript">
+	$(".pagebanner").hide();
+	$(".pagelinks").hide();
+</script>
 

@@ -24,7 +24,7 @@
 
 	<acme:submit name="save" code="comment.save" />
 
-	<input type="button" name="cancel"
+	<input class="waves-effect waves-light btn" type="button" name="cancel"
 		value="<spring:message code="comment.cancel" />"
 		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
 	<br />

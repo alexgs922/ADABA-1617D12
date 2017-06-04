@@ -15,7 +15,7 @@
 <h2>
 	<jstl:out value="${shInfo}"></jstl:out>
 </h2>
-<display:table pagesize="5" class="displaytag" name="shoppingGroup"
+<display:table pagesize="5" class="highlight" name="shoppingGroup"
 	requestURI="${requestURI}" id="sh">
 
 	<jstl:if test="${sh.private_group eq true}">
@@ -57,7 +57,7 @@
 
 <security:authorize access="hasRole('USER')">
 	<jstl:if test="${shoppingGroup.creator.id == principal.id && allowedMakeOrder == true and not empty shoppingGroup.products}">
-		<button
+		<button class="waves-effect waves-light btn"
 			onclick="location.href='shoppingGroup/user/makeOrder.do?shoppingGroupId=${sh.id}'">
 			<spring:message code="shoppingGroup.makeOrder" />
 		</button>
@@ -74,7 +74,7 @@
 
 	<jstl:if
 		test="${shoppingGroup.lastOrderDate eq null and shoppingGroup.private_group eq false and shoppingGroup.creator.id != principal.id and !sh.users.contains(principal)and shoppingGroup.freePlaces gt 0}">
-		<button
+		<button class="waves-effect waves-light btn"
 			onclick="if(confirm('${confirmJoin}'))
 						location.href='shoppingGroup/user/join.do?shoppingGroupId=${shoppingGroup.id}'">
 			<spring:message code="shoppingGroup.join" />
@@ -89,7 +89,7 @@
 <h2>
 	<jstl:out value="${shCategory}"></jstl:out>
 </h2>
-<display:table pagesize="5" class="displaytag" name="category"
+<display:table pagesize="5" class="highlight" name="category"
 	requestURI="${requestURI}" id="cat">
 
 	<spring:message code="category.name" var="categoryName" />
@@ -114,7 +114,7 @@
 <h2>
 	<jstl:out value="${shUsers}"></jstl:out>
 </h2>
-<display:table pagesize="5" class="displaytag" name="users"
+<display:table pagesize="5" class="highlight" name="users"
 	requestURI="${requestURI}" id="u">
 
 
@@ -152,7 +152,7 @@
 <h2>
 	<jstl:out value="${shProducts}"></jstl:out>
 </h2>
-<display:table pagesize="5" class="displaytag" name="products"
+<display:table pagesize="5" class="highlight" name="products"
 	requestURI="${requestURI}" id="p">
 
 
@@ -178,7 +178,7 @@
 	<%-- <security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id}">
-				<button
+				<button class="waves-effect waves-light btn"
 					onclick="location.href='shoppingGroup/user/editProduct.do?productId=${p.id}'">
 					<spring:message code="product.edit" />
 				</button>
@@ -194,7 +194,7 @@
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${p.userProduct.id == principal.id }">
-				<button
+				<button class="waves-effect waves-light btn"
 					onclick="if (confirm('${productConfirmDelete }'))
 					location.href='shoppingGroup/user/deleteProduct.do?productId=${p.id}'">
 					<spring:message code="product.delete" />
@@ -209,7 +209,7 @@
 
 <security:authorize access="hasRole('USER')">
 	<jstl:if test="${principal.shoppingGroup.contains(sh) && allowedMakeOrder == true}">
-		<button
+		<button class="waves-effect waves-light btn"
 			onclick="location.href='shoppingGroup/user/addProduct.do?shoppingGroupId=${sh.id}'">
 			<spring:message code="shoppingGroup.addProduct" />
 		</button>
@@ -223,7 +223,7 @@
 <h2>
 	<jstl:out value="${shComments}"></jstl:out>
 </h2>
-<display:table pagesize="10" class="displaytag" name="comments"
+<display:table pagesize="10" class="highlight" name="comments"
 	requestURI="${requestURI}" id="com">
 
 
@@ -267,13 +267,13 @@
 <security:authorize access="hasRole('USER')">
 	<jstl:choose>
 		<jstl:when test="${alreadyPunctuate == false}">
-			<button
+			<button class="waves-effect waves-light btn"
 				onclick="location.href='shoppingGroup/user/punctuate.do?shoppingGroupId=${sh.id}'">
 				<spring:message code="shoppingGroup.punctuate" />
 			</button>
 		</jstl:when>	
 		<jstl:when test="${alreadyPunctuate == true}">
-			<button
+			<button class="waves-effect waves-light btn"
 				onclick="location.href='shoppingGroup/user/editPunctuation.do?shoppingGroupId=${sh.id}'">
 				<spring:message code="shoppingGroup.punctuate" />
 			</button>

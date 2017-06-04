@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="warehouses" id="row">
+<display:table pagesize="5" class="highlight" name="warehouses" id="row">
 
 	<!-- Attributes -->
 
@@ -53,9 +53,10 @@
 
 		
 </display:table>
-		<button onclick = "location.href='warehouse/create.do'"> 
-		<spring:message code="warehouse.create" />
-		</button>
+<br>
+<button class="waves-effect waves-light btn" onclick = "location.href='warehouse/create.do'"> 
+<spring:message code="warehouse.create" />
+</button>
 
 	
 

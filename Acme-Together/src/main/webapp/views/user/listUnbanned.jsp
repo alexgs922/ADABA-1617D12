@@ -12,7 +12,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-<display:table pagesize="5" class="displaytag" name="users"
+<display:table pagesize="5" class="highlight" name="users"
 	requestURI="${requestURI}" id="row">
 
 
@@ -55,8 +55,8 @@
 	<security:authorize access="hasRole('USER')">
 		<jstl:if test="${principal.friends.contains(row)}">
 			<display:column>
-				<a href="user/unfollow.do?userId=${row.id}"> <spring:message
-						code="user.unfollow" />
+				<a class="waves-effect waves-light btn" href="user/unfollow.do?userId=${row.id}"><i class="material-icons right">thumb_down</i><spring:message
+						code="user.unfollow" /> 
 
 				</a>
 			</display:column>
@@ -64,8 +64,8 @@
 
 		<jstl:if test="${!principal.friends.contains(row)}">
 			<display:column>
-				<a href="user/follow.do?userId=${row.id}"> <spring:message
-						code="user.follow" />
+				<a class="waves-effect waves-light btn" href="user/follow.do?userId=${row.id}"><i class="material-icons right">thumb_up</i> <spring:message
+						code="user.follow" /> 
 
 				</a>
 			</display:column>
@@ -78,3 +78,4 @@
 
 
 </display:table>
+<br>

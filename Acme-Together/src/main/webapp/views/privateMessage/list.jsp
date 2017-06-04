@@ -23,7 +23,7 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<display:table pagesize="10" class="displaytag" name="privateMessages"
+<display:table pagesize="10" class="highlight" name="privateMessages"
 	requestURI="${requestURI}" id="row">
 
 	<jstl:if

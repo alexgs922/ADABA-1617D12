@@ -20,12 +20,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-
-<h3>
+<br>
+<h4>
 	<spring:message code="administrator.numberOfUserRegistered" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="numberOfUserRegistered" id="row">
 
 	<spring:message code="administrator.numberOfUserRegistered"
@@ -38,11 +38,11 @@
 
 </display:table>
 
-<h3>
+<h4>
 	<spring:message code="administrator.numberOfOrderLastMonth" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="numberOfOrderLastMonth" id="row">
 
 	<spring:message code="administrator.numberOfOrderLastMonth"
@@ -56,11 +56,11 @@
 </display:table>
 
 
-<h3>
+<h4>
 	<spring:message code="administrator.usersWhoCreateMoreShoppingGroup" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="usersWhoCreateMoreShoppingGroup" id="row">
 
 	<spring:message code="administrator.actor.name" var="nameActor" />
@@ -77,11 +77,11 @@
 
 </display:table>
 
-<h3>
+<h4>
 	<spring:message code="administrator.usersWhoCreateMinusShoppingGroup" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="usersWhoCreateMinusShoppingGroup" id="row">
 
 	<spring:message code="administrator.actor.name" var="nameActor" />
@@ -99,11 +99,11 @@
 
 </display:table>
 
-<h3>
+<h4>
 	<spring:message code="administrator.shoppingGroupsWithMorePuntuation" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="shoppingGroupsWithMorePuntuation" id="row">
 
 	<spring:message code="administrator.sg.name" var="nameSG" />
@@ -124,11 +124,11 @@
 </display:table>
 
 
-<h3>
+<h4>
 	<spring:message code="administrator.shoppingGroupsWithLessPuntuation" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="shoppingGroupsWithLessPuntuation" id="row">
 
 	<spring:message code="administrator.sg.name" var="nameSG" />
@@ -148,11 +148,11 @@
 
 </display:table>
 
-<h3>
+<h4>
 	<spring:message code="administrator.percentShoppingGroupsWithFreePlaces" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="percentShoppingGroupsWithFreePlaces" id="row">
 
 	<spring:message code="administrator.percentShoppingGroupsWithFreePlaces"
@@ -165,11 +165,11 @@
 
 </display:table>
 
-<h3>
+<h4>
 	<spring:message code="administrator.percentShoppingGroupsWithoutFreePlaces" />
-</h3>
+</h4>
 
-<display:table class="displaytag" keepStatus="true"
+<display:table class="highlight" keepStatus="true"
 	name="percentShoppingGroupsWithoutFreePlaces" id="row">
 
 	<spring:message code="administrator.percentShoppingGroupsWithoutFreePlaces"
@@ -181,7 +181,7 @@
 
 
 </display:table>
-
+<br>
 
 
 

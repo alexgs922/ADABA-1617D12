@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="orders" id="row">
+<display:table pagesize="5" class="highlight" name="orders" id="row">
 
 	<!-- Attributes -->
 

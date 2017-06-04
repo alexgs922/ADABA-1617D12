@@ -24,19 +24,15 @@
 <form:form action="warehouse/create.do"
 	modelAttribute="warehouse">
 
-	
-<fieldset>
-		<legend><spring:message code="warehouse.Info"/></legend>
+	<br>
+	<div class="row">
+		<h4><spring:message code="warehouse.Info"/></h4>
 		<acme:textbox code="warehouse.name" path="name"/>
 		<acme:textbox code="warehouse.warehouseAddress" path="warehouseAddress"/>
-	
-	</fieldset>
+	</div>
 	<acme:submit name="save" code="warehouse.accept"/>			
 	
-	
-	<input type="button" name="cancel"
-		value="<spring:message code="warehouse.cancel" />"
-		onclick="javascript: window.location.replace('warehouse/myWarehouses.do');" />
+	<a href="warehouse/myWarehouses.do" class="waves-effect waves-light btn"><spring:message code="warehouse.cancel" /></a>
 	<br />
 
 </form:form>

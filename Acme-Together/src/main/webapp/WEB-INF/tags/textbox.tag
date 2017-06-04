@@ -24,6 +24,7 @@
  
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="code" required="true" %>
+<%@ attribute name="placeholder" required="false" %>
 
 <%@ attribute name="readonly" required="false" %>
 

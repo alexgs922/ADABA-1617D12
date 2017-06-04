@@ -11,7 +11,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-<display:table pagesize="5" class="displaytag" name="configurations"
+<display:table pagesize="5" class="highlight" name="configurations"
 	requestURI="${requestURI}" id="row">
 
 	<spring:message code="configuration.fee" var="configurationFee" />
@@ -20,7 +20,7 @@
 
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
-			<button onclick="location.href='configuration/administrator/edit.do?configurationId=${row.id}'"> <spring:message code="configuration.change" /></button>
+			<button class="waves-effect waves-light btn" onclick="location.href='configuration/administrator/edit.do?configurationId=${row.id}'"> <spring:message code="configuration.change" /></button>
 		</display:column>
 	</security:authorize>
 

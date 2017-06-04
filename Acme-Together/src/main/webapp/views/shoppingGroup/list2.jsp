@@ -12,7 +12,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-<display:table pagesize="5" sort="list" class="displaytag" name="shoppingGroups"
+<display:table pagesize="5" sort="list" class="highlight" name="shoppingGroups"
 	requestURI="${requestURI}" id="sh">
 
 	<jstl:if test="${sh.private_group eq true}">
@@ -96,7 +96,7 @@
 
 <security:authorize access="hasRole('USER')">
 
-	<button
+	<button class="waves-effect waves-light btn"
 		onclick="location.href='shoppingGroup/user/create.do?'">
 		<spring:message code="shoppingGroup.create" />
 	</button>
@@ -105,7 +105,7 @@
 
 <security:authorize access="hasRole('USER')">
 
-	<button
+	<button class="waves-effect waves-light btn"
 		onclick="location.href='shoppingGroup/user/createPrivate.do?'">
 		<spring:message code="shoppingGroup.createPrivate" />
 	</button>

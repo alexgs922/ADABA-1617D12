@@ -14,7 +14,7 @@
 
 
 
-<display:table pagesize="5"  sort="list" class="displaytag" name="coupons" requestURI="${requestURI}" id="row">
+<display:table pagesize="5"  sort="list" class="highlight" name="coupons" requestURI="${requestURI}" id="row">
 	
 	<spring:message code="coupon.couponNumber" var="couponNumber" />
 	<display:column property="couponNumber" title="${couponNumber}" sortable="true" class="text-normal"/>
@@ -24,7 +24,7 @@
 	
 	<security:authorize access="hasRole('COMMERCIAL')">
 		<display:column>
-			<button onclick="location.href='coupon/commercial/edit.do?couponId=${row.id}'"> <spring:message code="coupon.edit" /></button>
+			<button class="waves-effect waves-light btn" onclick="location.href='coupon/commercial/edit.do?couponId=${row.id}'"> <spring:message code="coupon.edit" /></button>
 			<jstl:if test="${row.orders == null || empty row.orders }">
 				<acme:confirmDelete url="coupon/commercial/delete.do?couponId=${row.id}" code="coupon.delete" codeConfirm="coupon.confirm.delete" />
 			</jstl:if>
@@ -35,7 +35,7 @@
 
 <security:authorize access="hasRole('COMMERCIAL')">
 	<div>
-		<button onclick="location.href='coupon/commercial/create.do'"> 
+		<button class="waves-effect waves-light btn" onclick="location.href='coupon/commercial/create.do'"> 
 			<spring:message code="coupon.create" />
 		</button>
 	</div>

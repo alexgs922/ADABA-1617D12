@@ -12,7 +12,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
-<display:table pagesize="5" class="displaytag" name="users"
+<display:table pagesize="5" class="highlight" name="users"
 	requestURI="${requestURI}" id="row">
 	
 	
@@ -49,14 +49,14 @@
 		<display:column>
 			<jstl:choose>
 				<jstl:when test = "${row.banned == false }" >
-					<button
+					<button class="waves-effect waves-light btn"
 						onclick = "confirm('${confirmBan }')
 						location.href='user/administrator/banUser.do?userId=${row.id}'">
 						<spring:message code="user.banUser" />
 					</button>
 				</jstl:when>
 				<jstl:when test = "${row.banned == true }" >
-					<button
+					<button class="waves-effect waves-light btn"
 						onclick = "confirm('${confirmUnBan }')
 						location.href='user/administrator/unBanUser.do?userId=${row.id}'">
 						<spring:message code="user.unBanUser" />
@@ -69,3 +69,4 @@
 
 
 </display:table>
+<br>

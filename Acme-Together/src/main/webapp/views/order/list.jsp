@@ -21,7 +21,7 @@
 
 <!-- Listing grid -->
 
-<display:table pagesize="5" class="displaytag" name="orders"
+<display:table pagesize="5" class="highlight" name="orders"
 	requestURI="${requestURI}" id="row">
 	
 	<!-- Attributes -->
@@ -42,7 +42,7 @@
 	<security:authorize access="hasRole('USER')">
 		<display:column>
 			<jstl:if test="${row.status == 'SENT' }">
-			<button onclick = "location.href='order/user/markAsAReceived.do?orderId=${row.id}'"> <spring:message
+			<button class="waves-effect waves-light btn" onclick = "location.href='order/user/markAsAReceived.do?orderId=${row.id}'"> <spring:message
 					code="order.markAsAReceived" />
 			</button>
 			</jstl:if>

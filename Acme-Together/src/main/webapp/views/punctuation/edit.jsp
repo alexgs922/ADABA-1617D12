@@ -72,7 +72,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="punctuation.save" />" />&nbsp; 
 	
-	<input type="button" name="cancel"
+	<input class="waves-effect waves-light btn" type="button" name="cancel"
 		value="<spring:message code="punctuation.cancel" />"
 		onclick="javascript: window.location.replace('shoppingGroup/user/display.do?shoppingGroupId=${shoppingGroup.id}');" />
 	<br />

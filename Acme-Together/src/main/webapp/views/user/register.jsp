@@ -12,44 +12,48 @@
 
 
 <form:form action="user/register.do" modelAttribute="user">
-	<fieldset>
-		<legend><spring:message code="user.userAccountInfo"/></legend>
-		<acme:textbox code="user.username" path="username"/>
+
+	<br>
+	<div class="row">
+		<h4><spring:message code="user.userAccountInfo"/></h4>
+	
+		<acme:textbox code="user.username" path="username" />
 		<acme:password code="user.password" path="password"/>
 		<acme:password code="user.passwordConf" path="passwordCheck"/>
-	</fieldset>
+	</div>
 
-
-	<fieldset>
-		<legend><spring:message code="user.contactInfo"/></legend>
+	<div class="row">
+		<h4><spring:message code="user.contactInfo"/></h4>
 		<acme:textbox code="user.name" path="name"/>
 		<acme:textbox code="user.surname" path="surName"/>
 		<acme:textbox code="user.myEmail" path="email"/>
 		<acme:textbox code="user.myPhone" path="phone"/>
-	</fieldset>
+	</div>
 	
 	
-	<fieldset>
-		<legend><spring:message code="user.personalInfo"/></legend>
-		<acme:textbox code="user.picture" path="picture"/>
+	<div class="row">
+		<h4><spring:message code="user.personalInfo"/></h4>
+		<acme:textbox code="user.picture" path="picture" placeholder="https://flickr.com"/>
 		<acme:textarea code="user.desciption" path="description"/>
 		<acme:textbox code="user.birthDate" path="birthDate"/>
 		<acme:textbox code="user.adress" path="adress"/>
 		<acme:textbox code="user.identification" path="identefication"/>
-		
-	</fieldset>
+	</div>
 	
 
-	<form:checkbox path="termsOfUse"/>
+	<input id="termsOfUse" name="termsOfUse" class="filled-in" type="checkbox" value="true">
+	<label for="termsOfUse">
 	<spring:message code="user.termsOfUse.confirmation"/> 
 	<a href="user/dataProtection.do">
 		<spring:message code="user.termsOfUse.link" />
 	</a>
+	</label>
 	<form:errors cssClass="error" path="termsOfUse" />
 	<br>
-	<acme:submit name="save" code="user.accept"/>			
-	<acme:cancel url="welcome/index.do" code="user.cancel"/>
-
-	
+	<br>
+	<acme:submit name="save" code="user.accept"/>
+	<a href="welcome/index.do" class="waves-effect waves-light btn"><spring:message code="user.cancel" /></a>
+	<br>
+	<br>
 
 </form:form>
