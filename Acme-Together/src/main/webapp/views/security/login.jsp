@@ -18,26 +18,28 @@
 
 <form:form action="j_spring_security_check" modelAttribute="credentials">
 
-	<form:label path="username">
-		<spring:message code="security.username" />
-	</form:label>
-	<form:input path="username" />	
-	<form:errors class="error" path="username" />
-	<br />
-
-	<form:label path="password">
-		<spring:message code="security.password" />
-	</form:label>
-	<form:password path="password" />	
-	<form:errors class="error" path="password" />
-	<br />
+	<div class="row">
+      <div class="input-field col s12">
+        <form:input path="username" id="username" />	
+		<form:errors class="error" path="username" />
+		<label for="username"><spring:message code="security.username" /></label>
+      </div>
+    </div>
 	
+	<div class="row">
+      <div class="input-field col s12">
+       	<form:password path="password" id="password" />	
+		<form:errors class="error" path="password" />
+		<label for="password"><spring:message code="security.password" /></label>
+      </div>
+    </div>
 	<jstl:if test="${showError == true}">
 		<div class="error">
 			<spring:message code="security.login.failed" />
 		</div>
 	</jstl:if>
 	
-	<input type="submit" value="<spring:message code="security.login" />" />
+	<button class="btn waves-effect waves-light" type="submit" name="action"><spring:message code="security.login" /><i class="material-icons right">send</i>
+	</button>
 	
 </form:form>

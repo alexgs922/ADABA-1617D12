@@ -17,12 +17,12 @@
 <tiles-definitions>
 
 	<definition name="welcome/index" extends="master.page">	
-		<put-attribute name="title" value="¡Bienvenidos!" />
+		<put-attribute name="title" value="" />
 		<put-attribute name="body" value="/views/welcome/index.jsp" />
 	</definition>
 	
 	 <definition name="welcome/cookiesPolicy" extends="master.page">
-  <put-attribute name="title" value="Politica de Cookies" /> 
+  <put-attribute name="title" value="" /> 
   <put-attribute name="body" value="/views/welcome/cookiesPolicy.jsp" /> 
   </definition>
   

@@ -78,14 +78,16 @@ main {
 		<tiles:insertAttribute name="header" />
 	</nav>
 	<main>
-		<h1>
-			<tiles:insertAttribute name="title" />
-		</h1>
-		<tiles:insertAttribute name="body" />
-		<jstl:if test="${message != null}">
-			<br />
-			<span class="message"><spring:message code="${message}" /></span>
-		</jstl:if>
+		<div class="container">
+			<h1>
+				<tiles:insertAttribute name="title" />
+			</h1>
+			<tiles:insertAttribute name="body" />
+			<jstl:if test="${message != null}">
+				<br />
+				<span class="message"><spring:message code="${message}" /></span>
+			</jstl:if>
+		</div>
 	</main>
 	<footer class="page-footer">
 		<tiles:insertAttribute name="footer" />

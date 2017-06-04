@@ -19,6 +19,7 @@
 		<b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" />
 			Acme-Together Co., Inc.
 		</b>
+		<a class="grey-text text-lighten-4 right" href="welcome/about.do"><spring:message code="master.page.about" /></a>
 		<div class="fixed-action-btn horizontal click-to-toggle">
 		  <a class="btn-floating btn-large red">
 		    <i class="material-icons">menu</i>
@@ -30,13 +31,6 @@
 		</div>
 	</div>
 </div>
-
-<a href="welcome/about.do">
-
-	<spring:message code="master.page.about" />
-
-</a>
-
 
 
 <!-- Css Cookies -->
