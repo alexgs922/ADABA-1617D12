@@ -435,9 +435,7 @@ public class ShoppingGroupUserController extends AbstractController {
 		} else
 			try {
 				shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + punctuationRes.getValue());
-				this.userService.save(principal);
-				this.shoppingGroupService.save(shoppingGroup);
-				this.punctuationService.saveAndFlush(punctuation);
+				this.punctuationService.rate(shoppingGroup, punctuationRes);
 
 				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
 			} catch (final Throwable th) {
@@ -498,9 +496,7 @@ public class ShoppingGroupUserController extends AbstractController {
 			res.addObject("shoppingGroup", shoppingGroup);
 		} else
 			try {
-
-				this.shoppingGroupService.save(shoppingGroup);
-				this.punctuationService.saveAndFlush(punctuationRes);
+				this.punctuationService.editRate(shoppingGroup, punctuationRes);
 				res = new ModelAndView("redirect: display.do?shoppingGroupId=" + shoppingGroup.getId());
 			} catch (final Throwable th) {
 				res = new ModelAndView("forbiddenOperation");

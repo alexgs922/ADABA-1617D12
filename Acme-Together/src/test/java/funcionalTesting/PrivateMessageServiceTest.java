@@ -35,9 +35,9 @@ public class PrivateMessageServiceTest extends AbstractTest {
 	private ActorService			actorService;
 
 
-	//user = 1222,...,1226
-	//distributor = 1195,...,1194
-	//admin = 1187
+	//user = 591,...,594
+	//distributor = 564,...,566
+	//admin = 556
 
 	//Crear message sin errores de validacion y otros casos comunes
 	protected void template1(final String username, final int enviarId, final int recibirId, final Class<?> expected) {
@@ -83,30 +83,30 @@ public class PrivateMessageServiceTest extends AbstractTest {
 
 	}
 
-	//user = 1222,...,1226
-	//distributor = 1195,...,1194
-	//admin = 1187
+	//user = 591,...,594
+	//distributor = 564,...,566
+	//admin = 556
 	@Test
 	public void driver1() {
 
 		final Object testingData[][] = {
 			{   //user 1 envia mensaje correcto a user 2
-				"user1", 1222, 1223, null
+				"user1", 591, 592, null
 			}, {
 				//user 2 enviar mensaje correcto a user 1
-				"user2", 1223, 1222, null
+				"user2", 592, 591, null
 			}, {
 				//user 1 envia mensaje correcto a admin
-				"user1", 1222, 1187, null
+				"user1", 591, 556, null
 			}, {
 				//Simular post hacking. Logeado como user 3, pero en realidad soy user 2 intentando enviar mensaje a user 1
-				"user3", 1223, 1222, IllegalArgumentException.class
+				"user3", 592, 591, IllegalArgumentException.class
 			}, {
 				//Usuario no autenticado intenta enviar mensaje a otro actor.
-				null, 1222, 1223, IllegalArgumentException.class
+				null, 591, 592, IllegalArgumentException.class
 			}, {
 				//User 1 intenta enviar a un user que no existe un mensaje
-				"user1", 1222, 50000, IllegalArgumentException.class
+				"user1", 591, 50000, IllegalArgumentException.class
 			}
 		};
 
@@ -185,28 +185,28 @@ public class PrivateMessageServiceTest extends AbstractTest {
 
 	}
 
-	//user = 1222,...,1226
-	//distributor = 1195,...,1194
-	//admin = 1187
+	//user = 591,...,594
+	//distributor = 564,...,566
+	//admin = 556
 	@Test
 	public void driver2() {
 
 		final Object testingData[][] = {
 			{
 				//user 2 intenta enviar mensaje sin texto a user 1
-				"user2", 1223, 1222, 1, ConstraintViolationException.class
+				"user2", 592, 591, 1, ConstraintViolationException.class
 			}, {
 				//user 2 intenta enviar mensaje sin titulo a user 3
-				"user2", 1223, 1224, 2, ConstraintViolationException.class
+				"user2", 592, 593, 2, ConstraintViolationException.class
 			}, {
 				//user 1 intenta enviar mensaje sin recipient
-				"user1", 1222, 1223, 3, NullPointerException.class
+				"user1", 591, 592, 3, NullPointerException.class
 			}, {
 				//No existe sender
-				"user1", 1222, 1223, 4, NullPointerException.class
+				"user1", 591, 592, 4, NullPointerException.class
 			}, {
 				//Mensaje vacio
-				"user1", 1222, 1223, 5, NullPointerException.class
+				"user1", 591, 592, 5, NullPointerException.class
 			}
 
 		};
@@ -245,21 +245,18 @@ public class PrivateMessageServiceTest extends AbstractTest {
 
 	}
 
-	// user 2 tiene message2 1232 y user 4 su copia 1233
-	//message 3 = 1234
+	// user 3 tiene el mensaje 605
 	@Test
 	public void driver3() {
 
 		final Object testingData[][] = {
 			{
-				//user 4 elimina un message suyo
-				"user4", 1233, null
+				//user 3 elimina un message suyo
+				"user3", 605, null
 			}, {
-				//user 4 intenta eliminar un message que no es suyo
-				"user2", 1234, IllegalArgumentException.class
-			}
-
-			, {
+				//user 2 intenta eliminar un message que no es suyo
+				"user2", 598, IllegalArgumentException.class
+			}, {
 				//user 2 intenta eliminar un message que no existe
 				"user2", 20000, IllegalArgumentException.class
 			}
@@ -300,17 +297,17 @@ public class PrivateMessageServiceTest extends AbstractTest {
 
 	}
 
-	//message 3 = 1234
+	// user 1 tiene el mensaje 604
 	@Test
 	public void driver4() {
 
 		final Object testingData[][] = {
 			{
-				//user 2 elimina un message suyo
-				"user2", 1233, null
+				//user 1 elimina un message suyo
+				"user1", 604, null
 			}, {
 				//user 2 intenta eliminar un message que no es suyo
-				"user2", 1234, IllegalArgumentException.class
+				"user2", 598, IllegalArgumentException.class
 			}
 
 			, {

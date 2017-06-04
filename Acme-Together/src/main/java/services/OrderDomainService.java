@@ -17,6 +17,7 @@ import domain.OrderDomain;
 import domain.Product;
 import domain.ShoppingGroup;
 import domain.Status;
+import domain.User;
 
 @Service
 @Transactional
@@ -34,6 +35,9 @@ public class OrderDomainService {
 
 	@Autowired
 	private ShoppingGroupService	shoppingGroupService;
+
+	@Autowired
+	private UserService				userService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -97,6 +101,13 @@ public class OrderDomainService {
 
 	public void markAsAReceived(final OrderDomain order) {
 		Assert.notNull(order);
+
+		final User principal = this.userService.findByPrincipal();
+
+		final List<Product> orderProducts = new ArrayList<Product>(order.getProducts());
+
+		Assert.isTrue(orderProducts.get(0).getShoppingGroupProducts().getCreator().getId() == principal.getId());
+		Assert.isTrue(order.getStatus() == Status.SENT);
 
 		order.setStatus(Status.RECEIVED);
 		order.setFinishDate(new Date());

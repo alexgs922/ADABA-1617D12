@@ -36,6 +36,11 @@
 	<spring:message code="user.phone" var="phone" />
 	<display:column property="phone" title="${phone}"
 		sortable="false" />	
+		
+	<spring:message code="user.address" var="address" />
+	<display:column property="address" title="${address}"
+		sortable="false" />	
+	
 
 	<spring:message code="user.desc" var="description" />
 	<display:column property="description" title="${description}"

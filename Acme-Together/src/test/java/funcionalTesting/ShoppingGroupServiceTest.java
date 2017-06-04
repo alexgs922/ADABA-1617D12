@@ -22,13 +22,21 @@ import org.springframework.util.Assert;
 import services.ActorService;
 import services.CategoryService;
 import services.CommentService;
+import services.CouponService;
+import services.DistributorService;
+import services.OrderDomainService;
 import services.ProductService;
+import services.PunctuationService;
 import services.ShoppingGroupService;
 import services.UserService;
 import utilities.AbstractTest;
 import domain.Category;
 import domain.Comment;
+import domain.Coupon;
+import domain.Distributor;
+import domain.OrderDomain;
 import domain.Product;
+import domain.Punctuation;
 import domain.ShoppingGroup;
 import domain.User;
 import forms.ShoppingGroupForm;
@@ -60,6 +68,18 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 	@Autowired
 	private ProductService			productService;
+
+	@Autowired
+	private PunctuationService		punctuationService;
+
+	@Autowired
+	private DistributorService		distributorService;
+
+	@Autowired
+	private CouponService			couponService;
+
+	@Autowired
+	private OrderDomainService		orderService;
 
 
 	//Test dedicado a probar el caso de uso: Postear comentarios en tus grupos de compra
@@ -155,35 +175,35 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 
 	}
-	//user = 1222,...,1226
-	//shopping groups = 1238,..,1240
+	//user = 591,..,594
+	//shopping groups = 615,..,617
 	//user 1 tiene solo el shopping group 1
-	//admin = 1187
+	//admin = 556
 	@Test
 	public void driver1() {
 
 		final Object testingData[][] = {
 			{
 				//user 1 postea un comentario sin errores en uno de sus grupos de compra
-				"user1", 1222, 1238, 0, null
+				"user1", 591, 615, 0, null
 			}, {
 				//user 1 postea un comentario sin titulo en uno de sus grupos de compra
-				"user1", 1222, 1238, 1, ConstraintViolationException.class
+				"user1", 591, 615, 1, ConstraintViolationException.class
 			}, {
 				//user 1 postea un comentario sin texto en uno de sus grupos de compra
-				"user1", 1222, 1238, 2, ConstraintViolationException.class
+				"user1", 591, 615, 2, ConstraintViolationException.class
 			}, {
 				//user 1 postea un comentario sin creador en uno de sus grupos de compra
-				"user1", 1222, 1238, 3, ConstraintViolationException.class
+				"user1", 591, 615, 3, ConstraintViolationException.class
 			}, {
 				//user 1 intenta posterar un comentario en un grupo de comprar que no es suyo
-				"user1", 1222, 1239, 0, IllegalArgumentException.class
+				"user1", 591, 616, 0, IllegalArgumentException.class
 			}, {
 				//Usuario no autenticado intenta postear un mensaje
-				null, 1222, 1239, 0, IllegalArgumentException.class
+				null, 591, 615, 0, IllegalArgumentException.class
 			}, {
 				//Un actor del sistema que no es usuario intenta postear un comentario
-				"admin", 1222, 1239, 0, IllegalArgumentException.class
+				"admin", 556, 615, 0, IllegalArgumentException.class
 			}
 		};
 
@@ -211,6 +231,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 			//Comprobamos que se recojan para cada usuario la cantidad adecuada de grupos
 			Assert.isTrue(col.size() == numberOfGroups);
+			System.out.println(col.size());
+			System.out.println(numberOfGroups);
 
 			//Comprobamos que los grupos que se han recogido son los correctos
 			for (final ShoppingGroup sh : col)
@@ -251,8 +273,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 				//Test positivo
 				"user3", 3, paraUser3y4y5, null
 			}, {
-				//Test positivo
-				"user4", 3, paraUser3y4y5, null
+				//Test negativo, el usuario está baneado y no puede logearse ni acceder a nada dentro de la aplicación
+				"user4", 3, paraUser3y4y5, IllegalArgumentException.class
 			}, {
 				//Test positivo
 				"user5", 3, paraUser3y4y5, null
@@ -349,8 +371,8 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 				//Test positivo
 				"user3", 1, 1, paraUser3uno, paraUser3dos, null
 			}, {
-				//Test positivo
-				"user4", 1, 2, paraUser4uno, paraUser4dos, null
+				//Test negativo, el usuario está baneado y nunca llega a logearse ni puede acceder a nada dentro de la aplicación
+				"user4", 1, 2, paraUser4uno, paraUser4dos, IllegalArgumentException.class
 			}, {
 				//Test positivo
 				"user5", 0, 3, null, paraUser5, null
@@ -1388,6 +1410,229 @@ public class ShoppingGroupServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.testDeleteProduct((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (Product) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	//Test: un user puntua a un shoppingGroup al que esta apuntado y que todavía no ha puntuado
+	//Comprobamos también que la puntuación se ha cambiado correctamente
+
+	protected void testScoreShoppingGroup(final String username, final Integer value, final ShoppingGroup shoppingGroup, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+
+			final Punctuation rate = this.punctuationService.create();
+
+			rate.setShoppingGroup(shoppingGroup);
+			rate.setUser(principal);
+			rate.setValue(value);
+			principal.getPunctuations().add(rate);
+			shoppingGroup.getPunctuations().add(rate);
+
+			shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() + rate.getValue());
+
+			this.userService.save(principal);
+			this.shoppingGroupService.save(shoppingGroup);
+			this.punctuationService.saveAndFlush(rate);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverScoreShoppingGroup() {
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(616);
+		final ShoppingGroup group2 = this.shoppingGroupService.findOne(617);
+
+		final Object testingData[][] = {
+			{   //El user introduce correctamente una puntuación
+				"user3", 5, group1, null
+			}, {
+				//El user3 intenta introducir una puntuación con un valor que se sale de rango.
+				"user3", -6, group1, ConstraintViolationException.class
+			}, {
+				//El user3 intenta introducir una puntuación a un grupo en el que no está apuntado
+				"user3", 5, group2, IllegalArgumentException.class
+			},
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testScoreShoppingGroup((String) testingData[i][0], (Integer) testingData[i][1], (ShoppingGroup) testingData[i][2], (Class<?>) testingData[i][3]);
+
+	}
+
+	protected void testEditScoreShoppingGroup(final String username, final Punctuation rate, final Integer value, final ShoppingGroup shoppingGroup, final Integer expectedValue, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			//El usuario se encuentra inscrito en este shoppingGroup
+
+			final User principal = this.userService.findByPrincipal();
+
+			Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+
+			final Integer oldValue = rate.getValue();
+
+			rate.setValue(value);
+
+			shoppingGroup.setPuntuation(shoppingGroup.getPuntuation() - oldValue + rate.getValue());
+
+			Assert.isTrue(shoppingGroup.getPuntuation() == expectedValue);
+
+			this.userService.save(principal);
+			this.shoppingGroupService.save(shoppingGroup);
+			this.punctuationService.saveAndFlush(rate);
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverEditScoreShoppingGroup() {
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615); //shoppingGroup en el que ya ha puntuado el user1
+		final Punctuation rate1 = this.punctuationService.findOne(622); // puntuacion del user1 al group1
+
+		final Object testingData[][] = {
+			{   //El user introduce correctamente una puntuación
+				"user1", rate1, -1, group1, 1, null
+			}, {
+				//El user3 intenta introducir una puntuación con un valor que se sale de rango.
+				"user1", rate1, -6, group1, -4, ConstraintViolationException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testEditScoreShoppingGroup((String) testingData[i][0], (Punctuation) testingData[i][1], (Integer) testingData[i][2], (ShoppingGroup) testingData[i][3], (Integer) testingData[i][4], (Class<?>) testingData[i][5]);
+
+	}
+
+	//TEST: Realizar un order ---------------------------------------------------
+
+	protected void testMakeOrderShoppingGroup(final String username, final ShoppingGroup shoppingGroup, final Distributor distributor, final Coupon coupon, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			this.shoppingGroupService.makeOrder(shoppingGroup, coupon, distributor);
+
+			this.shoppingGroupService.flush();
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverMakeOrderShoppingGroup() {
+
+		this.authenticate("user1");
+
+		final ShoppingGroup group1 = this.shoppingGroupService.findOne(615); //shoppingGroup creado por el user1
+		final ShoppingGroup group2 = this.shoppingGroupService.findOne(616); //shoppingGroup creado por el user3
+		final Distributor distributor1 = this.distributorService.findOne(564);
+		final Distributor distributor2 = this.distributorService.findOne(565);
+
+		final Coupon coupon1 = this.couponService.findOne(560);
+		final Coupon coupon2 = this.couponService.findOne(561);
+
+		this.unauthenticate();
+
+		final Object testingData[][] = {
+			{   //El user1 creador del group1 hace realiza la order correctamente
+				"user1", group1, distributor1, coupon1, null
+			}, {
+				//El user1 no es creador del group1 e intenta realizar una order
+				"user1", group2, distributor2, coupon2, IllegalArgumentException.class
+			}, {
+				//El user 3 es el creador del group2 e intenta realizar un order cuando no esta permitido
+				//ya que hay un order en curso.
+				"user3", group2, distributor2, coupon2, IllegalArgumentException.class
+			}, {
+				//El user 5 intenta hacer una order. No puede realizarla porque su tarjeta de credito no es valida.
+				"user5", group2, distributor2, coupon2, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testMakeOrderShoppingGroup((String) testingData[i][0], (ShoppingGroup) testingData[i][1], (Distributor) testingData[i][2], (Coupon) testingData[i][3], (Class<?>) testingData[i][4]);
+
+	}
+
+	//TEST: Marcar una order como recibida ----------------------------------------------------------------------
+
+	protected void testMarkAsARecievedOrder(final String username, final OrderDomain order, final Class<?> expected) {
+
+		Class<?> caught;
+
+		caught = null;
+		try {
+			this.authenticate(username);
+
+			this.orderService.markAsAReceived(order);
+
+			this.orderService.flush();
+
+			this.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverMarkAsARecieved() {
+
+		final OrderDomain order1 = this.orderService.findOne(597); //order perteneciente al user3
+		final OrderDomain order2 = this.orderService.findOne(596); //order perteneciente al user1
+
+		final Object testingData[][] = {
+			{   //El user3 marca una order como recibida correctamente.
+				"user3", order1, null
+			}, {
+				//El user1 intenta marcar una order que pertenece al user3 como recibida
+				"user1", order1, NullPointerException.class
+			}, {
+				//El user1 intenta marcar una order como recibida, cuando ya ha sido marcada como tal
+				"user1", order2, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.testMarkAsARecievedOrder((String) testingData[i][0], (OrderDomain) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 

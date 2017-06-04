@@ -87,8 +87,15 @@ public class CouponService {
 		return coupon;
 	}
 
+	public Coupon saveAndFlush(final Coupon c) {
+		Assert.notNull(c);
+		return this.couponRepository.saveAndFlush(c);
+	}
+
 	public void delete(final Coupon c) {
 		Assert.notNull(c);
+		final Commercial principal = this.commercialService.findByPrincipal();
+		Assert.isTrue(principal.getCoupons().contains(c));
 		this.couponRepository.delete(c);
 	}
 

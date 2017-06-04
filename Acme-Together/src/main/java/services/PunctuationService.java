@@ -25,6 +25,12 @@ public class PunctuationService {
 	@Autowired
 	private PunctuationRepository	punctuationRepository;
 
+	@Autowired
+	private UserService				userService;
+
+	@Autowired
+	private ShoppingGroupService	shoppingGroupService;
+
 
 	// Supporting services ------------------------------------------
 
@@ -112,5 +118,32 @@ public class PunctuationService {
 		this.punctuationRepository.flush();
 
 		return result;
+	}
+
+	public void rate(final ShoppingGroup shoppingGroup, final Punctuation rate) {
+		Assert.notNull(shoppingGroup);
+		Assert.notNull(rate);
+
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+		Assert.isTrue(!principal.getPunctuations().contains(rate));
+
+		this.userService.save(principal);
+		this.shoppingGroupService.save(shoppingGroup);
+		this.punctuationRepository.saveAndFlush(rate);
+	}
+
+	public void editRate(final ShoppingGroup shoppingGroup, final Punctuation rate) {
+		Assert.notNull(shoppingGroup);
+		Assert.notNull(rate);
+
+		final User principal = this.userService.findByPrincipal();
+
+		Assert.isTrue(principal.getShoppingGroup().contains(shoppingGroup));
+		Assert.isTrue(principal.getPunctuations().contains(rate));
+
+		this.shoppingGroupService.save(shoppingGroup);
+		this.punctuationRepository.saveAndFlush(rate);
 	}
 }
