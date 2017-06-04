@@ -66,7 +66,9 @@
 		<security:intercept-url pattern="/user/follow.do" access="hasRole('USER')" /> 
 		<security:intercept-url pattern="/user/unfollow.do" access="hasRole('USER')" /> 
 		
-
+		<security:intercept-url pattern="/welcome/cookiespolicy.do" access="permitAll" /> 
+		<security:intercept-url pattern="/welcome/about.do" access="permitAll" /> 
+		
 	
 		<security:intercept-url pattern="/user/register.do"	access="isAnonymous()" />
 		<security:intercept-url pattern="/user/dataProtection.do" access="permitAll" />
@@ -103,7 +105,6 @@
 		<security:intercept-url pattern="/order/changeStatus.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/order/remove.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/warehouse/displayOrder.do" access="hasRole('DISTRIBUTOR')" />
-		
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
