@@ -104,7 +104,7 @@
 		<security:intercept-url pattern="/warehouse/myOrders.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/order/changeStatus.do" access="hasRole('DISTRIBUTOR')" />
 		<security:intercept-url pattern="/order/remove.do" access="hasRole('DISTRIBUTOR')" />
-		
+		<security:intercept-url pattern="/warehouse/displayOrder.do" access="hasRole('DISTRIBUTOR')" />
 	
 		<security:intercept-url pattern="/commercial/profile.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/commercial/viewProfile.do" access="hasRole('COMMERCIAL')" /> 
